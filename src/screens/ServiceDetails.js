@@ -4,6 +4,7 @@ import { COLORS } from './../utils/theme'
 import LinearGradient from 'react-native-linear-gradient';
 import Swiper from 'react-native-swiper'
 import ProviderDetails from './../components/cards/ProviderDetails'
+import Stars from './../components/review/Stars'
 
 
 const ServiceDetails = () => {
@@ -38,9 +39,46 @@ const ServiceDetails = () => {
                 <ScrollView showsVerticalScrollIndicator={false}>
 
 
-                    <View style={{marginTop:250}}>
-                        <ProviderDetails />
+                    <View style={{
+                        padding: 10,
+                        marginTop: 230,
+                    }}>
+                        <View style={{
+                            ...styles.rowCont,
+                            justifyContent: 'space-between',
+                            marginBottom: 10
+                        }}>
+                            <Text style={{
+                                ...styles.h2,
+                                color: '#000',
+                                marginRight: 10
+                            }}>Plumbing</Text>
+                            <Text style={{
+                                ...styles.h3,
+                                color: '#FEB300',
+                                marginRight: 'auto',
+                                borderWidth: 1,
+                                padding: 5,
+                                borderColor: '#FEB300',
+                                borderRadius: 5
+                            }}>pending</Text>
+                            <Text style={{
+                                ...styles.h2,
+                                color: COLORS.PRIMARY
+                            }}>$150</Text>
+                        </View>
+                        <Stars />
                     </View>
+
+                    <ProviderDetails />
+
+                    <View style={{margin:10}}>
+                        <Text style={styles.h2}>Service Details</Text>
+                        <Text>Lorem ipsum dolor sit amet, consectetur adipiscing elit,
+                            sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                            Ut enim ad minim veniam</Text>
+                    </View>
+
 
                 </ScrollView>
             </View>
@@ -64,7 +102,6 @@ const styles = StyleSheet.create({
         flex: 0.94,
         backgroundColor: '#fff',
         marginTop: 'auto',
-        padding: 10
     },
     h1: {
         fontSize: 20,
@@ -87,22 +124,14 @@ const styles = StyleSheet.create({
     },
     ImageWrapper: {
         position: 'absolute',
-        width: '100%',
+        width: '90%',
         height: 250,
         top: -25,
-        marginHorizontal: 10,
-        shadowColor: "#000",
-        shadowOffset: {
-            width: 0,
-            height: 3,
-        },
-        shadowOpacity: 0.29,
-        shadowRadius: 4.65,
-        elevation: 8,
+        marginHorizontal: 20,
+        zIndex: 1
     },
     image: {
         flex: 1,
-        borderRadius: 10,
     },
 
 })

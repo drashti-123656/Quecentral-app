@@ -1,13 +1,17 @@
 import React from 'react'
-import { StyleSheet, Text, View, TouchableOpacity } from 'react-native'
+import { StyleSheet, Text, View, TouchableOpacity, ActivityIndicator } from 'react-native'
 
-const LoginButton = ({ title, onPress }) => {
+const LoginButton = ({ title, onPress, loading }) => {
     return (
         <TouchableOpacity
             onPress={onPress}
             style={styles.container}
         >
+            {loading ? 
+           <ActivityIndicator color={'white'}/>: 
             <Text style={styles.title}>{title}</Text>
+            }
+            
         </TouchableOpacity>
     )
 }
@@ -28,6 +32,5 @@ const styles = StyleSheet.create({
         color: '#fff',
         fontSize: 20,
         fontWeight: 'bold',
-
     }
 })

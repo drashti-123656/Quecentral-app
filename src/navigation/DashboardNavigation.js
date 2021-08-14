@@ -45,8 +45,8 @@ const AuthNavigation = () => {
           headerShown: false,
         }}
       />
-      <Tab.Screen name="Setting" component={Setting} />
-      <Tab.Screen name="Logout" component={Logout} />
+      <Tab.Screen name="Setting" component={Setting} options={{ headerShown: false }} />
+      <Tab.Screen name="Logout"  component={Logout} options={{ headerShown: false }}/>
     </Tab.Navigator>
   )
 }

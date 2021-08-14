@@ -1,120 +1,143 @@
 import React, { useState, useEffect } from 'react'
-import { StyleSheet, Text, TouchableOpacity, View, Image, TextInput, ScrollView, Button } from 'react-native'
-import { CustomInput } from './../../components/input/CustomInput'
-import { Formik } from 'formik';
+import {
+    StyleSheet,
+    Text,
+    TouchableOpacity,
+    View,
+    Image,
+    TextInput,
+    ScrollView,
+    Button
+} from 'react-native'
+import { useSelector, useDispatch } from 'react-redux'
+import { login as signIn, reset } from './../../redux/actions/auth'
 import LoginButton from './../../components/button/LoginButton'
 import { showMessage, hideMessage } from "react-native-flash-message";
 import { COLORS } from './../../utils/theme'
-import { login as loginAPI } from './../../services/auth'
+import { generateOTP as generateOTPAPI } from './../../services/auth'
 
 const Login = ({ navigation }) => {
+    const dispatch = useDispatch()
+    const { error, errorMsg } = useSelector(state => state.miscData)
 
-    const [MobileNo, setMobileNo] = useState('')
-    const [OTP, setOTP] = useState('')
+    const [otpSent, setOtpSent] = useState(false)
+    const [mobileno, setMobileno] = useState('')
+    const [otp, setOtp] = useState('')
+    const [country_code, setCountry_code] = useState(91)
+    const [loading, setLoading] = useState(false)
 
     const handleLogin = async () => {
-        data = {
-            mobileno: MobileNo,
-            otp: OTP,
-            country_code: '91'
-        }
-        let formData = new URLSearchParams(data)
+        setLoading(true)
+        if (!otpSent) {
+            let generateOtpData = new URLSearchParams({
+                usertype: 1,
+                mobileno,
+                country_code: 91
+            })
 
-        const response = await loginAPI(formData);
-        console.log(response)
-        if (response.data.response_code === 200) {
-            showMessage({
-                message: response.data.response.response_message,
-                type: "info",
-                backgroundColor: COLORS.warningGreen,
-            });
+            let response = await generateOTPAPI(generateOtpData)
+            console.log(response.data.response.response_code)
+            if (response.data.response.response_code == 200) {
+                showMessage({
+                    message: response.data.response.response_message,
+                    type: "info",
+                    backgroundColor: COLORS.warningGreen,
+                });
+
+                setOtpSent(true)
+            } else {
+                showMessage({
+                    message: response.data.response.response_message,
+                    type: "info",
+                    backgroundColor: COLORS.warningRed,
+                });
+            }
+
         } else {
-            showMessage({
-                message: response.data.response.response_message,
-                type: "info",
-                backgroundColor: COLORS.warningRed,
-            });
+            let formData = new URLSearchParams({
+                mobileno,
+                otp,
+                country_code
+            })
+            dispatch(signIn(formData))
         }
 
-
-
-
+        setLoading(false)
     }
 
     useEffect(() => {
-
-    }, [])
+        if (error) {
+            showMessage({
+                message: errorMsg,
+                type: "info",
+                backgroundColor: COLORS.warningRed,
+            });
+            dispatch(reset())
+        }
+    }, [error, errorMsg])
 
     return (
         <View style={styles.container}>
-       
-            <View style={styles.headerCont}>
-                <Image
-                    source={require('./../../assets/icons/icon.png')}
-                    style={{ width: 60, height: 70 }} />
-                <Text style={styles.TitleText}>Queue Central</Text>
-            </View>
-            <View style={styles.bodyContainer}>
-            <ScrollView >
-                <Text style={{ ...styles.TitleText, color: '#333', marginTop: 50, marginBottom: 20 }}>Login</Text>
-                {/* <CustomInput
-                    value={MobileNo}
-                    onChangeText={setMobileNo}
-                    placeholder={'Enter mobile number'}
-                />
-                <CustomInput
-                    value={OTP}
-                    onChangeText={setOTP}
-                    placeholder={'OTP'}
-                /> */}
-
-                <Formik
-                    initialValues={{ email: '' }}
-                    onSubmit={values => console.log(values)}
-                >
-                    {({ handleChange, handleBlur, handleSubmit, values }) => (
-                        <View>
-                            <TextInput
-                                onChangeText={handleChange('MobileNo')}
-                                onBlur={handleBlur('MobileNo')}
-                                value={values.MobileNo}
-                                style={styles.input}
-                            />
-
-                            <TextInput
-                                onChangeText={handleChange('OTP')}
-                                onBlur={handleBlur('OTP')}
-                                value={values.OTP}
-                                style={styles.input}
-                            />
-
-                            <Text
-                                style={{
-                                    textAlign: 'right',
-                                    padding: 5,
-                                    marginRight: 12,
-                                    fontSize: 12
-                                }}>Didn't recieve the OTP? Resend OTP
-                            </Text>
-
-                            <LoginButton
-                                title={'Login'}
-                                onPress={handleSubmit}
-                            />
-
-                        </View>
-                    )}
-                </Formik>
+            <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
+                <View style={styles.headerCont}>
+                    <Image
+                        source={require('./../../assets/icons/icon.png')}
+                        style={{ width: 60, height: 70 }} />
+                    <Text style={styles.TitleText}>Queue Central</Text>
+                </View>
+                <View style={styles.bodyContainer}>
 
 
-                <Text style={{ textAlign: 'center' }}>Don't have an account ?
-                    <Text
-                        onPress={() => navigation.navigate('Signup')}
-                        style={{ color: '#2BBBA0', fontWeight: 'bold' }}> Signup</Text>
-                </Text>
-                </ScrollView>
-            </View>
-          
+                    <Text style={{ ...styles.TitleText, color: '#333', marginTop: 50, marginBottom: 20 }}>Login</Text>
+
+                    <TextInput
+                        style={styles.input}
+                        value={mobileno}
+                        placeholder={'Enter mobile number'}
+                        onChangeText={setMobileno}
+                        keyboardType="numeric"
+                    />
+
+                    <View style={{ opacity: otpSent ? 1 : 0.2 }}>
+                        <TextInput
+                            style={styles.input}
+                            value={otp}
+                            placeholder={'Enter OTP'}
+                            onChangeText={setOtp}
+                            editable={otpSent}
+                        />
+                    </View>
+
+                    <TouchableOpacity
+                        onPress={() => setOtpSent(false)}
+                        style={{
+                            flexDirection: 'row',
+                            alignItems: 'center',
+                            justifyContent: 'flex-end'
+                        }}>
+                        <Image
+                            source={require('./../../assets/icons/rounded-arrow.png')}
+                            style={{ width: 15, height: 15 }} />
+
+                        <Text
+                            style={{ textAlign: 'right', padding: 12 }}
+                        >Didn't recieve the otp? Send OTP</Text>
+                    </TouchableOpacity>
+
+                    <LoginButton
+                        title={otpSent ? 'Login' : 'Send OTP'}
+                        onPress={() => handleLogin()}
+                        loading={loading} />
+
+                    <Text style={{ textAlign: 'center' }}>Don't have an account ?
+                        <Text
+                            onPress={() => navigation.navigate('Signup')}
+                            style={{ color: '#2BBBA0', fontWeight: 'bold' }}> Signup</Text>
+                    </Text>
+
+
+                </View>
+            </ScrollView>
         </View>
     )
 }

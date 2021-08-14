@@ -1,19 +1,34 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { StyleSheet, Text, View, TextInput, Image, ActivityIndicator, TouchableOpacity, ScrollView } from 'react-native'
 import { COLORS } from './../utils/theme'
 import LinearGradient from 'react-native-linear-gradient';
 import Swiper from 'react-native-swiper'
 import { ViewMore, BookNow } from './../components/button/GeneralButton'
 import ServiceCard from './../components/cards/ServiceCard'
+import { home as homeAPI } from './../services/dashboard'
+import { BASE_URL } from './../utils/global/'
 
 
 const Dashboard = () => {
+    const [dasboardData, setDashboardData] = useState({})
+    const [categoryList, setCategoryList] = useState([])
+
+    useEffect(() => {
+        fetchDashboardData()
+    }, [])
+
+    const fetchDashboardData = async () => {
+        let formData = new URLSearchParams({
+            latitude: 11.057152556557286,
+            longitude: 77.29133561253548
+        })
+        let response = await homeAPI(formData)
+        setCategoryList(response.data.data.category_list)
+    }
+
     return (
-        <LinearGradient 
-        start={{ x: 0, y: 0 }}
-        end={{ x: 1, y: 0 }}
-        colors={['#72E5D8', '#41C8B1', '#16AE8F']}
-         style={styles.container}>
+        <View
+            style={styles.container}>
             <View style={styles.headerBar}>
                 <Text style={{ ...styles.h1, color: '#fff', marginLeft: 10 }}>Dashboard</Text>
             </View>
@@ -25,7 +40,7 @@ const Dashboard = () => {
                     placeholder='Search Service'
                 />
 
-                <ScrollView  showsVerticalScrollIndicator={false}>
+                <ScrollView showsVerticalScrollIndicator={false}>
 
                     <View style={styles.wrapper}>
                         <Swiper showsButtons={false}>
@@ -42,7 +57,7 @@ const Dashboard = () => {
                         </Swiper>
 
                         <LinearGradient
-                        pointerEvents={'none'}
+                            pointerEvents={'none'}
                             start={{ x: 0, y: 0 }}
                             end={{ x: 0.8, y: 0 }}
                             colors={['transparent', 'transparent', '#000']}
@@ -63,52 +78,24 @@ const Dashboard = () => {
                             <ViewMore />
                         </View>
 
-                        <View style={{ ...styles.rowCont, justifyContent: 'space-between', marginBottom: 10 }}>
-                            <TouchableOpacity style={{ alignItems: 'center' }}>
-                                <View style={styles.iconCont}>
-                                    <Image
-                                        source={require('./../assets/icons/car-wash.png')}
-                                        style={{ width: 40, height: 40 }}
-                                        PlaceholderContent={<ActivityIndicator />}
-                                    />
-                                </View>
-                                <Text style={styles.h3}>Car washing</Text>
-                            </TouchableOpacity>
-
-                            <TouchableOpacity style={{ alignItems: 'center' }}>
-                                <View style={{ ...styles.iconCont, backgroundColor: '#FFF8E6' }}>
-                                    <Image
-                                        source={require('./../assets/icons/Cleaning.png')}
-                                        style={{ width: 40, height: 40 }}
-                                        PlaceholderContent={<ActivityIndicator />}
-                                    />
-                                </View>
-                                <Text style={styles.h3}>Roofing</Text>
-                            </TouchableOpacity>
-
-                            <TouchableOpacity style={{ alignItems: 'center' }}>
-                                <View style={{ ...styles.iconCont, backgroundColor: '#E2F4FF' }}>
-                                    <Image
-                                        source={require('./../assets/icons/roofing.png')}
-                                        style={{ width: 40, height: 40 }}
-                                        PlaceholderContent={<ActivityIndicator />}
-                                    />
-                                </View>
-                                <Text style={styles.h3}>Plumbing</Text>
-                            </TouchableOpacity>
-
-                            <TouchableOpacity style={{ alignItems: 'center' }}>
-                                <View style={{ ...styles.iconCont, backgroundColor: '#F6E8FF' }}>
-                                    <Image
-                                        source={require('./../assets/icons/Plumbing.png')}
-                                        style={{ width: 40, height: 40 }}
-                                        PlaceholderContent={<ActivityIndicator />}
-                                    />
-                                </View>
-                                <Text style={styles.h3}>Cleaning</Text>
-                            </TouchableOpacity>
-
-                        </View>
+                        <ScrollView
+                            horizontal={true}
+                            showsHorizontalScrollIndicator={false}
+                            style={{marginVertical:5}}
+                          >
+                            {categoryList.map(item =>
+                                <TouchableOpacity style={{ alignItems: 'center', marginRight:32 }}>
+                                    <View style={styles.iconCont}>
+                                        <Image
+                                            source={{ uri: `${BASE_URL}${item.category_image}` }}
+                                            style={{ width: 60, height: 60, borderRadius: 100, }}
+                                            PlaceholderContent={<ActivityIndicator />}
+                                        />
+                                    </View>
+                                    <Text style={{ ...styles.h3, width: 60, marginTop: 5, textAlign:'center' }}>{item.category_name}</Text>
+                                </TouchableOpacity>)
+                            }
+                        </ScrollView>
                     </View>
 
 
@@ -119,7 +106,7 @@ const Dashboard = () => {
                 </ScrollView>
             </View>
 
-        </LinearGradient>
+        </View>
     )
 }
 
@@ -194,6 +181,6 @@ const styles = StyleSheet.create({
         height: 150,
         borderRadius: 10,
         zIndex: 1,
-        marginBottom:10
+        marginBottom: 10
     },
 })
