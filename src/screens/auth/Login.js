@@ -124,11 +124,12 @@ const Login = ({ navigation }) => {
                         >Didn't recieve the otp? Send OTP</Text>
                     </TouchableOpacity>
 
-                    <LoginButton
-                        title={otpSent ? 'Login' : 'Send OTP'}
-                        onPress={() => handleLogin()}
-                        loading={loading} />
-
+                    <View style={{margin:12}}>
+                        <LoginButton
+                            title={otpSent ? 'Login' : 'Send OTP'}
+                            onPress={() => handleLogin()}
+                            loading={loading} />
+                    </View>
                     <Text style={{ textAlign: 'center' }}>Don't have an account ?
                         <Text
                             onPress={() => navigation.navigate('Signup')}

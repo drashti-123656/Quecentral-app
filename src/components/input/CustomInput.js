@@ -14,20 +14,22 @@ const CustomInput = ({ value, onChangeText, placeholder }) => {
     )
 }
 
-const CustomInputWithTitle = ({ title, value, onChangeText, placeholder }) => {
+const CustomInputWithTitle = ({ title, value, onChangeText, placeholder, editable }) => {
     return (
-        <View style={{flex:1}}>
+        <View style={{width:'100%'}}>
             <Text style={styles.title}>{title}</Text>
             <TextInput
                 style={{...styles.input,  
-                    borderColor:'#a1a1a1',  
-                    borderRadius:5, 
-                    height: 40,
-                    margin: 5,
+                    borderColor:'#2BBBA0',
+                    height: 50,
+                    borderRadius:10, 
+                    margin:0,
+                    marginVertical: 5,
                 }}
                 onChangeText={onChangeText}
                 value={value}
                 placeholder={placeholder}
+                editable={editable}
             />
         </View>
     )

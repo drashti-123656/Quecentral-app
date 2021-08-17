@@ -3,7 +3,7 @@ import { StyleSheet, Text, View, Image } from 'react-native'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { COLORS } from './../utils/theme'
 import DashboardStack from './DashboardStack'
-import Setting from './../screens/Setting'
+import SettingsStack from './SettingsStack'
 import Logout from './../screens/auth/Logout'
 
 const Tab = createBottomTabNavigator();
@@ -19,7 +19,7 @@ const AuthNavigation = () => {
               source={require('./../assets/icons/home.png')}
               style={{ width: 22, height: 22, tintColor: '#fff' }}
             />;
-          } else if (route.name === 'Setting') {
+          } else if (route.name === 'SettingsStack') {
             return <Image
               source={require('./../assets/icons/setting.png')}
               style={{ width: 22, height: 22, tintColor: '#fff' }}
@@ -45,8 +45,15 @@ const AuthNavigation = () => {
           headerShown: false,
         }}
       />
-      <Tab.Screen name="Setting" component={Setting} options={{ headerShown: false }} />
-      <Tab.Screen name="Logout"  component={Logout} options={{ headerShown: false }}/>
+      <Tab.Screen
+        name="SettingsStack"
+        component={SettingsStack}
+        options={{
+          title:'Setting',
+          headerShown: false,
+        }}
+      />
+      <Tab.Screen name="Logout" component={Logout} options={{ headerShown: false }} />
     </Tab.Navigator>
   )
 }
