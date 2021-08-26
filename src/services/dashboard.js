@@ -12,4 +12,15 @@ export const updateUser = (data) => {
     return http.post('update_user', data)
 }
 
+export const searchService = (data) => {
+    return http.post('search_services', data)
+}
+
+export const getReviews = () => {
+    return http.get('get_reviews')
+}
+
+export const bookingList = () => {
+    return http.get('bookinglist_users?status=1')
+}
 
