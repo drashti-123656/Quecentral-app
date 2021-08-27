@@ -5,7 +5,7 @@ import {COLORS} from './../utils/theme';
 import DashboardStack from './DashboardStack';
 import SettingsStack from './SettingsStack';
 import Logout from './../screens/auth/Logout';
-import Wallet from './../screens/Wallet'
+import BookingList from './../screens/BookingList'
 
 const Tab = createBottomTabNavigator();
 
@@ -13,6 +13,8 @@ const AuthNavigation = () => {
   return (
     <Tab.Navigator
       screenOptions={({route}) => ({
+        headerStyle: {backgroundColor: COLORS.PRIMARY},
+        headerTintColor: '#fff',
         tabBarStyle: {backgroundColor: COLORS.PRIMARY},
         tabBarIcon: ({focused, color, size}) => {
           if (route.name === 'Home') {
@@ -22,10 +24,10 @@ const AuthNavigation = () => {
                 style={{width: 22, height: 22, tintColor: '#fff'}}
               />
             );
-          } else if (route.name === 'Wallet') {
+          } else if (route.name === 'Booking') {
             return (
               <Image
-                source={require('./../assets/icons/logout.png')}
+                source={require('./../assets/icons/list.png')}
                 style={{width: 22, height: 22, tintColor: '#fff'}}
               />
             );
@@ -57,10 +59,10 @@ const AuthNavigation = () => {
       />
 
       <Tab.Screen
-        name="Wallet"
-        component={Wallet}
+        name="Booking"
+        component={BookingList}
         options={{
-          headerShown: false,
+          headerShown: true,
         }}
       />
       <Tab.Screen

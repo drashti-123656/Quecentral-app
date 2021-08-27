@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { StyleSheet, Text, View } from 'react-native'
 import ReviewCard from './../components/cards/ReviewCard'
-import { getReviews } from './../services/dashboard'
+import { getReviews } from '../services/api'
 
 const Reviews = () => {
     const [reviewsData, setReviewsData] = useState([])

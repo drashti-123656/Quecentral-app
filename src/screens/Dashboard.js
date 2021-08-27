@@ -15,23 +15,25 @@ import Swiper from 'react-native-swiper';
 import {useSelector} from 'react-redux';
 import {ViewMore, BookNow} from './../components/button/GeneralButton';
 import ServiceCard from './../components/cards/ServiceCard';
-import {home as homeAPI} from './../services/dashboard';
+import {home as homeAPI} from '../services/api';
 import {BASE_URL} from './../utils/global/';
 import http from '../services/httpServices';
 
 const Dashboard = ({navigation}) => {
   const {token} = useSelector(state => state.authData);
 
+  const [loading, setLaoding] = useState(false);
   const [dasboardData, setDashboardData] = useState({});
   const [categoryList, setCategoryList] = useState([]);
-  const [searchData, setearchData] = useState('');
+  const [popularServices, setPopularServices] = useState([]);
+  const [searchKey, setSearchKey] = useState('');
 
   useEffect(() => {
     fetchDashboardData();
   }, []);
 
   const fetchDashboardData = async () => {
-    console.log(token)
+    setLaoding(true);
     http.setToken(token);
 
     let formData = new URLSearchParams({
@@ -40,6 +42,8 @@ const Dashboard = ({navigation}) => {
     });
     let response = await homeAPI(formData);
     setCategoryList(response.data.data.category_list);
+    setPopularServices(response.data.data.popular_services);
+    setLaoding(false);
   };
 
   return (
@@ -53,13 +57,14 @@ const Dashboard = ({navigation}) => {
         <View style={{...styles.rowCont, ...styles.search}}>
           <TextInput
             style={{flex: 1}}
-            value={''}
+            value={searchKey}
+            onChangeText={setSearchKey}
             placeholder="Search Service"
           />
           <TouchableOpacity
             onPress={() =>
               navigation.navigate('FindAProfessional', {
-                searchKey: searchData,
+                searchKey: searchKey,
               })
             }>
             <Image
@@ -118,42 +123,68 @@ const Dashboard = ({navigation}) => {
                 alignItems: 'center',
                 marginVertical: 10,
               }}>
-              <Text style={styles.h2}>Top Services</Text>
-              <ViewMore onPress={() => navigation.navigate('Reviews')} />
+              <Text style={styles.h2}>Categories</Text>
+              <ViewMore onPress={() => navigation.navigate('Categories')} />
             </View>
 
-            <ScrollView
-              horizontal={true}
-              showsHorizontalScrollIndicator={false}
-              style={{marginVertical: 5}}>
-              {categoryList.map((item, i) => (
-                <TouchableOpacity
-                  key={i}
-                  style={{alignItems: 'center', marginRight: 32}}>
-                  <View style={styles.iconCont}>
-                    <Image
-                      source={{uri: `${BASE_URL}${item.category_image}`}}
-                      style={{width: 60, height: 60, borderRadius: 100}}
-                      PlaceholderContent={<ActivityIndicator />}
-                    />
-                  </View>
-                  <Text
-                    style={{
-                      ...styles.h3,
-                      width: 60,
-                      marginTop: 5,
-                      textAlign: 'center',
-                    }}>
-                    {item.category_name}
-                  </Text>
-                </TouchableOpacity>
-              ))}
-            </ScrollView>
+            {loading ? (
+              <ActivityIndicator color={COLORS.PRIMARY} />
+            ) : (
+              <ScrollView
+                horizontal={true}
+                showsHorizontalScrollIndicator={false}
+                style={{marginVertical: 5}}>
+                {categoryList.map((item, i) => (
+                  <TouchableOpacity
+                    onPress={() => navigation.navigate('FindAProfessional')}
+                    key={i}
+                    style={{alignItems: 'center', marginRight: 32}}>
+                    <View style={styles.iconCont}>
+                      <Image
+                        source={{uri: `${BASE_URL}${item.category_image}`}}
+                        style={{width: 60, height: 60, borderRadius: 100}}
+                        PlaceholderContent={<ActivityIndicator />}
+                      />
+                    </View>
+                    <Text
+                      style={{
+                        ...styles.h3,
+                        width: 60,
+                        marginTop: 5,
+                        textAlign: 'center',
+                      }}>
+                      {item.category_name}
+                    </Text>
+                  </TouchableOpacity>
+                ))}
+              </ScrollView>
+            )}
           </View>
 
-          <ServiceCard />
-          <ServiceCard />
-          <ServiceCard />
+          <View
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              marginBottom: 10,
+            }}>
+            <Text style={styles.h2}>Popular Services</Text>
+          </View>
+
+          {loading ? (
+            <ActivityIndicator color={COLORS.PRIMARY} />
+          ) : (
+            popularServices.map((item, i) => (
+              <ServiceCard
+                key={i}
+                service_title={item.service_title}
+                image={item.service_image}
+                currency={item.currency_code}
+                service_amount={item.service_amount}
+                ratings={item.ratings}
+              />
+            ))
+          )}
         </ScrollView>
       </View>
     </View>

@@ -4,7 +4,7 @@ import { showMessage, hideMessage } from "react-native-flash-message";
 import { COLORS } from './../utils/theme'
 import LoginButton from './../components/button/LoginButton'
 import { CustomInputWithTitle } from './../components/input/CustomInput'
-import { updateUser as updateUserAPI } from './../services/dashboard'
+import { updateUser as updateUserAPI } from '../services/api'
 
 
 const EditProfile = ({ route }) => {

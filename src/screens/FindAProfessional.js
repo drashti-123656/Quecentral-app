@@ -14,7 +14,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import Slider from '@react-native-community/slider';
 import {CustomInputWithTitle} from './../components/input/CustomInput';
 import ServiceCard from './../components/cards/ServiceCard';
-import {searchService as searchServiceAPI} from './../services/dashboard';
+import {searchService as searchServiceAPI} from '../services/api';
 
 const FindAProfessional = ({route, navigation}) => {
   const {searchKey} = route.params;

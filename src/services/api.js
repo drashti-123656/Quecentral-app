@@ -1,7 +1,7 @@
 import http from './httpServices'
 
 export const home = (data) => {
-    return http.post('home', data)
+    return http.post('demo-home', data)
 }
 
 export const profileDetails = () => {
@@ -24,3 +24,6 @@ export const bookingList = () => {
     return http.get('bookinglist_users?status=1')
 }
 
+export const categoryList = () => {
+    return http.get('category')
+}

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { StyleSheet, Text, View, Image, TouchableOpacity, ActivityIndicator } from 'react-native'
 import { useIsFocused } from '@react-navigation/native';
 import { COLORS } from './../utils/theme'
-import { profileDetails } from './../services/dashboard'
+import { profileDetails } from '../services/api'
 import { BASE_URL } from './../utils/global'
 
 const Settings = ({ navigation }) => {
@@ -82,14 +82,15 @@ const Settings = ({ navigation }) => {
                     <Text style={styles.h2}>Notification</Text>
                 </View>
 
-                <View style={{ ...styles.rowCont, ...styles.menuItems }}>
+                <TouchableOpacity
+                onPress={() => navigation.navigate('Wallet')} style={{ ...styles.rowCont, ...styles.menuItems }}>
                     <View style={styles.iconWrapper}>
                         <Image
                             source={require('./../assets/icons/wallet.png')}
                             style={{ width: 15, height: 15, tintColor: COLORS.PRIMARY }} />
                     </View>
                     <Text style={styles.h2}>Wallet</Text>
-                </View>
+                </TouchableOpacity>
 
                 <View style={{ ...styles.rowCont, ...styles.menuItems, borderBottomWidth: 0 }}>
                     <View style={styles.iconWrapper}>

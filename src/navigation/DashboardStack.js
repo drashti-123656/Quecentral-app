@@ -7,7 +7,7 @@ import FindAProfessional from './../screens/FindAProfessional';
 import ServiceDetails from './../screens/ServiceDetails';
 import Payment from './../screens/Payment';
 import Reviews from './../screens/Reviews';
-import Demo from './../screens/Demo';
+import Categories from './../screens/Categories';
 import BookingList from './../screens/BookingList'
 
 const dashboardStack = createNativeStackNavigator();
@@ -66,6 +66,17 @@ const DashboardStack = () => {
           headerBackVisible: true,
         })}
       />
+
+<dashboardStack.Screen
+        name="Categories"
+        component={Categories}
+        options={({navigation, route}) => ({
+          headerShown: true,
+          title: 'Categories',
+          headerBackVisible: true,
+        })}
+      />
+
     </dashboardStack.Navigator>
   );
 };

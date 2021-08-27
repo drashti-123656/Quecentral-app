@@ -1,8 +1,8 @@
 import React, {useEffect, useState} from 'react';
-import {StyleSheet, ActivityIndicator, View, ScrollView} from 'react-native';
+import {StyleSheet, ActivityIndicator, View, FlatList} from 'react-native';
 import {COLORS} from '../utils/theme';
 import BookingCard from './../components/cards/BookingCard';
-import {bookingList} from './../services/dashboard';
+import {bookingList} from '../services/api';
 
 const BookingList = () => {
   const [bookingListData, setBookingListData] = useState([]);
@@ -28,21 +28,23 @@ const BookingList = () => {
           <ActivityIndicator color={COLORS.PRIMARY} size={'large'} />
         </View>
       ) : (
-        <ScrollView>
-          {bookingListData.map((item, i) => (
-            <View key={i} style={{marginHorizontal: 10, marginBottom: 10}}>
-              <BookingCard
-                service_title={item.service_title}
-                service_image={item.service_image}
-                service_date={item.service_date}
-                from_time={item.from_time}
-                to_time={item.to_time}
-                location={item.location}
-                service_amount={item.service_amount}
-              />
-            </View>
-          ))}
-        </ScrollView>
+        <FlatList
+        data={bookingListData}
+        renderItem={({item}) => (
+          <View style={{marginHorizontal: 10, marginBottom: 10}}>
+          <BookingCard
+            service_title={item.service_title}
+            service_image={item.service_image}
+            service_date={item.service_date}
+            from_time={item.from_time}
+            to_time={item.to_time}
+            location={item.location}
+            service_amount={item.service_amount}
+          />
+          </View>
+        )}
+        keyExtractor={() => Math.random()}
+      />
       )}
     </View>
   );
