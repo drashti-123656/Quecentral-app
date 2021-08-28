@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { StyleSheet, Text, View, TouchableOpacity, Image, TextInput } from 'react-native'
 import { showMessage, hideMessage } from "react-native-flash-message";
 import { COLORS } from './../utils/theme'
+import { BASE_URL } from './../utils/global'
 import LoginButton from './../components/button/LoginButton'
 import { CustomInputWithTitle } from './../components/input/CustomInput'
 import { updateUser as updateUserAPI } from '../services/api'

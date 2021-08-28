@@ -49,9 +49,14 @@ const Dashboard = ({navigation}) => {
   return (
     <View style={styles.container}>
       <View style={styles.headerBar}>
-        <Text style={{...styles.h1, color: '#fff', marginLeft: 10}}>
-          Dashboard
-        </Text>
+        <Text style={{...styles.h1, color: '#fff'}}>Dashboard</Text>
+        <TouchableOpacity
+        onPress={() => navigation.navigate('Notifications')}>
+          <Image
+            source={require('./../assets/icons/bell.png')}
+            style={{width: 25, height: 25, tintColor: '#fff'}}
+          />
+        </TouchableOpacity>
       </View>
       <View style={styles.bodyContainer}>
         <View style={{...styles.rowCont, ...styles.search}}>
@@ -136,7 +141,9 @@ const Dashboard = ({navigation}) => {
                 style={{marginVertical: 5}}>
                 {categoryList.map((item, i) => (
                   <TouchableOpacity
-                    onPress={() => navigation.navigate('FindAProfessional')}
+                    onPress={() => navigation.navigate('FindAProfessional',{
+                      searchKey: searchKey,
+                    })}
                     key={i}
                     style={{alignItems: 'center', marginRight: 32}}>
                     <View style={styles.iconCont}>
@@ -200,7 +207,9 @@ const styles = StyleSheet.create({
   },
   headerBar: {
     height: 50,
-    justifyContent: 'center',
+    padding: 10,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
   },
   bodyContainer: {
     flex: 0.94,

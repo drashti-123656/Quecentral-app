@@ -1,5 +1,11 @@
 import React, {useState, useEffect} from 'react';
-import {StyleSheet, ActivityIndicator, View, FlatList} from 'react-native';
+import {
+  StyleSheet,
+  ActivityIndicator,
+  View,
+  FlatList,
+  Alert,
+} from 'react-native';
 import {COLORS} from '../utils/theme';
 import CategoriesCard from './../components/cards/CategoriesCard';
 import {categoryList} from './../services/api';
@@ -16,6 +22,8 @@ const Categories = () => {
     const response = await categoryList();
     if (response.data.response.response_code == 200) {
       setCategoryListData(response.data.data.category_list);
+    } else {
+      Alert.alert('Oops', 'There is network issue');
     }
     setLoading(false);
   };

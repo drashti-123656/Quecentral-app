@@ -8,7 +8,8 @@ import ServiceDetails from './../screens/ServiceDetails';
 import Payment from './../screens/Payment';
 import Reviews from './../screens/Reviews';
 import Categories from './../screens/Categories';
-import BookingList from './../screens/BookingList'
+import BookingList from './../screens/BookingList';
+import Notifications from './../screens/Notifications';
 
 const dashboardStack = createNativeStackNavigator();
 
@@ -67,7 +68,7 @@ const DashboardStack = () => {
         })}
       />
 
-<dashboardStack.Screen
+      <dashboardStack.Screen
         name="Categories"
         component={Categories}
         options={({navigation, route}) => ({
@@ -77,6 +78,15 @@ const DashboardStack = () => {
         })}
       />
 
+      <dashboardStack.Screen
+        name="Notifications"
+        component={Notifications}
+        options={({navigation, route}) => ({
+          headerShown: true,
+          title: 'Notifications',
+          headerBackVisible: true,
+        })}
+      />
     </dashboardStack.Navigator>
   );
 };

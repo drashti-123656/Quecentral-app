@@ -27,3 +27,13 @@ export const bookingList = () => {
 export const categoryList = () => {
     return http.get('category')
 }
+
+export const notificationList = () => {
+    return http.get('get-notification-list')
+}
+
+export const walletDetails = () => {
+    return http.post('get-wallet')
+}
+
+

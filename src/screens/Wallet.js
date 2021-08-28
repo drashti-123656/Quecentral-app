@@ -8,27 +8,41 @@ import {
   TextInput,
   ActivityIndicator,
   TouchableOpacity,
+  Alert
 } from 'react-native';
 import {useSelector} from 'react-redux';
-import COLORS from './../utils/theme';
+import { COLORS } from './../utils/theme';
 import LoginButton from './../components/button/LoginButton';
 import {BASE_URL} from '../utils/global';
+import {walletDetails as walletDetailsAPI} from './../services/api';
 
 const Wallet = () => {
   const {token} = useSelector(state => state.authData);
 
-  const [walletInfo, setWalletInfo] = useState({
-    wallet_amt: '$2000',
-    total_credit: 20,
-    currency: '$',
-    total_debit: '20',
-  });
+  const [walletInfo, setWalletInfo] = useState({});
   const [amount, setAmount] = useState('');
   const [paymentGateway, setPaymentGateway] = useState('paypal');
   const [wallet_transactions, set_wallet_transactions] = useState([]);
 
   const [viewModal, setViewModal] = useState(false);
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    fetchWalletDetails()
+  }, [])
+
+  const fetchWalletDetails = async () => {
+    setLoading(true)
+    const response = await walletDetailsAPI();
+    if(response.data.response.response_code == 200){   
+      setWalletInfo(response.data.data.wallet_info)
+    }
+    setLoading(false)
+  };
+
+  const refreshScreen = () => {
+
+  }
 
   return (
     <View style={styles.container}>
@@ -38,7 +52,7 @@ const Wallet = () => {
           <View style={{alignItems: 'flex-end'}}>
             <Text style={styles.h1}>
               {loading ? (
-                <ActivityIndicator color={COLORS.primary} />
+                <ActivityIndicator color={COLORS.PRIMARY} />
               ) : (
                 walletInfo.wallet_amt
               )}
@@ -65,7 +79,7 @@ const Wallet = () => {
             <Text
               style={{fontWeight: 'bold', fontSize: 18, textAlign: 'right'}}>
               {loading ? (
-                <ActivityIndicator color={COLORS.primary} />
+                <ActivityIndicator color={COLORS.PRIMARY} />
               ) : (
                 `+ ${walletInfo.currency} ${walletInfo.total_credit}`
               )}
@@ -84,20 +98,26 @@ const Wallet = () => {
             <Text
               style={{fontWeight: 'bold', fontSize: 18, textAlign: 'right'}}>
               {loading ? (
-                <ActivityIndicator color={COLORS.primary} />
+                <ActivityIndicator color={COLORS.PRIMARY} />
               ) : (
-                `+ ${walletInfo.currency} ${walletInfo.total_debit}`
+                `+ ${walletInfo.currency} ${ Math.round(walletInfo.total_debit)}`
               )}
             </Text>
           </View>
         </View>
 
         <View style={styles.withdrawCont}>
-          <View style={{flexDirection:'row', justifyContent:'space-between', alignItems:'center'}}>
+          <View
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+            }}>
             <Text style={{fontWeight: 'bold', marginBottom: 10}}>Withdraw</Text>
-            <Image 
-            source={require('./../assets/images/razorpay.png')}
-            style={{width:20, height:20}}/>
+            <Image
+              source={require('./../assets/images/razorpay.png')}
+              style={{width: 20, height: 20}}
+            />
           </View>
           <TextInput
             style={{
@@ -105,7 +125,7 @@ const Wallet = () => {
               borderRadius: 10,
               height: 50,
               paddingHorizontal: 20,
-              marginBottom:10
+              marginBottom: 10,
             }}
             placeholder={'$ Enter Amount'}
             value={amount}
@@ -118,7 +138,7 @@ const Wallet = () => {
                             onPress={() => {
                                 setPaymentGateway('paypal')
                             }}
-                            style={{ alignItems: 'center', borderWidth: 2, borderColor: (paymentGateway == 'paypal') ? COLORS.primary : 'transparent' }}>
+                            style={{ alignItems: 'center', borderWidth: 2, borderColor: (paymentGateway == 'paypal') ? COLORS.PRIMARY : 'transparent' }}>
                             <Image
                                 source={require('../assets/images/paypal2.png')}
                             />
@@ -129,7 +149,7 @@ const Wallet = () => {
                             onPress={() => {
                                 setPaymentGateway('stripe')
                             }}
-                            style={{ alignItems: 'center', borderWidth: 2, borderColor: (paymentGateway == 'stripe') ? COLORS.primary : 'transparent' }}>
+                            style={{ alignItems: 'center', borderWidth: 2, borderColor: (paymentGateway == 'stripe') ? COLORS.PRIMARY : 'transparent' }}>
                             <Image
                                 source={require('../assets/images/stripe2.png')}
                             />
@@ -159,7 +179,7 @@ const Wallet = () => {
             Transaction History
           </Text>
 
-          {loading && <ActivityIndicator color={COLORS.primary} />}
+          {loading && <ActivityIndicator color={COLORS.PRIMARY} />}
 
           {wallet_transactions.map(item => (
             <View key={item.transaction_id} style={styles.itemContainer}>
@@ -185,7 +205,7 @@ const Wallet = () => {
                     style={{
                       ...styles.h1,
                       fontSize: 18,
-                      color: COLORS.primary,
+                      color: COLORS.PRIMARY,
                     }}>{`${item.transaction_currency_code} ${item.transaction_amount}`}</Text>
                 </View>
                 <Text>

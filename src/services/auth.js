@@ -7,3 +7,9 @@ export const login = (data) => {
 export const generateOTP = (data) => {
     return http.post('generate_userotp', data)
 }
+
+export const signup = (data) => {
+    return http.post('generate_otp_user', data)
+}
+
+
