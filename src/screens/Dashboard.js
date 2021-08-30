@@ -81,7 +81,7 @@ const Dashboard = ({navigation}) => {
 
         <ScrollView showsVerticalScrollIndicator={false}>
           <View style={styles.wrapper}>
-            <Swiper showsButtons={false}>
+            <Swiper style={{borderRadius:10}} showsButtons={false}>
               <Image
                 source={require('./../assets/images/home.png')}
                 style={styles.image}
@@ -184,6 +184,7 @@ const Dashboard = ({navigation}) => {
             popularServices.map((item, i) => (
               <ServiceCard
                 key={i}
+                service_id={item.service_id}
                 service_title={item.service_title}
                 image={item.service_image}
                 currency={item.currency_code}
@@ -272,5 +273,6 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     zIndex: 1,
     marginBottom: 10,
+    borderRadius: 10,
   },
 });

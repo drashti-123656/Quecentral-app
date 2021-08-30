@@ -36,4 +36,8 @@ export const walletDetails = () => {
     return http.post('get-wallet')
 }
 
+export const serviceDetails = (id) => {
+    return http.get(`service-details?id=${id}`)
+}
+
 

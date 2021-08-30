@@ -4,32 +4,33 @@ import { useNavigation } from '@react-navigation/native';
 import { COLORS } from './../../utils/theme'
 import Stars from './../../components/review/Stars'
 import LinearGradient from 'react-native-linear-gradient';
+import { BASE_URL } from './../../utils/global'
 
-const ProviderDetails = ({ image }) => {
+const ProviderDetails = ({ style, image, name, email, mobileno }) => {
     const navigation = useNavigation();
 
     return (
-        <View style={styles.container}>
-            <Text style={styles.h1}>Provider Details</Text>
+        <View style={{...styles.container, ...style}}>
+            <Text style={{...styles.h1, marginBottom:5}}>Provider Details</Text>
 
             <View style={{...styles.rowCont, alignItems:'flex-start'}}>
                 <Image
-                    source={require('./../../assets/icons/home.png')}
-                    style={{ width: 40, height: 40 }} />
+                    source={{uri:`${BASE_URL}${image}`}}
+                    style={{ width: 40, height: 40, borderRadius:50 }} />
                 <View style={{ marginLeft: 10 }}>
-                    <Text style={styles.h1}>Jhon Deo</Text>
+                    <Text style={styles.h1}>{name}</Text>
                     <View style={styles.rowCont}>
                         <Image
                             source={require('./../../assets/icons/home.png')}
-                            style={{ width: 20, height: 20, marginRight: 10 }} />
-                        <Text style={styles.h3}>jhon@gmail.com</Text>
+                            style={{ width: 15, height: 15, marginRight: 10 }} />
+                        <Text style={styles.h3}>{email}</Text>
                     </View>
 
                     <View style={styles.rowCont}>
                         <Image
                             source={require('./../../assets/icons/call.png')}
-                            style={{ width: 20, height: 20, marginRight: 10 }} />
-                        <Text style={styles.h3}>234567891</Text>
+                            style={{ width: 15, height: 15, marginRight: 10 }} />
+                        <Text style={styles.h3}>{mobileno}</Text>
                     </View>
                 </View>
             </View>
@@ -62,7 +63,6 @@ const styles = StyleSheet.create({
     },
     h1: {
         fontWeight: 'bold',
-        marginBottom: 7
     },
     h3: {
         fontSize: 12,

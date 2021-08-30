@@ -1,10 +1,11 @@
 import React, {useState} from 'react';
-import {StyleSheet, Text, TouchableOpacity, View, Image} from 'react-native';
+import {StyleSheet, Text, Modal, View, Image} from 'react-native';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import CheckBox from '@react-native-community/checkbox';
 import {showMessage, hideMessage} from 'react-native-flash-message';
 import {COLORS} from './../../utils/theme';
 import {CustomInput} from './../../components/input/CustomInput';
+import AlertModel from './../../components/model/AlertModel'
 import LoginButton from './../../components/button/LoginButton';
 import {signup as signupAPI} from './../../services/auth';
 
@@ -22,12 +23,11 @@ const Signup = ({navigation}) => {
     // }
     // setLoading(true);
 
-   
-
     let formData = new URLSearchParams({
       usertype: 1,
-      device_id: 'cc7cRipyIg8:APA91bGehTWOt96uZi-fLYeTaH3G1KNP_8HozxYiwd8YUwvGMqIz_W216kBcEq7wj64pkEj47NCThmhCFcR9o95iOhNaU68ygA0I-ZVniH3m7rJm9IRcLUcBdV-T8H66kvgR-oj-c2tD',
-      device_type:'android',
+      device_id:
+        'cc7cRipyIg8:APA91bGehTWOt96uZi-fLYeTaH3G1KNP_8HozxYiwd8YUwvGMqIz_W216kBcEq7wj64pkEj47NCThmhCFcR9o95iOhNaU68ygA0I-ZVniH3m7rJm9IRcLUcBdV-T8H66kvgR-oj-c2tD',
+      device_type: 'android',
       mobileno,
       name,
       email,
@@ -67,6 +67,11 @@ const Signup = ({navigation}) => {
       </View>
 
       <View style={styles.bodyContainer}>
+        <Modal
+          animationType="slide"
+          transparent={true}
+          visible={true}> </Modal>
+
         <Text
           style={{
             ...styles.TitleText,
@@ -104,7 +109,11 @@ const Signup = ({navigation}) => {
         </View>
 
         <View style={{margin: 12}}>
-          <LoginButton title={'Signup'} loading={loading} onPress={handleSignUp} />
+          <LoginButton
+            title={'Signup'}
+            loading={loading}
+            onPress={handleSignUp}
+          />
         </View>
 
         <Text style={{textAlign: 'center'}}>

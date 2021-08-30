@@ -6,12 +6,14 @@ import { BASE_URL } from './../../utils/global'
 import Stars from './../../components/review/Stars'
 import LinearGradient from 'react-native-linear-gradient';
 
-const ServiceCard = ({ image, location, service_title, service_amount, currency }) => {
+const ServiceCard = ({ service_id, image, location, service_title, service_amount, currency }) => {
     const navigation = useNavigation();
 
     return (
         <TouchableOpacity
-        onPress={() => navigation.navigate('ServiceDetails')}>
+        onPress={() => navigation.navigate('ServiceDetails', {
+            serviceId : service_id
+        })}>
             <LinearGradient
                 pointerEvents={'none'}
                 start={{ x: 0, y: 0 }}
