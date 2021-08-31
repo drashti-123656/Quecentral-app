@@ -1,12 +1,12 @@
 import React from 'react'
 import { StyleSheet, Text, View } from 'react-native'
-import { createStackNavigator } from '@react-navigation/stack';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import Settings from './../screens/Settings'
 import EditProfile from './../screens/EditProfile'
 import Wallet from './../screens/Wallet'
 import { COLORS } from './../utils/theme'
 
-const dashboardStack = createStackNavigator();
+const dashboardStack = createNativeStackNavigator();
 
 const SettingsStack = () => {
     return (

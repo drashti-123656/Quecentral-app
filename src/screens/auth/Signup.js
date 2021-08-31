@@ -1,32 +1,39 @@
 import React, {useState} from 'react';
-import {StyleSheet, Text, Modal, View, Image} from 'react-native';
+import {StyleSheet, Text, Modal, View, Image, Alert} from 'react-native';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import CheckBox from '@react-native-community/checkbox';
 import {showMessage, hideMessage} from 'react-native-flash-message';
 import {COLORS} from './../../utils/theme';
+import AlertModel from './../../components/model/AlertModel';
 import {CustomInput} from './../../components/input/CustomInput';
-import AlertModel from './../../components/model/AlertModel'
 import LoginButton from './../../components/button/LoginButton';
 import {signup as signupAPI} from './../../services/auth';
+import {login as signIn, reset} from './../../redux/actions/auth';
+import {useSelector, useDispatch} from 'react-redux';
 
 const Signup = ({navigation}) => {
+  const dispatch = useDispatch();
+
   const [termsCondition, setTermsCondition] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [mobileno, setMbileno] = useState('9688157699');
-  const [name, setName] = useState('Nithya User');
-  const [email, setEmail] = useState('nithya123@gmail.com');
+  const [mobileno, setMbileno] = useState('');
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [alertDisplay , setAlertDisplay] = useState(false);
 
   const handleSignUp = async () => {
-    // if(!termsCondition){
-    //   return
-    // }
-    // setLoading(true);
+
+    if(!termsCondition){
+      setAlertDisplay(true)
+      return
+    }
+    setLoading(true);
 
     let formData = new URLSearchParams({
-      usertype: 1,
-      device_id:
-        'cc7cRipyIg8:APA91bGehTWOt96uZi-fLYeTaH3G1KNP_8HozxYiwd8YUwvGMqIz_W216kBcEq7wj64pkEj47NCThmhCFcR9o95iOhNaU68ygA0I-ZVniH3m7rJm9IRcLUcBdV-T8H66kvgR-oj-c2tD',
+    //  usertype: 1,
+     // device_id:
+    //    'cc7cRipyIg8:APA91bGehTWOt96uZi-fLYeTaH3G1KNP_8HozxYiwd8YUwvGMqIz_W216kBcEq7wj64pkEj47NCThmhCFcR9o95iOhNaU68ygA0I-ZVniH3m7rJm9IRcLUcBdV-T8H66kvgR-oj-c2tD',
       device_type: 'android',
       mobileno,
       name,
@@ -38,11 +45,7 @@ const Signup = ({navigation}) => {
     const response = await signupAPI(formData);
 
     if (response.data.response.response_code == 200) {
-      showMessage({
-        message: response.data.response.response_message,
-        type: 'info',
-        backgroundColor: COLORS.warningGreen,
-      });
+      setAlertDisplay(true)
     } else {
       showMessage({
         message: response.data.response.response_message,
@@ -53,6 +56,21 @@ const Signup = ({navigation}) => {
 
     setLoading(false);
   };
+
+  const login = async() => {
+    setLoading(true);
+
+    let formData = new URLSearchParams({
+        email,
+        password
+    });
+
+    dispatch(signIn(formData));
+
+ 
+  };
+
+  
 
   return (
     <KeyboardAwareScrollView
@@ -67,10 +85,7 @@ const Signup = ({navigation}) => {
       </View>
 
       <View style={styles.bodyContainer}>
-        <Modal
-          animationType="slide"
-          transparent={true}
-          visible={true}> </Modal>
+        <AlertModel alertDisplay={alertDisplay} setAlertDisplay={setAlertDisplay} onPressOkay={login} />
 
         <Text
           style={{
@@ -81,9 +96,11 @@ const Signup = ({navigation}) => {
           }}>
           Signup
         </Text>
-        <CustomInput placeholder={'Enter email'} onPress={setEmail} />
-        <CustomInput placeholder={'enter mobile number'} onPress={setMbileno} />
-        <CustomInput placeholder={'Password'} onPress={setPassword} />
+
+        <CustomInput placeholder={'Enter name'} value={name} onChangeText={setName} />
+        <CustomInput placeholder={'Enter email'} value={email} onChangeText={setEmail} />
+        <CustomInput placeholder={'enter mobile number'} value={mobileno} onChangeText={setMbileno} />
+        <CustomInput placeholder={'Password'} value={password} onChangeText={setPassword} />
 
         <View
           style={{

@@ -40,4 +40,8 @@ export const serviceDetails = (id) => {
     return http.get(`service-details?id=${id}`)
 }
 
+export const stateList = () => {
+    return http.get('state_details?id=101')
+}
+
 

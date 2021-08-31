@@ -1,52 +1,70 @@
 import React from 'react';
-import {StyleSheet, Text, View, Image,ActivityIndicator} from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  ActivityIndicator,
+  TouchableOpacity,
+} from 'react-native';
 import {COLORS} from './../../utils/theme';
-import { BASE_URL } from './../../utils/global'
+import {BASE_URL} from './../../utils/global';
 import LinearGradient from 'react-native-linear-gradient';
-
+import {useNavigation} from '@react-navigation/native';
 
 const BookingCard = ({
-    service_title,
-    service_image,
-    service_date,
-    from_time,
-    to_time,
-    location,
-    service_amount
+  service_id,
+  service_title,
+  service_image,
+  service_date,
+  from_time,
+  to_time,
+  location,
+  service_amount,
 }) => {
+  
+  const navigation = useNavigation();
   return (
     <LinearGradient
-    pointerEvents={'none'}
-    start={{ x: 0, y: 0 }}
-    end={{ x: 1, y: 0 }}
-    colors={['#E6FFF9', '#fff', '#fff']}
-    style={{...styles.rowCont, ...styles.bookingCardContainer}}>
+      start={{x: 0, y: 0}}
+      end={{x: 1, y: 0}}
+      colors={['#E6FFF9', '#fff', '#fff']}
+      style={{...styles.rowCont, ...styles.bookingCardContainer}}>
       <Image
-        source={{uri : `${BASE_URL}${service_image}`}}
+        source={{uri: `${BASE_URL}${service_image}`}}
         style={styles.serviceImage}
       />
 
       <View style={{marginLeft: 10, flex: 1}}>
-        <Text style={{...styles.h1, marginBottom: 5}}>{service_title}</Text>
-       
-        <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom:5 }}>
-                        <View style={{...styles.rowCont, alignItems: 'center',}}>
-                            <Image
-                                source={require('./../../assets/icons/call.png')}
-                                style={{ width: 15, height: 15, marginRight:5 }}
-                                PlaceholderContent={<ActivityIndicator />}
-                            />
-                            <Text style={styles.h3}>xxxxxxxxxx</Text>
-                        </View>
-                        <View style={{ ...styles.rowCont, marginLeft: 10, alignItems: 'center' }}>
-                            <Image
-                                source={require('./../../assets/icons/location.png')}
-                                style={{ width: 15, height: 15, marginRight:5 }}
-                                PlaceholderContent={<ActivityIndicator />}
-                            />
-                            <Text style={styles.h3}>{location}</Text>
-                        </View>
-                    </View>
+        <TouchableOpacity
+          onPress={() =>
+            navigation.navigate('ServiceDetails', {
+              serviceId: service_id,
+            })
+          }>
+          <Text style={{...styles.h1, marginBottom: 5}}>{service_title}</Text>
+        </TouchableOpacity>
+
+        <View
+          style={{flexDirection: 'row', alignItems: 'center', marginBottom: 5}}>
+          <View style={{...styles.rowCont, alignItems: 'center'}}>
+            <Image
+              source={require('./../../assets/icons/call.png')}
+              style={{width: 15, height: 15, marginRight: 5}}
+              PlaceholderContent={<ActivityIndicator />}
+            />
+            <Text style={styles.h3}>xxxxxxxxxx</Text>
+          </View>
+          <View
+            style={{...styles.rowCont, marginLeft: 10, alignItems: 'center'}}>
+            <Image
+              source={require('./../../assets/icons/location.png')}
+              style={{width: 15, height: 15, marginRight: 5}}
+              PlaceholderContent={<ActivityIndicator />}
+            />
+            <Text style={styles.h3}>{location}</Text>
+          </View>
+        </View>
 
         <View
           style={{...styles.rowCont, alignItems: 'center', marginBottom: 5}}>
@@ -110,6 +128,6 @@ const styles = StyleSheet.create({
     top: 10,
     right: 10,
     fontWeight: 'bold',
-    color:COLORS.warningGreen
+    color: COLORS.warningGreen,
   },
 });

@@ -49,6 +49,7 @@ const BookingList = () => {
           renderItem={({item}) => (
             <View style={{marginHorizontal: 10, marginBottom: 10}}>
               <BookingCard
+                service_id={item.service_id}
                 service_title={item.service_title}
                 service_image={item.service_image}
                 service_date={item.service_date}
@@ -59,7 +60,7 @@ const BookingList = () => {
               />
             </View>
           )}
-          keyExtractor={() => Math.random()}
+          keyExtractor={item => item.id}
         />
       )}
     </View>
