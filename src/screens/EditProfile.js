@@ -10,7 +10,7 @@ import {
 import {showMessage, hideMessage} from 'react-native-flash-message';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
-import OptionsPicker from './../components/picker/OptionsPicker'
+import RegionPicker from '../components/picker/RegionPicker';
 import {COLORS} from './../utils/theme';
 import {BASE_URL} from './../utils/global';
 import LoginButton from './../components/button/LoginButton';
@@ -23,22 +23,26 @@ const EditProfile = ({route}) => {
   const [name, setName] = useState(userDetails.name);
   const [mobileno, setMobileno] = useState(userDetails.mobileno);
   const [email, setEmail] = useState(userDetails.email);
-  const [country, setCountry] = useState(userDetails.country);
+  const [State, setState] = useState({});
+  const [city, setCity] = useState({});
   const [address, setAddress] = useState(userDetails.address);
+  const [postalCode, setPostalCode] = useState(userDetails.pincode);
   const [ProfilePic, setProfilePic] = useState(null);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-  console.log(userDetails)
-  }, [])
+    console.log(userDetails);
+  }, []);
 
   const handleSubmit = async () => {
     setLoading(true);
     let formdata = new URLSearchParams({
       name: name,
-      email:email,
-      address:address,
-      mobileno:mobileno,
+      email: email,
+      address: address,
+      mobileno: mobileno,
+      state_id: State.id,
+      city_id: city.id,
       user_currency: 'INR',
       type: 1,
     });
@@ -138,13 +142,38 @@ const EditProfile = ({route}) => {
           onChangeText={setAddress}
         />
 
-      <OptionsPicker />
-
-        <LoginButton
-          title={'Update'}
-          onPress={handleSubmit}
-          loading={loading}
+        <RegionPicker
+          title={'states'}
+          mode={'states'}
+          value={State.name}
+          onSelect={setState}
+          queryString={101}
         />
+
+       <View style={{opacity: (Object.keys(State).length === 0) ? 0.5 : 1 }}>
+        <RegionPicker
+          title={'City'}
+          mode={'city'}
+          value={city.name}
+          onSelect={setCity}
+          queryString={State.id}
+          editable={(Object.keys(State).length === 0) ? false : true }
+        />
+</View>
+        <CustomInputWithTitle
+          title={'Postal code'}
+          placeholder={'Enter postal code'}
+          value={postalCode}
+          onChangeText={setPostalCode}
+        />
+
+        <View style={{marginBottom:20, marginTop:10}}>
+          <LoginButton
+            title={'Update'}
+            onPress={handleSubmit}
+            loading={loading}
+          />
+        </View>
       </View>
     </KeyboardAwareScrollView>
   );

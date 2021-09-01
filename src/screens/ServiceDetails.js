@@ -32,10 +32,12 @@ const ServiceDetails = props => {
   const fetchServiceDetails = async () => {
     setLoading(true);
     let MD5ServiceId =  MD5(serviceId)
+    console.log(serviceId)
     const response = await serviceDetailsAPI(MD5ServiceId);
     if (response.data.response.response_code == 200) {
       setServiceOverview(response.data.data.service_overview);
       setSellerOverview(response.data.data.seller_overview);
+      console.log(response.data.data.service_overview)
     }
     setLoading(false);
   };

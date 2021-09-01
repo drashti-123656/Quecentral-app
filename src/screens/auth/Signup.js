@@ -1,5 +1,10 @@
 import React, {useState} from 'react';
 import {StyleSheet, Text, Modal, View, Image, Alert} from 'react-native';
+import {
+  GoogleSignin,
+  GoogleSigninButton,
+  statusCodes,
+} from '@react-native-google-signin/google-signin';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import CheckBox from '@react-native-community/checkbox';
 import {showMessage, hideMessage} from 'react-native-flash-message';
@@ -133,12 +138,18 @@ const Signup = ({navigation}) => {
           />
         </View>
 
+        
+<GoogleSigninButton
+  style={{ width: 192, height: 48 }}
+  size={GoogleSigninButton.Size.Wide}
+  color={GoogleSigninButton.Color.Dark}
+/>
+
         <Text style={{textAlign: 'center'}}>
           Already have an account ?
           <Text
             onPress={() => navigation.navigate('Login')}
             style={{color: '#2BBBA0', fontWeight: 'bold'}}>
-            {' '}
             Login
           </Text>
         </Text>
