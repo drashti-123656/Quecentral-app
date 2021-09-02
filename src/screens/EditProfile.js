@@ -23,8 +23,8 @@ const EditProfile = ({route}) => {
   const [name, setName] = useState(userDetails.name);
   const [mobileno, setMobileno] = useState(userDetails.mobileno);
   const [email, setEmail] = useState(userDetails.email);
-  const [State, setState] = useState({});
-  const [city, setCity] = useState({});
+  const [State, setState] = useState({id: userDetails.state_id, name: ''});
+  const [city, setCity] = useState({id: userDetails.city_id, name: ''});
   const [address, setAddress] = useState(userDetails.address);
   const [postalCode, setPostalCode] = useState(userDetails.pincode);
   const [ProfilePic, setProfilePic] = useState(null);
@@ -44,6 +44,7 @@ const EditProfile = ({route}) => {
       state_id: State.id,
       city_id: city.id,
       user_currency: 'INR',
+      pincode: postalCode,
       type: 1,
     });
     let response = await updateUserAPI(formdata);
@@ -145,7 +146,7 @@ const EditProfile = ({route}) => {
         <RegionPicker
           title={'states'}
           mode={'states'}
-          value={State.name}
+          value={State}
           onSelect={setState}
           queryString={101}
         />
@@ -154,7 +155,7 @@ const EditProfile = ({route}) => {
         <RegionPicker
           title={'City'}
           mode={'city'}
-          value={city.name}
+          value={city}
           onSelect={setCity}
           queryString={State.id}
           editable={(Object.keys(State).length === 0) ? false : true }

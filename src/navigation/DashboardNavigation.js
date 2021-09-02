@@ -1,15 +1,23 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {StyleSheet, Text, View, Image} from 'react-native';
+import {useSelector} from 'react-redux';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {COLORS} from './../utils/theme';
 import DashboardStack from './DashboardStack';
 import SettingsStack from './SettingsStack';
 import Logout from './../screens/auth/Logout';
-import BookingList from './../screens/BookingList'
+import BookingList from './../screens/BookingList';
+import http from './../services/httpServices';
 
 const Tab = createBottomTabNavigator();
 
 const AuthNavigation = () => {
+  const {token} = useSelector(state => state.authData);
+
+  useEffect(() => {
+    http.setToken(token);
+  }, []);
+
   return (
     <Tab.Navigator
       screenOptions={({route}) => ({

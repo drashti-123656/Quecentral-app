@@ -29,15 +29,18 @@ const RegionPicker = ({ title, mode, onSelect, value, queryString, editable=true
   const fetchStatesList = async () => {
     const response = await stateListAPI(queryString);
     setModalData(response.data.data);
+    onSelect(response.data.data.find((item) => item.id === value.id))
+
   };
 
   const fetchCityList = async () => {
     const response = await cityListAPI(queryString);
     setModalData(response.data.data);
+    console.log(response.data.data.find((item) => item.id === value.id))
   };
 
-  const handleSelect = value => {
-    onSelect(value);
+  const handleSelect = item => {
+    onSelect(item);
     setShowModal(false);
   };
 
@@ -46,7 +49,7 @@ const RegionPicker = ({ title, mode, onSelect, value, queryString, editable=true
         <Text style={styles.title}>{title}</Text>
 
       <TouchableOpacity style={styles.input} onPress={() => editable && setShowModal(true)}>
-        <Text>{value}</Text>
+        <Text>{value.name}</Text>
       </TouchableOpacity>
 
       <Modal animationType="fade" visible={showModal} transparent={true}>

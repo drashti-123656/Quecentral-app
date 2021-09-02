@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {StyleSheet, Text, Modal, View, Image, Alert} from 'react-native';
+import {StyleSheet, Text, Modal, View, Image, TextInput} from 'react-native';
 import {
   GoogleSignin,
   GoogleSigninButton,
@@ -15,42 +15,51 @@ import LoginButton from './../../components/button/LoginButton';
 import {signup as signupAPI} from './../../services/auth';
 import {login as signIn, reset} from './../../redux/actions/auth';
 import {useSelector, useDispatch} from 'react-redux';
+import {Formik} from 'formik';
+import {SignupSchema} from './../../utils/schema';
 
 const Signup = ({navigation}) => {
   const dispatch = useDispatch();
 
   const [termsCondition, setTermsCondition] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [mobileno, setMbileno] = useState('');
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [alertDisplay , setAlertDisplay] = useState(false);
+  const [alertDisplay, setAlertDisplay] = useState(false);
 
-  const handleSignUp = async () => {
-
-    if(!termsCondition){
-      setAlertDisplay(true)
-      return
+  const handleSignUp = async formData => {
+    if (!termsCondition) {
+      showMessage({
+        message: 'Please check privacy policy checkbox ',
+        type: 'info',
+        backgroundColor: COLORS.warningRed,
+      });
+      return;
     }
     setLoading(true);
 
-    let formData = new URLSearchParams({
-    //  usertype: 1,
-     // device_id:
-    //    'cc7cRipyIg8:APA91bGehTWOt96uZi-fLYeTaH3G1KNP_8HozxYiwd8YUwvGMqIz_W216kBcEq7wj64pkEj47NCThmhCFcR9o95iOhNaU68ygA0I-ZVniH3m7rJm9IRcLUcBdV-T8H66kvgR-oj-c2tD',
+    console.log(formData);
+
+    const data = new URLSearchParams({
+      //  usertype: 1,
+      // device_id:
+      //    'cc7cRipyIg8:APA91bGehTWOt96uZi-fLYeTaH3G1KNP_8HozxYiwd8YUwvGMqIz_W216kBcEq7wj64pkEj47NCThmhCFcR9o95iOhNaU68ygA0I-ZVniH3m7rJm9IRcLUcBdV-T8H66kvgR-oj-c2tD',
       device_type: 'android',
-      mobileno,
-      name,
-      email,
-      password,
+      mobileno: formData.mobileno,
+      name: formData.name,
+      email: formData.email,
+      password: formData.password,
       country_code: 91,
     });
 
-    const response = await signupAPI(formData);
+    const response = await signupAPI(data);
 
     if (response.data.response.response_code == 200) {
-      setAlertDisplay(true)
+      setAlertDisplay(true);
+      const URlEncodedData = new URLSearchParams({
+        email: formData.email,
+        password: formData.password,
+      });
+
+      dispatch(signIn(URlEncodedData));
     } else {
       showMessage({
         message: response.data.response.response_message,
@@ -61,21 +70,6 @@ const Signup = ({navigation}) => {
 
     setLoading(false);
   };
-
-  const login = async() => {
-    setLoading(true);
-
-    let formData = new URLSearchParams({
-        email,
-        password
-    });
-
-    dispatch(signIn(formData));
-
- 
-  };
-
-  
 
   return (
     <KeyboardAwareScrollView
@@ -90,7 +84,10 @@ const Signup = ({navigation}) => {
       </View>
 
       <View style={styles.bodyContainer}>
-        <AlertModel alertDisplay={alertDisplay} setAlertDisplay={setAlertDisplay} onPressOkay={login} />
+        <AlertModel
+          alertDisplay={alertDisplay}
+          setAlertDisplay={setAlertDisplay}
+        />
 
         <Text
           style={{
@@ -102,53 +99,101 @@ const Signup = ({navigation}) => {
           Signup
         </Text>
 
-        <CustomInput placeholder={'Enter name'} value={name} onChangeText={setName} />
-        <CustomInput placeholder={'Enter email'} value={email} onChangeText={setEmail} />
-        <CustomInput placeholder={'enter mobile number'} value={mobileno} onChangeText={setMbileno} />
-        <CustomInput placeholder={'Password'} value={password} onChangeText={setPassword} />
+        <Formik
+          initialValues={{name: '', email: '', mobileno: '', password: ''}}
+          validationSchema={SignupSchema}
+          onSubmit={values => handleSignUp(values)}>
+          {({
+            handleChange,
+            handleBlur,
+            handleSubmit,
+            touched,
+            errors,
+            values,
+          }) => (
+            <View>
+              <CustomInput
+                placeholder={'Enter name'}
+                value={values.name}
+                onChangeText={handleChange('name')}
+              />
+              {errors.name && touched.name ? (
+                <Text style={styles.error}>{errors.name}</Text>
+              ) : null}
 
-        <View
-          style={{
-            flexDirection: 'row',
-            alignItems: 'center',
-            marginBottom: 10,
-            marginLeft: 12,
-          }}>
-          <CheckBox
-            disabled={false}
-            value={termsCondition}
-            onValueChange={newValue => setTermsCondition(newValue)}
-            tintColors={{true: COLORS.PRIMARY, false: COLORS.PRIMARY}}
-            tintColor={COLORS.PRIMARY} // for IOS
-            boxType={'square'} // for IOS
-            onCheckColor={COLORS.PRIMARY}
-            onTintColor={COLORS.PRIMARY}
-          />
-          <Text style={styles.TermsCondition}>
-            I agree to the <Text style={{color: COLORS.PRIMARY}}>terms</Text>{' '}
-            and<Text style={{color: COLORS.PRIMARY}}> privacy policy </Text>
-          </Text>
-        </View>
+              <CustomInput
+                placeholder={'Enter email'}
+                value={values.email}
+                onChangeText={handleChange('email')}
+              />
+              {errors.email && touched.email ? (
+                <Text style={styles.error}>{errors.email}</Text>
+              ) : null}
 
-        <View style={{margin: 12}}>
-          <LoginButton
-            title={'Signup'}
-            loading={loading}
-            onPress={handleSignUp}
-          />
-        </View>
+              <CustomInput
+                placeholder={'enter mobile number'}
+                value={values.mobileno}
+                onChangeText={handleChange('mobileno')}
+                keyboardType="numeric"
+              />
+              {errors.mobileno && touched.mobileno ? (
+                <Text style={styles.error}>{errors.mobileno}</Text>
+              ) : null}
 
-        
-<GoogleSigninButton
-  style={{ width: 192, height: 48 }}
-  size={GoogleSigninButton.Size.Wide}
-  color={GoogleSigninButton.Color.Dark}
-/>
+              <CustomInput
+                placeholder={'Password'}
+                value={values.password}
+                onChangeText={handleChange('password')}
+              />
+              {errors.password && touched.password ? (
+                <Text style={styles.error}>{errors.password}</Text>
+              ) : null}
 
-        <Text style={{textAlign: 'center'}}>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  marginBottom: 10,
+                  marginLeft: 12,
+                }}>
+                <CheckBox
+                  disabled={false}
+                  value={termsCondition}
+                  onValueChange={newValue => setTermsCondition(newValue)}
+                  tintColors={{true: COLORS.PRIMARY, false: COLORS.PRIMARY}}
+                  tintColor={COLORS.PRIMARY} // for IOS
+                  boxType={'square'} // for IOS
+                  onCheckColor={COLORS.PRIMARY}
+                  onTintColor={COLORS.PRIMARY}
+                />
+                <Text style={styles.TermsCondition}>
+                  I agree to the{' '}
+                  <Text style={{color: COLORS.PRIMARY}}>terms</Text> and
+                  <Text style={{color: COLORS.PRIMARY}}> privacy policy </Text>
+                </Text>
+              </View>
+
+              <View style={{margin: 12}}>
+                <LoginButton
+                  title={'Signup'}
+                  loading={loading}
+                  onPress={handleSubmit}
+                />
+              </View>
+            </View>
+          )}
+        </Formik>
+
+        <GoogleSigninButton
+          style={{width: 192, height: 48}}
+          size={GoogleSigninButton.Size.Wide}
+          color={GoogleSigninButton.Color.Dark}
+        />
+
+        <Text style={{textAlign: 'center', marginBottom: 30}}>
           Already have an account ?
           <Text
-            onPress={() => navigation.navigate('Login')}
+            onPress={() => navigation.navigate('EmailLogin')}
             style={{color: '#2BBBA0', fontWeight: 'bold'}}>
             Login
           </Text>
@@ -182,5 +227,12 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     borderTopLeftRadius: 30,
     borderTopRightRadius: 30,
+  },
+  error: {
+    fontSize: 12,
+    fontWeight: 'bold',
+    color: COLORS.warningRed,
+    marginHorizontal: 12,
+    textAlign: 'right',
   },
 });

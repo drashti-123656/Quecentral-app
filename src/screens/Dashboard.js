@@ -12,16 +12,13 @@ import {
 import {COLORS} from './../utils/theme';
 import LinearGradient from 'react-native-linear-gradient';
 import Swiper from 'react-native-swiper';
-import {useSelector} from 'react-redux';
 import {ViewMore, BookNow} from './../components/button/GeneralButton';
 import ServiceCard from './../components/cards/ServiceCard';
 import {home as homeAPI} from '../services/api';
 import {BASE_URL} from './../utils/global/';
-import http from '../services/httpServices';
+
 
 const Dashboard = ({navigation}) => {
-  const {token} = useSelector(state => state.authData);
-
   const [loading, setLaoding] = useState(false);
   const [dasboardData, setDashboardData] = useState({});
   const [categoryList, setCategoryList] = useState([]);
@@ -34,8 +31,6 @@ const Dashboard = ({navigation}) => {
 
   const fetchDashboardData = async () => {
     setLaoding(true);
-    http.setToken(token);
-
     let formData = new URLSearchParams({
       latitude: 11.057152556557286,
       longitude: 77.29133561253548,
@@ -77,7 +72,7 @@ const Dashboard = ({navigation}) => {
               style={{width: 25, height: 25}}
             />
           </TouchableOpacity>
-        </View>
+        </View>                         
 
         <ScrollView showsVerticalScrollIndicator={false}>
           <View style={styles.wrapper}>
