@@ -7,7 +7,7 @@ import FindAProfessional from './../screens/FindAProfessional';
 import ServiceDetails from './../screens/ServiceDetails';
 import Payment from './../screens/Payment';
 import Reviews from './../screens/Reviews';
-import Categories from './../screens/Categories';
+import CategoriesStack from './CategoriesStack';
 import BookingList from './../screens/BookingList';
 import Notifications from './../screens/Notifications';
 
@@ -69,10 +69,10 @@ const DashboardStack = () => {
       />
 
       <dashboardStack.Screen
-        name="Categories"
-        component={Categories}
+        name="CategoriesStack"
+        component={CategoriesStack}
         options={({navigation, route}) => ({
-          headerShown: true,
+          headerShown: false,
           title: 'Categories',
           headerBackVisible: true,
         })}

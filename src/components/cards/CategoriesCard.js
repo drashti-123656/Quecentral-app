@@ -1,10 +1,15 @@
 import React from 'react';
-import {StyleSheet, Text, View, Image} from 'react-native';
+import {StyleSheet, Text, View, Image, TouchableOpacity} from 'react-native';
 import {BASE_URL} from './../../utils/global';
+import { useNavigation } from '@react-navigation/native';
 
-const CategoriesCard = ({category_name, category_image, category_count}) => {
+const CategoriesCard = ({id, category_name, category_image, category_count}) => {
+  const navigation = useNavigation();
+
   return (
-    <View style={styles.card}>
+    <TouchableOpacity
+    onPress={() => navigation.navigate('ServicesList', { categoryID: id })}
+     style={styles.card}>
       <View>
         <Image
           source={{uri: `${BASE_URL}${category_image}`}}
@@ -19,7 +24,7 @@ const CategoriesCard = ({category_name, category_image, category_count}) => {
         </View>
       </View>
       <Text style={styles.h1}>{category_name}</Text>
-    </View>
+    </TouchableOpacity>
   );
 };
 

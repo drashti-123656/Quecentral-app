@@ -48,4 +48,7 @@ export const cityList = (id) => {
     return http.get(`city_details?id=${id}`)
 }
 
+export const categoryWiseServices = (data) => {
+    return http.post('category_select', data)
+}
 

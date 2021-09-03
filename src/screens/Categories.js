@@ -44,6 +44,7 @@ const Categories = () => {
           data={categoryListData}
           renderItem={({item}) => (
             <CategoriesCard
+              id={item.id}
               category_name={item.category_name}
               category_image={item.category_image}
               category_count={item.category_count}

@@ -124,7 +124,7 @@ const Dashboard = ({navigation}) => {
                 marginVertical: 10,
               }}>
               <Text style={styles.h2}>Categories</Text>
-              <ViewMore onPress={() => navigation.navigate('Categories')} />
+              <ViewMore onPress={() => navigation.navigate('CategoriesStack')} />
             </View>
 
             {loading ? (
