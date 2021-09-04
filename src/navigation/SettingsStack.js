@@ -1,50 +1,80 @@
-import React from 'react'
-import { StyleSheet, Text, View } from 'react-native'
+import React from 'react';
+import {StyleSheet, Text, View} from 'react-native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import Settings from './../screens/Settings'
-import EditProfile from './../screens/EditProfile'
-import Wallet from './../screens/Wallet'
-import { COLORS } from './../utils/theme'
+import Settings from './../screens/Settings';
+import EditProfile from './../screens/EditProfile';
+import Wallet from './../screens/Wallet';
+import {COLORS} from './../utils/theme';
+import Notifications from './../screens/Notifications'
+import Transactions from './../screens/Transactions'
 
 const dashboardStack = createNativeStackNavigator();
 
 const SettingsStack = () => {
-    return (
-        <dashboardStack.Navigator initialRouteName="Dashboard">
-            <dashboardStack.Screen
-                name="Settings"
-                component={Settings}
-                options={{
-                    title: 'Setting',
-                    headerStyle: {
-                        backgroundColor: COLORS.PRIMARY,
-                    },
-                    headerTintColor: '#fff',
-                }} />
-            <dashboardStack.Screen name="EditProfile"
-                component={EditProfile}
-                options={{
-                    title: 'Edit Profile',
-                    headerStyle: {
-                        backgroundColor: COLORS.PRIMARY,
-                    },
-                    headerTintColor: '#fff',
-                }}
-            />
-               <dashboardStack.Screen name="Wallet"
-                component={Wallet}
-                options={{
-                    title: 'Wallet',
-                    headerStyle: {
-                        backgroundColor: COLORS.PRIMARY,
-                    },
-                    headerTintColor: '#fff',
-                }}
-            />
-        </dashboardStack.Navigator>
-    )
-}
+  return (
+    <dashboardStack.Navigator initialRouteName="Dashboard">
+      <dashboardStack.Screen
+        name="Settings"
+        component={Settings}
+        options={{
+          title: 'Setting',
+          headerStyle: {
+            backgroundColor: COLORS.PRIMARY,
+          },
+          headerTintColor: '#fff',
+        }}
+      />
+      <dashboardStack.Screen
+        name="EditProfile"
+        component={EditProfile}
+        options={{
+          title: 'Edit Profile',
+          headerStyle: {
+            backgroundColor: COLORS.PRIMARY,
+          },
+          headerTintColor: '#fff',
+        }}
+      />
 
-export default SettingsStack
+      <dashboardStack.Screen
+        name="Notifications"
+        component={Notifications}
+        options={{
+          title: 'Notifications',
+          headerStyle: {
+            backgroundColor: COLORS.PRIMARY,
+          },
+          headerTintColor: '#fff',
+        }}
+      />
 
-const styles = StyleSheet.create({})
+      <dashboardStack.Screen
+        name="Wallet"
+        component={Wallet}
+        options={{
+          title: 'Wallet',
+          headerStyle: {
+            backgroundColor: COLORS.PRIMARY,
+          },
+          headerTintColor: '#fff',
+        }}
+      />
+
+<dashboardStack.Screen
+        name="Transactions"
+        component={Transactions}
+        options={{
+          title: 'Transactions',
+          headerStyle: {
+            backgroundColor: COLORS.PRIMARY,
+          },
+          headerTintColor: '#fff',
+        }}
+      />
+    </dashboardStack.Navigator>
+  );
+};
+
+export default SettingsStack;
+
+const styles = StyleSheet.create({});

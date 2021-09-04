@@ -86,15 +86,17 @@ const Settings = ({navigation}) => {
           </View>
 
           <View style={styles.menuCont}>
-            <View style={{...styles.rowCont, ...styles.menuItems}}>
+            <TouchableOpacity 
+             onPress={() => navigation.navigate('Notifications')}
+             style={{...styles.rowCont, ...styles.menuItems}}>
               <View style={styles.iconWrapper}>
                 <Image
                   source={require('./../assets/icons/notification.png')}
                   style={{width: 15, height: 15, tintColor: COLORS.PRIMARY}}
                 />
               </View>
-              <Text style={styles.h2}>Notification</Text>
-            </View>
+              <Text style={styles.h2}>Notifications</Text>
+            </TouchableOpacity>
 
             <TouchableOpacity
               onPress={() => navigation.navigate('Wallet')}
@@ -108,7 +110,8 @@ const Settings = ({navigation}) => {
               <Text style={styles.h2}>Wallet</Text>
             </TouchableOpacity>
 
-            <View
+            <TouchableOpacity
+            onPress={() => navigation.navigate('Transactions')}
               style={{
                 ...styles.rowCont,
                 ...styles.menuItems,
@@ -121,7 +124,7 @@ const Settings = ({navigation}) => {
                 />
               </View>
               <Text style={styles.h2}>Transactions</Text>
-            </View>
+            </TouchableOpacity>
           </View>
         </>
       )}

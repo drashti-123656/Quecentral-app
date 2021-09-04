@@ -4,10 +4,9 @@ import {COLORS} from './../../utils/theme';
 import LinearGradient from 'react-native-linear-gradient';
 import {useNavigation} from '@react-navigation/native';
 
-const ViewMore = ({ onPress }) => {
+const ViewMore = ({onPress}) => {
   return (
-    <TouchableOpacity
-    onPress={onPress}>
+    <TouchableOpacity onPress={onPress}>
       <LinearGradient
         start={{x: 0, y: 0}}
         end={{x: 1, y: 0}}
@@ -32,7 +31,12 @@ const BookNow = () => {
   const navigation = useNavigation();
 
   return (
-    <TouchableOpacity onPress={() => navigation.navigate('BookingList')}>
+    <TouchableOpacity
+      onPress={() =>
+        navigation.navigate('FindAProfessional', {
+          searchKey: '',
+        })
+      }>
       <LinearGradient
         start={{x: 0, y: 0}}
         end={{x: 1, y: 0}}

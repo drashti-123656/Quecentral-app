@@ -3,6 +3,7 @@ import { StyleSheet, Text, View } from 'react-native'
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import BookingList from './../screens/BookingList'
 import ServiceDetails from './../screens/ServiceDetails'
+import {COLORS} from './../utils/theme'
 
 const bookingListStack = createNativeStackNavigator();
 
@@ -16,7 +17,7 @@ const BookingListStack = () => {
         }}>
         <bookingListStack.Screen
           name="BookingList"
-          options={{headerShown: false}}
+          options={{headerShown: true}}
           component={BookingList}
         />
          <bookingListStack.Screen

@@ -52,3 +52,12 @@ export const categoryWiseServices = (data) => {
     return http.post('category_select', data)
 }
 
+export const walletHistory = () => {
+    return http.post('wallet-history')
+}
+
+export const bookService = (data) => {
+    return http.post('book_service', data)
+}
+
+

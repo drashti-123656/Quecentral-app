@@ -8,13 +8,17 @@ import {
   TextInput,
   ActivityIndicator,
   TouchableOpacity,
-  Alert
+  Alert,
 } from 'react-native';
 import {useSelector} from 'react-redux';
-import { COLORS } from './../utils/theme';
+import {COLORS} from './../utils/theme';
 import LoginButton from './../components/button/LoginButton';
 import {BASE_URL} from '../utils/global';
-import {walletDetails as walletDetailsAPI} from './../services/api';
+import {
+  walletDetails as walletDetailsAPI,
+  walletHistory as walletHistoryAPI,
+} from './../services/api';
+import Card from './../components/cards/Card'
 
 const Wallet = () => {
   const {token} = useSelector(state => state.authData);
@@ -28,21 +32,28 @@ const Wallet = () => {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    fetchWalletDetails()
-  }, [])
+    fetchWalletDetails();
+    fetchWalletHistory();
+  }, []);
 
   const fetchWalletDetails = async () => {
-    setLoading(true)
+    setLoading(true);
     const response = await walletDetailsAPI();
-    if(response.data.response.response_code == 200){   
-      setWalletInfo(response.data.data.wallet_info)
+    if (response.data.response.response_code == 200) {
+      setWalletInfo(response.data.data.wallet_info);
     }
-    setLoading(false)
+    setLoading(false);
   };
 
-  const refreshScreen = () => {
+  const fetchWalletHistory = async () => {
+    setLoading(true);
+    const response = await walletHistoryAPI();
+    if (response.data.response.response_code == 200) {
+      set_wallet_transactions(response.data.data.wallet_info.wallet_history);
+    }
+    setLoading(false);
+  };
 
-  }
 
   return (
     <View style={styles.container}>
@@ -100,7 +111,7 @@ const Wallet = () => {
               {loading ? (
                 <ActivityIndicator color={COLORS.PRIMARY} />
               ) : (
-                `+ ${walletInfo.currency} ${ Math.round(walletInfo.total_debit)}`
+                `+ ${walletInfo.currency} ${Math.round(walletInfo.total_debit)}`
               )}
             </Text>
           </View>
@@ -181,9 +192,9 @@ const Wallet = () => {
 
           {loading && <ActivityIndicator color={COLORS.PRIMARY} />}
 
-          {wallet_transactions.map(item => (
-            <View key={item.transaction_id} style={styles.itemContainer}>
-              <Image
+          {wallet_transactions.map((item, i) => (
+            <Card key={i} style={styles.itemContainer}>
+              {/* <Image
                 source={{uri: `${BASE_URL}${item.profile_img}`}}
                 style={{
                   width: 30,
@@ -192,7 +203,7 @@ const Wallet = () => {
                   marginRight: 5,
                   alignSelf: 'flex-start',
                 }}
-              />
+              /> */}
               <View style={{marginLeft: 10, marginRight: 10, flex: 1}}>
                 <View
                   style={{
@@ -200,18 +211,18 @@ const Wallet = () => {
                     justifyContent: 'space-between',
                     alignItems: 'center',
                   }}>
-                  <Text style={{...styles.h1, fontSize: 15}}>{item.name}</Text>
+                  <Text style={{...styles.h1, fontSize: 15}}>{item.reason}</Text>
                   <Text
                     style={{
                       ...styles.h1,
                       fontSize: 18,
                       color: COLORS.PRIMARY,
-                    }}>{`${item.transaction_currency_code} ${item.transaction_amount}`}</Text>
+                    }}>{`${item.currency} ${item.total_amt}`}</Text>
                 </View>
                 <Text>
                   Gateway :{' '}
                   <Text style={{fontWeight: 'normal'}}>
-                    {item.transaction_gateway}
+                    {'Razorpay'}
                   </Text>
                 </Text>
                 <View
@@ -225,7 +236,7 @@ const Wallet = () => {
                       styles.h2,
                       {color: '#a1a1a1', fontWeight: 'normal', fontSize: 12},
                     ]}>
-                    {item.transaction_created_date.split(' ')[0]}
+                    {item.created_at.split(' ')[0]}
                   </Text>
                   <Text
                     style={[
@@ -237,7 +248,7 @@ const Wallet = () => {
                   </Text>
                 </View>
               </View>
-            </View>
+            </Card>
           ))}
         </View>
       </ScrollView>

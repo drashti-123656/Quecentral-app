@@ -136,9 +136,7 @@ const Dashboard = ({navigation}) => {
                 style={{marginVertical: 5}}>
                 {categoryList.map((item, i) => (
                   <TouchableOpacity
-                    onPress={() => navigation.navigate('FindAProfessional',{
-                      searchKey: searchKey,
-                    })}
+                    onPress={() => navigation.navigate('ServicesList', { categoryID: item.id })}
                     key={i}
                     style={{alignItems: 'center', marginRight: 32}}>
                     <View style={styles.iconCont}>

@@ -21,7 +21,10 @@ const ServicesList = props => {
       category: categoryID,
     });
     const response = await categoryWiseServicesAPI(formData);
+    console.log(response)
+    if(response.data.response.response_code == 200 ){
     setServiceListData(response.data.data.service_list);
+  }
     setLoading(false);
   };
 

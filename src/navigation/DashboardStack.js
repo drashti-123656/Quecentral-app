@@ -10,6 +10,9 @@ import Reviews from './../screens/Reviews';
 import CategoriesStack from './CategoriesStack';
 import BookingList from './../screens/BookingList';
 import Notifications from './../screens/Notifications';
+import ServicesList from './../screens/ServicesList'
+import ServiceDetailsStack from './ServiceDetailsStack'
+import BookService from './../screens/BookService'
 
 const dashboardStack = createNativeStackNavigator();
 
@@ -37,6 +40,12 @@ const DashboardStack = () => {
         name="ServiceDetails"
         options={{headerShown: false}}
         component={ServiceDetails}
+      />
+
+<dashboardStack.Screen
+        name="ServiceDetailsStack"
+        options={{headerShown: false}}
+        component={ServiceDetailsStack}
       />
 
       <dashboardStack.Screen
@@ -84,6 +93,26 @@ const DashboardStack = () => {
         options={({navigation, route}) => ({
           headerShown: true,
           title: 'Notifications',
+          headerBackVisible: true,
+        })}
+      />
+
+<dashboardStack.Screen
+        name="ServicesList"
+        component={ServicesList}
+        options={({navigation, route}) => ({
+          headerShown: true,
+          title: 'Services List',
+          headerBackVisible: true,
+        })}
+      />
+
+<dashboardStack.Screen
+        name="BookService"
+        component={BookService}
+        options={({navigation, route}) => ({
+          headerShown: true,
+          title: 'Book Service',
           headerBackVisible: true,
         })}
       />

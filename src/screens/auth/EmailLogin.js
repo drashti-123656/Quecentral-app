@@ -14,6 +14,8 @@ import {login as signIn, reset} from './../../redux/actions/auth';
 import LoginButton from './../../components/button/LoginButton';
 import {showMessage, hideMessage} from 'react-native-flash-message';
 import {COLORS} from './../../utils/theme';
+import {Formik} from 'formik';
+import {SigninSchema} from './../../utils/schema';
 
 const EmailLogin = ({navigation}) => {
   const dispatch = useDispatch();
@@ -24,17 +26,15 @@ const EmailLogin = ({navigation}) => {
   const [country_code, setCountry_code] = useState(91);
   const [loading, setLoading] = useState(false);
 
-  const handleLogin = async () => {
+  const handleLogin = async data => {
     setLoading(true);
 
     let formData = new URLSearchParams({
-        email,
-        password
+      email: data.email,
+      password: data.password,
     });
 
     dispatch(signIn(formData));
-
- 
   };
 
   useEffect(() => {
@@ -70,46 +70,71 @@ const EmailLogin = ({navigation}) => {
             Login
           </Text>
 
-          <TextInput
-            style={styles.input}
-            value={email}
-            placeholder={'Enter email'}
-            onChangeText={setEmail}
-          />
+          <Formik
+            initialValues={{
+              email: '',
+              password: '',
+            }}
+            validationSchema={SigninSchema}
+            onSubmit={values => handleLogin(values)}>
+            {({
+              handleChange,
+              handleBlur,
+              handleSubmit,
+              errors,
+              touched,
+              values,
+            }) => (
+              <View>
+                <TextInput
+                  style={styles.input}
+                  value={values.email}
+                  placeholder={'Enter email'}
+                  onChangeText={handleChange('email')}
+                />
+                {errors.email && touched.email ? (
+                  <Text style={styles.error}>{errors.email}</Text>
+                ) : null}
 
-        
-            <TextInput
-              style={styles.input}
-              value={password}
-              placeholder={'Enter password'}
-              onChangeText={setPassword}
-            />
-         
+                <TextInput
+                  style={styles.input}
+                  value={values.password}
+                  placeholder={'Enter password'}
+                  onChangeText={handleChange('password')}
+                />
 
-          <TouchableOpacity
-            onPress={() => console.log('sdsd')}
-            style={{
-              flexDirection: 'row',
-              alignItems: 'center',
-              justifyContent: 'flex-end',
-            }}>
-            <Image
-              source={require('./../../assets/icons/rounded-arrow.png')}
-              style={{width: 15, height: 15}}
-            />
+                {errors.password && touched.password ? (
+                  <Text style={styles.error}>{errors.password}</Text>
+                ) : null}
 
-            <Text style={{textAlign: 'right', padding: 12}}>
-              Forgot password ? 
-            </Text>
-          </TouchableOpacity>
+                <TouchableOpacity
+                  onPress={() => console.log('sdsd')}
+                  style={{
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    justifyContent: 'flex-end',
+                  }}>
+                  {/* <Image
+                    source={require('./../../assets/icons/rounded-arrow.png')}
+                    style={{width: 15, height: 15}}
+                  /> */}
 
-          <View style={{margin: 12}}>
-            <LoginButton
-              title={'Login'}
-              onPress={() => handleLogin()}
-              loading={loading}
-            />
-          </View>
+                  <Text style={{textAlign: 'right', padding: 12, fontWeight:'bold'}}>
+                    Forgot password ?
+                  </Text>
+                </TouchableOpacity>
+
+                <View style={{margin: 12}}>
+                  <LoginButton
+                    title={'Login'}
+                    onPress={handleSubmit}
+                    loading={loading}
+                  />
+                </View>
+              </View>
+            )}
+          </Formik>
+
           <Text style={{textAlign: 'center'}}>
             Don't have an account ?
             <Text
@@ -158,5 +183,12 @@ const styles = StyleSheet.create({
     padding: 10,
     borderRadius: 10,
     borderColor: '#2BBBA0',
+  },
+  error: {
+    fontSize: 12,
+    fontWeight: 'bold',
+    color: COLORS.warningRed,
+    marginHorizontal: 12,
+    textAlign: 'right',
   },
 });

@@ -10,16 +10,17 @@ import {
   ScrollView,
   Dimensions,
 } from 'react-native';
-import MD5 from "crypto-js/md5";
+import MD5 from 'crypto-js/md5';
 import {COLORS} from './../utils/theme';
 import LinearGradient from 'react-native-linear-gradient';
 import Swiper from 'react-native-swiper';
 import ProviderDetails from './../components/cards/ProviderDetails';
 import Stars from './../components/review/Stars';
 import {serviceDetails as serviceDetailsAPI} from './../services/api';
+import {BASE_URL} from './../utils/global';
 
 const ServiceDetails = props => {
-  const { serviceId } = props.route.params;
+  const {serviceId} = props.route.params;
 
   const [loading, setLoading] = useState(false);
   const [serviceOverview, setServiceOverview] = useState({});
@@ -31,13 +32,13 @@ const ServiceDetails = props => {
 
   const fetchServiceDetails = async () => {
     setLoading(true);
-    let MD5ServiceId =  MD5(serviceId)
-    console.log(serviceId)
+    let MD5ServiceId = MD5(serviceId);
+    console.log(serviceId);
     const response = await serviceDetailsAPI(MD5ServiceId);
     if (response.data.response.response_code == 200) {
       setServiceOverview(response.data.data.service_overview);
       setSellerOverview(response.data.data.seller_overview);
-      console.log(response.data.data.service_overview)
+      console.log(response.data.data.service_overview);
     }
     setLoading(false);
   };
@@ -68,42 +69,61 @@ const ServiceDetails = props => {
               right: 10,
               height: Dimensions.get('window').height,
             }}>
-            <ScrollView showsVerticalScrollIndicator={false}>
-              <View style={styles.ImageWrapper}>
-                <Swiper showsButtons={false}>
-                  <Image
-                    source={require('./../assets/images/home.png')}
-                    style={styles.image}
-                    PlaceholderContent={<ActivityIndicator />}
-                  />
-                  <Image
-                    source={require('./../assets/images/home.png')}
-                    style={styles.image}
-                    PlaceholderContent={<ActivityIndicator />}
-                  />
-                </Swiper>
-              </View>
-
+            {Object.keys(serviceOverview).length === 0 ? (
               <View
                 style={{
-                  padding: 10,
-                  marginTop: 230,
+                  flex: 1,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  marginBottom: 100,
                 }}>
+                <Image
+                  source={require('./../assets/icons/exclamation.png')}
+                  style={{width: 60, height: 60, margin: 30}}
+                />
+                <Text
+                  style={{
+                    fontSize: 20,
+                    fontWeight: 'bold',
+                  }}>
+                  Service Close
+                </Text>
+              </View>
+            ) : (
+              <ScrollView showsVerticalScrollIndicator={false}>
+                <View style={styles.ImageWrapper}>
+                  <Swiper showsButtons={false}>
+                    {serviceOverview.service_image.map((item, i) => (
+                      <Image
+                        key={i}
+                        source={{uri: `${BASE_URL}${item}`}}
+                        style={styles.image}
+                        PlaceholderContent={<ActivityIndicator />}
+                      />
+                    ))}
+                  </Swiper>
+                </View>
+
                 <View
                   style={{
-                    ...styles.rowCont,
-                    justifyContent: 'space-between',
-                    marginBottom: 10,
+                    padding: 10,
+                    marginTop: 230,
                   }}>
-                  <Text
+                  <View
                     style={{
-                      ...styles.h2,
-                      color: '#000',
-                      marginRight: 10,
+                      ...styles.rowCont,
+                      justifyContent: 'space-between',
+                      marginBottom: 10,
                     }}>
-                    {serviceOverview.service_title}
-                  </Text>
-                  {/* <Text
+                    <Text
+                      style={{
+                        ...styles.h2,
+                        color: '#000',
+                        marginRight: 10,
+                      }}>
+                      {serviceOverview.service_title}
+                    </Text>
+                    {/* <Text
                 style={{
                   ...styles.h3,
                   color: '#FEB300',
@@ -115,37 +135,63 @@ const ServiceDetails = props => {
                 }}>
                 pending
               </Text> */}
-                  <Text
+                    <Text
+                      style={{
+                        ...styles.h2,
+                        color: COLORS.PRIMARY,
+                      }}>
+                      {`${serviceOverview.currency}${serviceOverview.service_amount}`}
+                    </Text>
+                  </View>
+
+                  <View
                     style={{
-                      ...styles.h2,
-                      color: COLORS.PRIMARY,
+                      ...styles.rowCont,
+                      justifyContent: 'space-between',
                     }}>
-                    {`${serviceOverview.currency}${serviceOverview.service_amount}`}
-                  </Text>
+                    <Stars rating={seller_overview.rating} />
+
+                    <TouchableOpacity
+                      onPress={() => props.navigation.navigate('BookService',{ service_amount: serviceOverview.service_amount})}
+                      style={{
+                        padding: 5,
+                        backgroundColor: COLORS.PRIMARY,
+                        width: 120,
+                        borderRadius: 5,
+                      }}>
+                      <Text
+                        style={{
+                          ...styles.h2,
+                          textAlign: 'center',
+                          color: '#fff',
+                        }}>
+                        Book Service
+                      </Text>
+                    </TouchableOpacity>
+                  </View>
                 </View>
-                <Stars rating={0} />
-              </View>
 
-              <ProviderDetails
-                style={{marginBottom: 10}}
-                name={seller_overview.name}
-                image={seller_overview.profile_img}
-                mobileno={seller_overview.mobileno}
-                email={seller_overview.email}
-              />
+                <ProviderDetails
+                  style={{marginBottom: 10}}
+                  name={seller_overview.name}
+                  image={seller_overview.profile_img}
+                  mobileno={seller_overview.mobileno}
+                  email={seller_overview.email}
+                />
 
-              <View
-                style={{
-                  padding: 10,
-                  margin: 10,
-                  backgroundColor: '#fff',
-                  borderRadius: 10,
-                  marginBottom: 120,
-                }}>
-                <Text style={styles.h2}>Service Details</Text>
-                <Text>{serviceOverview.about}</Text>
-              </View>
-            </ScrollView>
+                <View
+                  style={{
+                    padding: 10,
+                    margin: 10,
+                    backgroundColor: '#fff',
+                    borderRadius: 10,
+                    marginBottom: 120,
+                  }}>
+                  <Text style={styles.h2}>Service Details</Text>
+                  <Text>{serviceOverview.about}</Text>
+                </View>
+              </ScrollView>
+            )}
           </View>
         )}
       </View>

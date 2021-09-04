@@ -6,7 +6,7 @@ import {COLORS} from './../utils/theme';
 import DashboardStack from './DashboardStack';
 import SettingsStack from './SettingsStack';
 import Logout from './../screens/auth/Logout';
-import BookingList from './../screens/BookingList';
+import BookingListStack from './BookingListStack';
 import http from './../services/httpServices';
 
 const Tab = createBottomTabNavigator();
@@ -32,7 +32,7 @@ const AuthNavigation = () => {
                 style={{width: 22, height: 22, tintColor: '#fff'}}
               />
             );
-          } else if (route.name === 'Booking') {
+          } else if (route.name === 'BookingListStack') {
             return (
               <Image
                 source={require('./../assets/icons/list.png')}
@@ -67,10 +67,11 @@ const AuthNavigation = () => {
       />
 
       <Tab.Screen
-        name="Booking"
-        component={BookingList}
+        name="BookingListStack"
+        component={BookingListStack}
         options={{
-          headerShown: true,
+          title: 'Booking List',
+          headerShown: false,
         }}
       />
       <Tab.Screen

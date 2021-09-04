@@ -148,6 +148,7 @@ const FindAProfessional = ({route, navigation}) => {
                 searchresultData.map((item, i) => (
                   <View key={i} style={{paddingHorizontal: 10}}>
                     <ServiceCard
+                      service_id={item.service_id}
                       location={item.service_location}
                       image={item.service_image}
                       service_title={item.service_title}

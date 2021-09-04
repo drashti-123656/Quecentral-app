@@ -15,7 +15,7 @@ import LoginButton from './../../components/button/LoginButton';
 import {signup as signupAPI} from './../../services/auth';
 import {login as signIn, reset} from './../../redux/actions/auth';
 import {useSelector, useDispatch} from 'react-redux';
-import {Formik} from 'formik';
+import {Formik} from 'formik'; 
 import {SignupSchema} from './../../utils/schema';
 
 GoogleSignin.configure();
