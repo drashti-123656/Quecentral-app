@@ -15,22 +15,23 @@ const CustomInput = ({ value, onChangeText, placeholder, keyboardType='default' 
     )
 }
 
-const CustomInputWithTitle = ({ title, value, onChangeText, placeholder, editable }) => {
+const CustomInputWithTitle = props => {
     return (
-        <View style={{width:'100%'}}>
-            <Text style={styles.title}>{title}</Text>
+        <View style={{flex:1}}>
+            <Text style={styles.title}>{props.title}</Text>
             <TextInput
                 style={{...styles.input,  
                     borderColor:'#2BBBA0',
-                    height: 50,
+                    height: props.height ? props.height : 50,
                     borderRadius:10, 
                     margin:0,
                     marginVertical: 5,
                 }}
-                onChangeText={onChangeText}
-                value={value}
-                placeholder={placeholder}
-                editable={editable}
+                onChangeText={props.onChangeText}
+                value={props.value}
+                placeholder={props.placeholder}
+                editable={props.editable}
+                multiline={props.multiline}
             />
         </View>
     )

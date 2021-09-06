@@ -61,3 +61,8 @@ export const bookService = (data) => {
 }
 
 
+export const availability = () => {
+    return http.get('availability')
+}
+
+

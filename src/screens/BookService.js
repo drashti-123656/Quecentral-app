@@ -4,17 +4,21 @@ import {CustomInputWithTitle} from './../components/input/CustomInput';
 import LoginButton from './../components/button/LoginButton';
 import {bookService as bookServiceAPI} from './../services/api';
 import {showMessage, hideMessage} from 'react-native-flash-message';
-import {COLORS} from './../utils/theme'
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+import TimePicker from './../components/picker/TimePicker'
+import CalendarPicker from './../components/picker/CalendarPicker';
+import {COLORS} from './../utils/theme';
 
-const BookService = (props) => {
-  const [notes, setNotes] = useState('')
-  const [loading, setLoading] = useState(false)
+const BookService = props => {
+  const [notes, setNotes] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [selectedDay, setSelectedDay] = useState({});
+  const [selectedTime, setSelectedTime] = useState({});
 
-    const {service_amount} = props.route.params;  
-
+  const {service_amount} = props.route.params;
 
   const submitHandler = async () => {
-    setLoading(true)
+    setLoading(true);
 
     let formData = new URLSearchParams({
       from_time: '14:00:00',
@@ -29,58 +33,75 @@ const BookService = (props) => {
     });
     const response = await bookServiceAPI(formData);
     if (response.data.response.response_code == 200) {
-        showMessage({
-            message: response.data.response.response_message,
-            type: 'info',
-            backgroundColor: COLORS.warningRed,
-          });
-    }else{
-        showMessage({
-            message: response.data.response.response_message,
-            type: 'info',
-            backgroundColor: COLORS.warningRed,
-          });
+      showMessage({
+        message: response.data.response.response_message,
+        type: 'info',
+        backgroundColor: COLORS.warningRed,
+      });
+    } else {
+      showMessage({
+        message: response.data.response.response_message,
+        type: 'info',
+        backgroundColor: COLORS.warningRed,
+      });
     }
 
-    setLoading(false)
+    setLoading(false);
   };
 
   return (
-    <View style={styles.container}>
-      <CustomInputWithTitle
-        title={'Service Location'}
-        placeholder={'Service Location'}
-        editable={false}
-      />
-      <CustomInputWithTitle
-        title={'Service amount'}
-        placeholder={'Service amount'}
-        value={service_amount}
-        editable={false}
-      />
-
+    <KeyboardAwareScrollView style={styles.container}>
+      <View style={{marginVertical: 10}}>
+        <CustomInputWithTitle
+          title={'Service Location'}
+          placeholder={'Service Location'}
+          editable={false}
+        />
+      </View>
+      <View style={{marginBottom: 10}}>
+        <CustomInputWithTitle
+          title={'Service amount'}
+          placeholder={'Service amount'}
+          value={service_amount}
+          editable={false}
+        />
+      </View>
       <View style={styles.rowCont}>
-        <View style={{width: '49%'}}>
-          <CustomInputWithTitle
-            title={'Date'}
-            placeholder={'Time slot'}
-            editable={false}
+        <View style={{flex: 1, marginRight: 5}}>
+          <CalendarPicker
+            title={'Select date'}
+            value={selectedDay}
+            onSelect={setSelectedDay}
+            minDate={new Date().toISOString().slice(0, 10)}
           />
         </View>
-        <View style={{width: '49%'}}>
-          <CustomInputWithTitle
-            title={'Time slot'}
-            placeholder={'Time slot'}
-            editable={false}
+        <View style={{flex: 1, marginLeft: 5}}>
+
+          <TimePicker 
+          title={'Time slot'}
+          placeholder={'Time slot'}
+          value={'12:00 - 3:00'}
+          onSelect={setSelectedTime}
           />
+       
         </View>
       </View>
+
+      {/* <RegionPicker
+          title={'states'}
+          mode={'states'}
+          value={State}
+          onSelect={setState}
+          queryString={101}
+        /> */}
 
       <CustomInputWithTitle
         title={'Notes '}
         placeholder={'Time slot'}
         editable={true}
         onChangeText={setNotes}
+        multiline={true}
+        height={150}
       />
 
       <View
@@ -95,7 +116,7 @@ const BookService = (props) => {
           onPress={() => submitHandler()}
         />
       </View>
-    </View>
+    </KeyboardAwareScrollView>
   );
 };
 
@@ -110,5 +131,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
+    marginBottom: 10,
   },
 });

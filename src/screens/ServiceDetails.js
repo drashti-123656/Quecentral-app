@@ -38,7 +38,7 @@ const ServiceDetails = props => {
     if (response.data.response.response_code == 200) {
       setServiceOverview(response.data.data.service_overview);
       setSellerOverview(response.data.data.seller_overview);
-      console.log(response.data.data.service_overview);
+      console.log(response);
     }
     setLoading(false);
   };
