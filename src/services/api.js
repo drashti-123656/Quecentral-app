@@ -60,9 +60,13 @@ export const bookService = (data) => {
     return http.post('book_service', data)
 }
 
-
 export const availability = () => {
     return http.get('availability')
 }
+
+export const serviceAvailability = (data) => {
+    return http.post('service_availability', data)
+}
+
 
 

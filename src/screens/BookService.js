@@ -5,17 +5,31 @@ import LoginButton from './../components/button/LoginButton';
 import {bookService as bookServiceAPI} from './../services/api';
 import {showMessage, hideMessage} from 'react-native-flash-message';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
-import TimePicker from './../components/picker/TimePicker'
+import TimePicker from './../components/picker/TimePicker';
 import CalendarPicker from './../components/picker/CalendarPicker';
 import {COLORS} from './../utils/theme';
+
+import {availability as availabilityAPI} from './../services/api';
+import {serviceAvailability as serviceAvailabilityAPI} from './../services/api';
+
+
 
 const BookService = props => {
   const [notes, setNotes] = useState('');
   const [loading, setLoading] = useState(false);
+  const [enableTimeSlot, setEnableTimeSlot] = useState(false);
   const [selectedDay, setSelectedDay] = useState({});
+  const [timeSlots, setTimeSlots] = useState([]);
   const [selectedTime, setSelectedTime] = useState({});
+  const [availabilityData, setavailabilityData] = useState({});
+
+  const [DateError,  setDateError] = useState('')
 
   const {service_amount} = props.route.params;
+
+  useEffect(() => {
+    fetchAvailablity();
+  }, []);
 
   const submitHandler = async () => {
     setLoading(true);
@@ -49,6 +63,31 @@ const BookService = props => {
     setLoading(false);
   };
 
+  const handleDateSelect = async (day) => {
+
+    const formData = new URLSearchParams({
+      service_id:67,
+      date: day.dateString
+    })
+    const response = await serviceAvailabilityAPI(formData)
+
+    if(response.data.response.response_code == 200){
+      setTimeSlots(response.data.data.service_availability)
+      setDateError('')
+      setSelectedDay(day)
+      setEnableTimeSlot(true)
+    }else{
+      setDateError(response.data.response.response_message)
+      setEnableTimeSlot(false)
+    }
+
+  };
+
+  const fetchAvailablity = async () => {
+    const response = await availabilityAPI();
+    setavailabilityData(response.data.data);
+  };
+
   return (
     <KeyboardAwareScrollView style={styles.container}>
       <View style={{marginVertical: 10}}>
@@ -71,20 +110,22 @@ const BookService = props => {
           <CalendarPicker
             title={'Select date'}
             value={selectedDay}
-            onSelect={setSelectedDay}
+            onSelect={handleDateSelect}
             minDate={new Date().toISOString().slice(0, 10)}
-          />
-        </View>
-        <View style={{flex: 1, marginLeft: 5}}>
 
-          <TimePicker 
-          title={'Time slot'}
-          placeholder={'Time slot'}
-          value={'12:00 - 3:00'}
-          onSelect={setSelectedTime}
           />
-       
+             {(DateError !== '') &&<Text style={{color: COLORS.warningRed}}>{DateError}</Text>}
         </View>
+    { enableTimeSlot &&  <View style={{flex: 1, marginLeft: 5}}>
+          <TimePicker
+            title={'Time slot'}
+            placeholder={'Time slot'}
+            value={'12:00 - 3:00'}
+            onSelect={setSelectedTime}
+            timeSlots={timeSlots}
+            selectedDay={selectedDay}
+          />
+        </View>}
       </View>
 
       {/* <RegionPicker
@@ -102,6 +143,12 @@ const BookService = props => {
         onChangeText={setNotes}
         multiline={true}
         height={150}
+      />
+
+<CustomInputWithTitle
+        title={'Coupon'}
+        placeholder={'Coupon'}
+        editable={true}
       />
 
       <View
@@ -126,6 +173,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 10,
+    backgroundColor:'#fff'
   },
   rowCont: {
     flexDirection: 'row',
