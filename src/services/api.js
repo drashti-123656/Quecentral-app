@@ -68,5 +68,12 @@ export const serviceAvailability = (data) => {
     return http.post('service_availability', data)
 }
 
+export const validateCoupon = (data) => {
+    return http.post('valid-coupan', data)
+}
+
+
+
+
 
 

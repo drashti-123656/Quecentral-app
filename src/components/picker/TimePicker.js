@@ -30,7 +30,7 @@ const TimePicker = props => {
       <Text style={styles.title}>{props.title}</Text>
 
       <TouchableOpacity style={styles.input} onPress={() => setShowModal(true)}>
-        <Text>{props.value}</Text>
+        <Text>{`${props.value.start_time} - ${props.value.end_time}`}</Text>
       </TouchableOpacity>
 
       <Modal animationType="fade" visible={showModal} transparent={true}>
@@ -46,11 +46,11 @@ const TimePicker = props => {
             }}></Pressable>
           <View style={styles.modalCont}>
             <ScrollView>
-              <Text
+              {/* <Text
                 onPress={() => handleSelect({category_name: 'All'})}
                 style={{...styles.h2, textAlign:'center'}}>
                 All
-              </Text>
+              </Text> */}
               {props.timeSlots.map((item, id) => (
                 <Text
                   key={id}

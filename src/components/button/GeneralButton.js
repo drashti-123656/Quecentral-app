@@ -55,6 +55,29 @@ const BookNow = () => {
   );
 };
 
-export {ViewMore, BookNow};
+const SmallGenralButton = ({onPress, title}) => {
+  return (
+    <TouchableOpacity onPress={onPress}>
+      <LinearGradient
+        start={{x: 0, y: 0}}
+        end={{x: 1, y: 0}}
+        colors={['#72E5D8', '#41C8B1', '#16AE8F']}
+        style={{
+          backgroundColor: COLORS.PRIMARY,
+          width: 90,
+          padding: 5,
+          justifyContent: 'center',
+          alignItems: 'center',
+          borderRadius: 5,
+        }}>
+        <Text style={{fontWeight: 'bold', color: '#fff', fontSize: 12}}>
+          {title}
+        </Text>
+      </LinearGradient>
+    </TouchableOpacity>
+  );
+};
+
+export {ViewMore, BookNow, SmallGenralButton};
 
 const styles = StyleSheet.create({});

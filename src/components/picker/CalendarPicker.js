@@ -7,6 +7,7 @@ import {
   Modal,
   ScrollView,
   Pressable,
+  ActivityIndicator,
 } from 'react-native';
 import {categoryList as categoryListAPI} from '../../services/api';
 import {COLORS} from '../../utils/theme';
@@ -23,9 +24,17 @@ const CalendarPicker = props => {
     <View>
       <Text style={styles.title}>{props.title}</Text>
 
-      <TouchableOpacity style={styles.input} onPress={() => setShowModal(true)}>
-        <Text>{props.value.dateString}</Text>
-      </TouchableOpacity>
+      {props.loading ? (
+        <TouchableOpacity style={styles.input}>
+          <ActivityIndicator color={COLORS.PRIMARY} />
+        </TouchableOpacity>
+      ) : (
+        <TouchableOpacity
+          style={styles.input}
+          onPress={() => setShowModal(true)}>
+          <Text>{props.value.dateString}</Text>
+        </TouchableOpacity>
+      )}
 
       <Modal animationType="fade" visible={showModal} transparent={true}>
         <View style={{flex: 1, justifyContent: 'center'}}>

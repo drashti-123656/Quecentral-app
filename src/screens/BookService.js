@@ -1,100 +1,138 @@
 import React, {useEffect, useState} from 'react';
 import {StyleSheet, Text, View} from 'react-native';
-import {CustomInputWithTitle} from './../components/input/CustomInput';
+import {
+  CustomInputWithTitle,
+  CouponInputWithTitle,
+} from './../components/input/CustomInput';
 import LoginButton from './../components/button/LoginButton';
+import {SmallGenralButton} from './../components/button/GeneralButton';
 import {bookService as bookServiceAPI} from './../services/api';
-import {showMessage, hideMessage} from 'react-native-flash-message';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import TimePicker from './../components/picker/TimePicker';
 import CalendarPicker from './../components/picker/CalendarPicker';
 import {COLORS} from './../utils/theme';
+import SuccessAlertModal from '../components/model/SuccessAlertModal';
 
-import {availability as availabilityAPI} from './../services/api';
-import {serviceAvailability as serviceAvailabilityAPI} from './../services/api';
-
-
+import {
+  serviceAvailability as serviceAvailabilityAPI,
+  validateCoupon as validateCouponAPI,
+} from './../services/api';
 
 const BookService = props => {
   const [notes, setNotes] = useState('');
   const [loading, setLoading] = useState(false);
+  const [alertData, setAlertData] = useState({
+    alertDisplay: false,
+    message: '',
+    bookingStatus: false,
+  });
+
+  const [serviceLocation, setServiceLocation] = useState('');
   const [enableTimeSlot, setEnableTimeSlot] = useState(false);
   const [selectedDay, setSelectedDay] = useState({});
   const [timeSlots, setTimeSlots] = useState([]);
   const [selectedTime, setSelectedTime] = useState({});
-  const [availabilityData, setavailabilityData] = useState({});
+  const [DateError, setDateError] = useState('');
 
-  const [DateError,  setDateError] = useState('')
+  const [coupon, setCoupon] = useState('');
+  const [couponDetails, setCouponDetails] = useState({});
+  const [couponError, setCouponError] = useState('');
 
   const {service_amount} = props.route.params;
 
-  useEffect(() => {
-    fetchAvailablity();
-  }, []);
+  useEffect(() => {}, []);
 
   const submitHandler = async () => {
     setLoading(true);
 
     let formData = new URLSearchParams({
-      from_time: '14:00:00',
-      to_time: '15:00:00',
-      service_date: '2021-07-30',
+      from_time: selectedTime.start_time ? selectedTime.start_time : null,
+      to_time: selectedTime.end_time ? selectedTime.end_time : null,
+      service_date: selectedDay.dateString,
       service_id: '1',
       latitude: '19.0759837',
-      location: '72.8776559',
+      longitude: '72.8776559',
       location: 'bilaspur',
       notes: notes,
       amount: service_amount,
     });
+
     const response = await bookServiceAPI(formData);
+
     if (response.data.response.response_code == 200) {
-      showMessage({
+      setAlertData({
+        alertDisplay: true,
         message: response.data.response.response_message,
-        type: 'info',
-        backgroundColor: COLORS.warningRed,
+        bookingStatus: true,
       });
     } else {
-      showMessage({
+      setAlertData({
+        alertDisplay: true,
         message: response.data.response.response_message,
-        type: 'info',
-        backgroundColor: COLORS.warningRed,
+        bookingStatus: false,
       });
     }
 
     setLoading(false);
   };
 
-  const handleDateSelect = async (day) => {
-
+  const handleDateSelect = async day => {
+    setLoading(true);
     const formData = new URLSearchParams({
-      service_id:67,
-      date: day.dateString
-    })
-    const response = await serviceAvailabilityAPI(formData)
+      service_id: 71,
+      date: day.dateString,
+    });
+    const response = await serviceAvailabilityAPI(formData);
 
-    if(response.data.response.response_code == 200){
-      setTimeSlots(response.data.data.service_availability)
-      setDateError('')
-      setSelectedDay(day)
-      setEnableTimeSlot(true)
-    }else{
-      setDateError(response.data.response.response_message)
-      setEnableTimeSlot(false)
+    if (
+      response.data.response.response_code == 200 &&
+      Object.keys(response.data.data).length !== 0
+    ) {
+      setTimeSlots(response.data.data.service_availability);
+      setDateError('');
+      setSelectedDay(day);
+      setEnableTimeSlot(true);
+    } else if (
+      response.data.response.response_code == 200 &&
+      Object.keys(response.data.data).length === 0
+    ) {
+      setDateError('');
+      setSelectedDay(day);
+    } else {
+      setDateError(response.data.response.response_message);
+      setEnableTimeSlot(false);
     }
-
+    setLoading(false);
   };
 
-  const fetchAvailablity = async () => {
-    const response = await availabilityAPI();
-    setavailabilityData(response.data.data);
+  const validateCoupon = async (text) => {
+    console.log(text)
+    let formData = new URLSearchParams({
+      coupon_code: text,
+    });
+    const response = await validateCouponAPI(formData);
+
+    if (response.data.response.response_code == 200) {
+      setCouponDetails(response.data.data[0]);
+      setCouponError('couponISAvailable');
+    } else {
+      setCouponError(response.data.response.response_message);
+    }
   };
 
   return (
     <KeyboardAwareScrollView style={styles.container}>
+      <SuccessAlertModal
+        value={alertData}
+        text={alertData.message}
+        onPressOkay={setAlertData}
+      />
       <View style={{marginVertical: 10}}>
         <CustomInputWithTitle
           title={'Service Location'}
           placeholder={'Service Location'}
-          editable={false}
+          value={serviceLocation}
+          onChangeText={setServiceLocation}
         />
       </View>
       <View style={{marginBottom: 10}}>
@@ -112,29 +150,26 @@ const BookService = props => {
             value={selectedDay}
             onSelect={handleDateSelect}
             minDate={new Date().toISOString().slice(0, 10)}
-
+            loading={loading}
+            placeholder={'Choose Date'}
           />
-             {(DateError !== '') &&<Text style={{color: COLORS.warningRed}}>{DateError}</Text>}
+          {DateError !== '' && (
+            <Text style={{color: COLORS.warningRed}}>{DateError}</Text>
+          )}
         </View>
-    { enableTimeSlot &&  <View style={{flex: 1, marginLeft: 5}}>
-          <TimePicker
-            title={'Time slot'}
-            placeholder={'Time slot'}
-            value={'12:00 - 3:00'}
-            onSelect={setSelectedTime}
-            timeSlots={timeSlots}
-            selectedDay={selectedDay}
-          />
-        </View>}
+        {enableTimeSlot && (
+          <View style={{flex: 1, marginLeft: 5}}>
+            <TimePicker
+              title={'Time slot'}
+              placeholder={'Time slot'}
+              value={selectedTime}
+              onSelect={setSelectedTime}
+              timeSlots={timeSlots}
+              selectedDay={selectedDay}
+            />
+          </View>
+        )}
       </View>
-
-      {/* <RegionPicker
-          title={'states'}
-          mode={'states'}
-          value={State}
-          onSelect={setState}
-          queryString={101}
-        /> */}
 
       <CustomInputWithTitle
         title={'Notes '}
@@ -145,11 +180,32 @@ const BookService = props => {
         height={150}
       />
 
-<CustomInputWithTitle
-        title={'Coupon'}
-        placeholder={'Coupon'}
-        editable={true}
-      />
+      <View style={{marginTop: 10}}>
+        <CouponInputWithTitle
+          title={'Enter coupon'}
+          placeholder={'Coupon'}
+          editable={true}
+          onChangeText={text => {
+            setCoupon(text);
+            validateCoupon(text);
+          }}
+          value={coupon}
+          couponError={couponError}
+        />
+        <View
+          style={{
+            flexDirection: 'row',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+          }}>
+          {couponError !== '' && couponError !== 'couponISAvailable' && (
+            <Text style={{color: COLORS.warningRed}}>{couponError}</Text>
+          )}
+          <View style={{marginLeft: 'auto'}}>
+            <SmallGenralButton title={'Apply'} onPress={validateCoupon} />
+          </View>
+        </View>
+      </View>
 
       <View
         style={{
@@ -173,7 +229,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 10,
-    backgroundColor:'#fff'
+    backgroundColor: '#fff',
   },
   rowCont: {
     flexDirection: 'row',
