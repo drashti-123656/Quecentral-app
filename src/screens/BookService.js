@@ -105,10 +105,9 @@ const BookService = props => {
     setLoading(false);
   };
 
-  const validateCoupon = async (text) => {
-    console.log(text)
+  const validateCoupon = async () => {
     let formData = new URLSearchParams({
-      coupon_code: text,
+      coupon_code: coupon,
     });
     const response = await validateCouponAPI(formData);
 
@@ -185,10 +184,7 @@ const BookService = props => {
           title={'Enter coupon'}
           placeholder={'Coupon'}
           editable={true}
-          onChangeText={text => {
-            setCoupon(text);
-            validateCoupon(text);
-          }}
+          onChangeText={setCoupon}
           value={coupon}
           couponError={couponError}
         />
@@ -201,8 +197,8 @@ const BookService = props => {
           {couponError !== '' && couponError !== 'couponISAvailable' && (
             <Text style={{color: COLORS.warningRed}}>{couponError}</Text>
           )}
-          <View style={{marginLeft: 'auto'}}>
-            <SmallGenralButton title={'Apply'} onPress={validateCoupon} />
+          <View style={{marginLeft:'auto'}}>
+            <SmallGenralButton title={'Check'} onPress={validateCoupon} />
           </View>
         </View>
       </View>

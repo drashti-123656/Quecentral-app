@@ -45,8 +45,6 @@ const Signup = ({navigation}) => {
     }
     setLoading(true);
 
-    console.log(formData);
-
     const data = new URLSearchParams({
       //  usertype: 1,
       // device_id:
