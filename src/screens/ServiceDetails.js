@@ -92,7 +92,7 @@ const ServiceDetails = props => {
             ) : (
               <ScrollView showsVerticalScrollIndicator={false}>
                 <View style={styles.ImageWrapper}>
-                  <Swiper showsButtons={false}>
+                  <Swiper showsButtons={false} autoplay={true}>
                     {serviceOverview.service_image.map((item, i) => (
                       <Image
                         key={i}

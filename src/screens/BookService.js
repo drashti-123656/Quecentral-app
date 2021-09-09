@@ -23,6 +23,7 @@ const BookService = props => {
 
   const [notes, setNotes] = useState('');
   const [loading, setLoading] = useState(false);
+  const [bookinLoading, setBookinLoading] = useState(false);
   const [alertData, setAlertData] = useState({
     alertDisplay: false,
     message: '',
@@ -46,7 +47,7 @@ const BookService = props => {
   }, []);
 
   const submitHandler = async () => {
-    setLoading(true);
+    setBookinLoading(true);
 
     let formData = new URLSearchParams({
       from_time: selectedTime.start_time ? selectedTime.start_time : null,
@@ -58,6 +59,7 @@ const BookService = props => {
       location: serviceLocation,
       notes: notes,
       amount: service_amount,
+      coupon_id:couponDetails.id
     });
 
     const response = await bookServiceAPI(formData);
@@ -76,7 +78,7 @@ const BookService = props => {
       });
     }
 
-    setLoading(false);
+    setBookinLoading(false);
   };
 
   const handleDateSelect = async day => {
@@ -206,8 +208,8 @@ const BookService = props => {
       </View>
 
       <CustomInputWithTitle
-        title={'Notes '}
-        placeholder={'Time slot'}
+        title={'Notes'}
+        placeholder={'Notes'}
         editable={true}
         onChangeText={setNotes}
         multiline={true}
@@ -216,13 +218,11 @@ const BookService = props => {
 
       <View
         style={{
-          justifyContent: 'center',
-          alignItems: 'center',
           marginVertical: 20,
         }}>
         <LoginButton
           title={'Continue To Book'}
-          loading={loading}
+          loading={bookinLoading}
           onPress={() => submitHandler()}
         />
       </View>
