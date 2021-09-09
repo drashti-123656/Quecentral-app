@@ -12,27 +12,31 @@ import {availability as availabilityAPI} from '../../services/api';
 import {COLORS} from '../../utils/theme';
 import {hoursSplitter} from '../../utils/helper';
 
-
-
 const TimePicker = props => {
   const [showModal, setShowModal] = useState(false);
-
 
   const handleSelect = item => {
     props.onSelect(item);
     setShowModal(false);
   };
 
- 
-
   return (
     <View>
       <Text style={styles.title}>{props.title}</Text>
 
-      <TouchableOpacity style={styles.input} onPress={() => setShowModal(true)}>
-        <Text>{`${props.value.start_time} - ${props.value.end_time}`}</Text>
-      </TouchableOpacity>
-
+      {props.value.start_time ? (
+        <TouchableOpacity
+          style={styles.input}
+          onPress={() => setShowModal(true)}>
+          <Text>{`${props.value.start_time} - ${props.value.end_time}`}</Text>
+        </TouchableOpacity>
+      ) : (
+        <TouchableOpacity
+          style={styles.input}
+          onPress={() => setShowModal(true)}>
+          <Text style={{color:'#a1a1a1'}}>Choose time</Text>
+        </TouchableOpacity>
+      )}
       <Modal animationType="fade" visible={showModal} transparent={true}>
         <View style={{flex: 1, justifyContent: 'center'}}>
           <Pressable
@@ -55,7 +59,7 @@ const TimePicker = props => {
                 <Text
                   key={id}
                   onPress={() => handleSelect(item)}
-                  style={{...styles.h2, textAlign:'center'}}>
+                  style={{...styles.h2, textAlign: 'center'}}>
                   {item.start_time} - {item.end_time}
                 </Text>
               ))}

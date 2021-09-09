@@ -84,6 +84,8 @@ const CouponInputWithTitle = props => {
             source={require('./../../assets/icons/check.png')}
             style={{width: 20, height: 20}}
           />
+        ) : props.couponError === '' ? (
+          <Text></Text>
         ) : (
           <Image
             source={require('./../../assets/icons/exclamation.png')}

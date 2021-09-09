@@ -19,6 +19,8 @@ import {
 } from './../services/api';
 
 const BookService = props => {
+  const {service_amount} = props.route.params;
+
   const [notes, setNotes] = useState('');
   const [loading, setLoading] = useState(false);
   const [alertData, setAlertData] = useState({
@@ -37,10 +39,11 @@ const BookService = props => {
   const [coupon, setCoupon] = useState('');
   const [couponDetails, setCouponDetails] = useState({});
   const [couponError, setCouponError] = useState('');
+  const [amount, setAmount] = useState('');
 
-  const {service_amount} = props.route.params;
-
-  useEffect(() => {}, []);
+  useEffect(() => {
+    setAmount(service_amount);
+  }, []);
 
   const submitHandler = async () => {
     setLoading(true);
@@ -54,7 +57,7 @@ const BookService = props => {
       longitude: '72.8776559',
       location: 'bilaspur',
       notes: notes,
-      amount: service_amount,
+      amount: amount,
     });
 
     const response = await bookServiceAPI(formData);
@@ -113,6 +116,7 @@ const BookService = props => {
 
     if (response.data.response.response_code == 200) {
       setCouponDetails(response.data.data[0]);
+      setAmount(JSON.stringify((service_amount*(100-response.data.data[0].discount))/100))
       setCouponError('couponISAvailable');
     } else {
       setCouponError(response.data.response.response_message);
@@ -134,14 +138,7 @@ const BookService = props => {
           onChangeText={setServiceLocation}
         />
       </View>
-      <View style={{marginBottom: 10}}>
-        <CustomInputWithTitle
-          title={'Service amount'}
-          placeholder={'Service amount'}
-          value={service_amount}
-          editable={false}
-        />
-      </View>
+
       <View style={styles.rowCont}>
         <View style={{flex: 1, marginRight: 5}}>
           <CalendarPicker
@@ -170,24 +167,28 @@ const BookService = props => {
         )}
       </View>
 
-      <CustomInputWithTitle
-        title={'Notes '}
-        placeholder={'Time slot'}
-        editable={true}
-        onChangeText={setNotes}
-        multiline={true}
-        height={150}
-      />
+      <View style={styles.rowCont}>
+        <View style={{width: '49%'}}>
+          <CustomInputWithTitle
+            title={'Service amount'}
+            placeholder={'Service amount'}
+            value={amount}
+            editable={false}
+          />
+        </View>
+        <View style={{width: '49%'}}>
+          <CouponInputWithTitle
+            title={'Enter coupon'}
+            placeholder={'Coupon'}
+            editable={true}
+            onChangeText={setCoupon}
+            value={coupon}
+            couponError={couponError}
+          />
+        </View>
+      </View>
 
-      <View style={{marginTop: 10}}>
-        <CouponInputWithTitle
-          title={'Enter coupon'}
-          placeholder={'Coupon'}
-          editable={true}
-          onChangeText={setCoupon}
-          value={coupon}
-          couponError={couponError}
-        />
+      <View style={styles.rowCont}>
         <View
           style={{
             flexDirection: 'row',
@@ -197,11 +198,21 @@ const BookService = props => {
           {couponError !== '' && couponError !== 'couponISAvailable' && (
             <Text style={{color: COLORS.warningRed}}>{couponError}</Text>
           )}
-          <View style={{marginLeft:'auto'}}>
-            <SmallGenralButton title={'Check'} onPress={validateCoupon} />
-          </View>
+        </View>
+
+        <View style={{marginLeft: 'auto'}}>
+          <SmallGenralButton title={'Apply'} onPress={validateCoupon} />
         </View>
       </View>
+
+      <CustomInputWithTitle
+        title={'Notes '}
+        placeholder={'Time slot'}
+        editable={true}
+        onChangeText={setNotes}
+        multiline={true}
+        height={150}
+      />
 
       <View
         style={{
