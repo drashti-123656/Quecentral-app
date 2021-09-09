@@ -152,7 +152,7 @@ const ServiceDetails = props => {
                     <Stars rating={seller_overview.rating} />
 
                     <TouchableOpacity
-                      onPress={() => props.navigation.navigate('BookService',{ service_amount: serviceOverview.service_amount})}
+                      onPress={() => props.navigation.navigate('BookService',{ service_amount: serviceOverview.service_amount, serviceId })}
                       style={{
                         padding: 5,
                         backgroundColor: COLORS.PRIMARY,

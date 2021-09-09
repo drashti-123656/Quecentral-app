@@ -24,19 +24,14 @@ const TimePicker = props => {
     <View>
       <Text style={styles.title}>{props.title}</Text>
 
-      {props.value.start_time ? (
-        <TouchableOpacity
-          style={styles.input}
-          onPress={() => setShowModal(true)}>
-          <Text>{`${props.value.start_time} - ${props.value.end_time}`}</Text>
-        </TouchableOpacity>
-      ) : (
-        <TouchableOpacity
-          style={styles.input}
-          onPress={() => setShowModal(true)}>
-          <Text style={{color:'#a1a1a1'}}>Choose time</Text>
-        </TouchableOpacity>
-      )}
+      <TouchableOpacity style={styles.input} onPress={() => setShowModal(true)}>
+        <Text>
+          {props.value.start_time !== undefined
+            ? `${props.value.start_time} - ${props.value.end_time}`
+            : 'Choose time'}
+        </Text>
+      </TouchableOpacity>
+
       <Modal animationType="fade" visible={showModal} transparent={true}>
         <View style={{flex: 1, justifyContent: 'center'}}>
           <Pressable

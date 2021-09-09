@@ -19,7 +19,7 @@ import {
 } from './../services/api';
 
 const BookService = props => {
-  const {service_amount} = props.route.params;
+  const {service_amount, serviceId} = props.route.params;
 
   const [notes, setNotes] = useState('');
   const [loading, setLoading] = useState(false);
@@ -33,7 +33,7 @@ const BookService = props => {
   const [enableTimeSlot, setEnableTimeSlot] = useState(false);
   const [selectedDay, setSelectedDay] = useState({});
   const [timeSlots, setTimeSlots] = useState([]);
-  const [selectedTime, setSelectedTime] = useState({});
+  const [selectedTime, setSelectedTime] = useState({placeholder:'Choose time'});
   const [DateError, setDateError] = useState('');
 
   const [coupon, setCoupon] = useState('');
@@ -52,12 +52,12 @@ const BookService = props => {
       from_time: selectedTime.start_time ? selectedTime.start_time : null,
       to_time: selectedTime.end_time ? selectedTime.end_time : null,
       service_date: selectedDay.dateString,
-      service_id: '1',
+      service_id: serviceId,
       latitude: '19.0759837',
       longitude: '72.8776559',
-      location: 'bilaspur',
+      location: serviceLocation,
       notes: notes,
-      amount: amount,
+      amount: service_amount,
     });
 
     const response = await bookServiceAPI(formData);
@@ -82,7 +82,7 @@ const BookService = props => {
   const handleDateSelect = async day => {
     setLoading(true);
     const formData = new URLSearchParams({
-      service_id: 71,
+      service_id: serviceId,
       date: day.dateString,
     });
     const response = await serviceAvailabilityAPI(formData);

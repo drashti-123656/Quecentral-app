@@ -9,7 +9,9 @@ import {
   ActivityIndicator,
   TouchableOpacity,
   Alert,
+  TouchableHighlight,
 } from 'react-native';
+import {showMessage, hideMessage} from 'react-native-flash-message';
 import {useSelector} from 'react-redux';
 import {COLORS} from './../utils/theme';
 import LoginButton from './../components/button/LoginButton';
@@ -19,6 +21,7 @@ import {
   walletHistory as walletHistoryAPI,
 } from './../services/api';
 import Card from './../components/cards/Card'
+import RazorpayCheckout from 'react-native-razorpay';
 
 const Wallet = () => {
   const {token} = useSelector(state => state.authData);
@@ -54,9 +57,39 @@ const Wallet = () => {
     setLoading(false);
   };
 
+  const addWalletHandler = () => {
+    {
+      var options = {
+      description: 'Credits towards consultation',
+      image: 'https://i.imgur.com/3g7nmJC.png',
+      currency: 'INR',
+      key: 'AZZxAKnbaIZijhSSNV4PQO7v',
+      amount: '5000',
+      name: 'Acme Corp',
+      order_id: 'order_DslnoIgkIDL8Zt',//Replace this with an order_id created using Orders API.
+      prefill: {
+        email: 'gaurav.kumar@example.com',
+        contact: '9191919191',
+        name: 'Gaurav Kumar'
+      },
+      theme: {color: '#53a20e'}
+    }
+    RazorpayCheckout.open(options).then((data) => {
+      // handle success
+      alert(`Success: ${data.razorpay_payment_id}`);
+    }).catch((error) => {
+      // handle failure
+      alert(`Error: ${error.code} | ${error.description}`);
+    });
+  }
+  }
+
 
   return (
     <View style={styles.container}>
+
+
+  
       <ScrollView style={{padding: 20}}>
         <View style={styles.myWalletCont}>
           <Text style={{fontWeight: 'bold'}}>My Wallet</Text>
@@ -179,7 +212,7 @@ const Wallet = () => {
                 });
                 return;
               } else {
-                setViewModal(true);
+                addWalletHandler();
               }
             }}
           />
