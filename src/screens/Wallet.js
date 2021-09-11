@@ -63,10 +63,10 @@ const Wallet = () => {
       description: 'Credits towards consultation',
       image: 'https://i.imgur.com/3g7nmJC.png',
       currency: 'INR',
-      key: 'AZZxAKnbaIZijhSSNV4PQO7v',
+      key: 'rzp_test_7DBE92V0ZiWCac',
       amount: '5000',
       name: 'Acme Corp',
-      order_id: 'order_DslnoIgkIDL8Zt',//Replace this with an order_id created using Orders API.
+    //  order_id: 'order_DslnoIgkIDL8Zt',//Replace this with an order_id created using Orders API.
       prefill: {
         email: 'gaurav.kumar@example.com',
         contact: '9191919191',
@@ -76,7 +76,7 @@ const Wallet = () => {
     }
     RazorpayCheckout.open(options).then((data) => {
       // handle success
-      alert(`Success: ${data.razorpay_payment_id}`);
+      console.log(data);
     }).catch((error) => {
       // handle failure
       alert(`Error: ${error.code} | ${error.description}`);

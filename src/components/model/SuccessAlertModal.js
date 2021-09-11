@@ -8,19 +8,23 @@ import {
   Image,
 } from 'react-native';
 import {COLORS} from '../../utils/theme';
+import { BlurView, VibrancyView } from "@react-native-community/blur";
 
 const SuccessAlertModal = ({value, text, onPressOkay}) => {
   return (
     <Modal animationType="fade" visible={value.alertDisplay} transparent={true}>
       <View style={{flex: 1, justifyContent: 'center'}}>
-        <View
+        <BlurView
           style={{
             height: '100%',
             width: '100%',
-            opacity: 0.4,
-            backgroundColor: '#222',
+            opacity: 0.9,
             position: 'absolute',
-          }}></View>
+            
+          }}
+          blurType="dark"
+          blurAmount={10}
+          reducedTransparencyFallbackColor="black"></BlurView>
         <View style={styles.modalCont}>
           {value.bookingStatus ? (
             <Image
