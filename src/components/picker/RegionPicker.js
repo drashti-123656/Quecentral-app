@@ -14,9 +14,17 @@ import {
 } from '../../services/api';
 import {COLORS} from '../../utils/theme';
 
-const RegionPicker = ({ title, mode, onSelect, value, queryString, editable=true}) => {
+const RegionPicker = ({
+  title,
+  mode,
+  onSelect,
+  value,
+  queryString,
+  editable = true,
+}) => {
   const [showModal, setShowModal] = useState(false);
   const [modalData, setModalData] = useState([]);
+  const [initialState, setInitialState] = useState({name:''})
 
   useEffect(() => {
     if (mode === 'states') {
@@ -29,14 +37,13 @@ const RegionPicker = ({ title, mode, onSelect, value, queryString, editable=true
   const fetchStatesList = async () => {
     const response = await stateListAPI(queryString);
     setModalData(response.data.data);
-    onSelect(response.data.data.find((item) => item.id === value.id))
-
+    onSelect(response.data.data.find(item => item.id === value.id));
   };
 
   const fetchCityList = async () => {
     const response = await cityListAPI(queryString);
     setModalData(response.data.data);
-    console.log(response.data.data.find((item) => item.id === value.id))
+    setInitialState(response.data.data.find(item => item.id === value.id));
   };
 
   const handleSelect = item => {
@@ -46,11 +53,20 @@ const RegionPicker = ({ title, mode, onSelect, value, queryString, editable=true
 
   return (
     <View>
-        <Text style={styles.title}>{title}</Text>
-
-      <TouchableOpacity style={styles.input} onPress={() => editable && setShowModal(true)}>
-        <Text>{value.name}</Text>
-      </TouchableOpacity>
+      <Text style={styles.title}>{title}</Text>
+      {value.name ? (
+        <TouchableOpacity
+          style={styles.input}
+          onPress={() => editable && setShowModal(true)}>
+          <Text>{value.name}</Text>
+        </TouchableOpacity>
+      ) : (
+        <TouchableOpacity
+          style={styles.input}
+          onPress={() => editable && setShowModal(true)}>
+          <Text>{initialState.name}</Text>
+        </TouchableOpacity>
+      )}
 
       <Modal animationType="fade" visible={showModal} transparent={true}>
         <View style={{flex: 1, justifyContent: 'center'}}>
@@ -66,7 +82,10 @@ const RegionPicker = ({ title, mode, onSelect, value, queryString, editable=true
           <View style={styles.modalCont}>
             <ScrollView>
               {modalData.map((item, id) => (
-                <Text key={id} onPress={() => handleSelect(item)} style={styles.h2}>
+                <Text
+                  key={id}
+                  onPress={() => handleSelect(item)}
+                  style={styles.h2}>
                   {item.name}
                 </Text>
               ))}
@@ -84,10 +103,10 @@ const styles = StyleSheet.create({
   h1: {
     padding: 10,
   },
-  title:{
-    fontWeight:'bold',
-    fontSize:12,
-    marginBottom:5
+  title: {
+    fontWeight: 'bold',
+    fontSize: 12,
+    marginBottom: 5,
   },
   modalCont: {
     padding: 10,
@@ -126,7 +145,7 @@ const styles = StyleSheet.create({
     padding: 10,
     borderRadius: 10,
     borderColor: '#2BBBA0',
-    justifyContent:'center',
-    marginBottom:10
+    justifyContent: 'center',
+    marginBottom: 10,
   },
 });

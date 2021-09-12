@@ -76,7 +76,7 @@ const Dashboard = ({navigation}) => {
 
         <ScrollView showsVerticalScrollIndicator={false}>
           <View style={styles.wrapper}>
-            <Swiper style={{borderRadius:10}} showsButtons={false}>
+            <Swiper style={{borderRadius:10}} showsButtons={false} autoplay={true}>
               <Image
                 source={require('./../assets/images/home.png')}
                 style={styles.image}
@@ -209,7 +209,7 @@ const styles = StyleSheet.create({
     flex: 0.94,
     backgroundColor: '#fff',
     marginTop: 'auto',
-    padding: 10,
+    paddingHorizontal: 10,
   },
   h1: {
     fontSize: 20,
@@ -261,7 +261,7 @@ const styles = StyleSheet.create({
     borderRadius: 100,
   },
   wrapper: {
-    marginTop: 30,
+    marginTop: 40,
     height: 150,
     borderRadius: 10,
     zIndex: 1,

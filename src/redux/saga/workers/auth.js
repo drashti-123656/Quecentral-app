@@ -17,7 +17,7 @@ export function* userLoginAuth({ user }) {
             yield put({
                 type: AUTH_SUCCESS,
                 authData: { isLoggedIn: true, token: data.data.user_details.token },
-                userData: data.data.provider_details,
+                userData: data.data.user_details,
             });
         } else {
             yield put({

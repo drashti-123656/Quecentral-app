@@ -24,8 +24,9 @@ import Card from './../components/cards/Card'
 import RazorpayCheckout from 'react-native-razorpay';
 
 const Wallet = () => {
-  const {token} = useSelector(state => state.authData);
+  const {name, email, mobileno} = useSelector(state => state.userData);
 
+  
   const [walletInfo, setWalletInfo] = useState({});
   const [amount, setAmount] = useState('');
   const [paymentGateway, setPaymentGateway] = useState('paypal');
@@ -60,25 +61,30 @@ const Wallet = () => {
   const addWalletHandler = () => {
     {
       var options = {
-      description: 'Credits towards consultation',
+      description: 'Add money to wallet',
       image: 'https://i.imgur.com/3g7nmJC.png',
       currency: 'INR',
       key: 'rzp_test_7DBE92V0ZiWCac',
-      amount: '5000',
-      name: 'Acme Corp',
+      amount: amount*100,
+      name: 'Queue Central',
     //  order_id: 'order_DslnoIgkIDL8Zt',//Replace this with an order_id created using Orders API.
       prefill: {
-        email: 'gaurav.kumar@example.com',
-        contact: '9191919191',
-        name: 'Gaurav Kumar'
+        email: email,
+        contact: mobileno,
+        name: name
       },
-      theme: {color: '#53a20e'}
+      theme: {color: COLORS.PRIMARY}
     }
     RazorpayCheckout.open(options).then((data) => {
       // handle success
       console.log(data);
     }).catch((error) => {
       // handle failure
+      showMessage({
+        message: `Error: ${error.code} | ${error.description}`,
+        type: 'info',
+        backgroundColor: COLORS.warningRed,
+      });
       alert(`Error: ${error.code} | ${error.description}`);
     });
   }

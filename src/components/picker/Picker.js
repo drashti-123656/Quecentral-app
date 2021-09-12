@@ -8,22 +8,11 @@ import {
   ScrollView,
   Pressable,
 } from 'react-native';
-import {availability as availabilityAPI} from '../../services/api';
-import {COLORS} from '../../utils/theme';
 
-const picker = ({title, onSelect, value}) => {
+const picker = ({title, onSelect, value, data}) => {
   const [showModal, setShowModal] = useState(false);
-  const [modalData, setModalData] = useState([]);
 
-  useEffect(() => {
-    fetchAvailability();
-  }, []);
 
-  const fetchAvailability = async () => {
-    const response = await availabilityAPI();
-    console.log(response);
-    // onSelect(response.data.data.category_list.find((item) => item.id === value.id))
-  };
 
   const handleSelect = item => {
     onSelect(item);
@@ -31,12 +20,26 @@ const picker = ({title, onSelect, value}) => {
   };
 
   return (
+  
     <View>
+          
       <Text style={styles.title}>{title}</Text>
-
-      <TouchableOpacity style={styles.input} onPress={() => setShowModal(true)}>
-        <Text>{value.day}</Text>
-      </TouchableOpacity>
+      {value.id === 0 ? (
+        <TouchableOpacity
+          style={styles.input}
+          onPress={() => setShowModal(true)}>
+          <Text style={{color: '#a1a1a1'}}>Please select</Text>
+        </TouchableOpacity>
+      ) : (
+        <View>
+        {console.log(value.value)}
+        <TouchableOpacity
+          style={styles.input}
+          onPress={() => setShowModal(true)}>
+          <Text>{value.value}</Text>
+        </TouchableOpacity>
+        </View>
+      )}
 
       <Modal animationType="fade" visible={showModal} transparent={true}>
         <View style={{flex: 1, justifyContent: 'center'}}>
@@ -52,16 +55,16 @@ const picker = ({title, onSelect, value}) => {
           <View style={styles.modalCont}>
             <ScrollView>
               <Text
-                onPress={() => handleSelect({category_name: 'All'})}
-                style={styles.h2}>
-                All
+                onPress={() => handleSelect({id:0, value:''})}
+                style={{...styles.h2, color: '#a1a1a1'}}>
+                Please select
               </Text>
-              {modalData.map((item, id) => (
+              {data.map((item, id) => (
                 <Text
                   key={id}
                   onPress={() => handleSelect(item)}
                   style={styles.h2}>
-                  {item.day}
+                  {item.value}
                 </Text>
               ))}
             </ScrollView>
@@ -85,7 +88,6 @@ const styles = StyleSheet.create({
   },
   modalCont: {
     padding: 10,
-    flex: 0.5,
     marginHorizontal: 20,
     backgroundColor: '#fff',
     justifyContent: 'center',

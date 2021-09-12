@@ -8,13 +8,17 @@ import {
   Image,
   TextInput,
   ActivityIndicator,
+  Dimensions,
 } from 'react-native';
 import CategoriesPicker from './../components/picker/CategoriesPicker';
+import Picker from './../components/picker/Picker'
 import {COLORS} from './../utils/theme';
-import Slider from '@react-native-community/slider';
 import {CustomInputWithTitle} from './../components/input/CustomInput';
 import ServiceCard from './../components/cards/ServiceCard';
 import {categoryList, searchService as searchServiceAPI} from '../services/api';
+
+import SliderScreen from './../components/Slider/Slider';
+
 
 const FindAProfessional = ({route, navigation}) => {
   const {searchKey} = route.params;
@@ -22,20 +26,24 @@ const FindAProfessional = ({route, navigation}) => {
   const [searchresultData, setSearchResultData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [searchText, setSearchText] = useState(searchKey);
-  const [sortBy, setSortBy] = useState('');
+  const [sortBy, setSortBy] = useState({id:0, value:''});
   const [Categories, setCategories] = useState({category_name: 'All'});
   const [location, setLocation] = useState('');
-  const [priceRange, setPriceRange] = useState('');
+  const [minPrice, setMinPrice] = useState(0);
+  const [maxPrice, setMaxPrice] = useState(50);
 
   useEffect(() => {
-      searchHandler();
+    searchHandler();
   }, []);
 
   const searchHandler = async () => {
     setLoading(true);
     let formdata = new URLSearchParams({
       text: searchText,
-     
+      category: Categories.id,
+      min_price: minPrice,
+      max_price: maxPrice,
+      sort_by: sortBy.id
     });
     const response = await searchServiceAPI(formdata);
     if (response.data.response.response_code == 200) {
@@ -58,7 +66,7 @@ const FindAProfessional = ({route, navigation}) => {
             top: -30,
             left: 0,
             right: 0,
-            height: '100%',
+            height: Dimensions.get('window').height - 20,
           }}>
           <ScrollView
             showsVerticalScrollIndicator={true}
@@ -96,10 +104,16 @@ const FindAProfessional = ({route, navigation}) => {
                   marginBottom: 5,
                 }}>
                 <View style={{width: '49%'}}>
-                  <CustomInputWithTitle
-                    title={'Short By'}
-                    placeholder={'Price low to high'}
-                  />
+                <Picker 
+                title={'Sort By'}
+                value={sortBy}
+                data={[
+                  {id:1, value:'Price low to high'},
+                  {id:2, value:'Price high to low'},
+                  {id:3, value:'Newest'}
+                ]}
+                onSelect={setSortBy}
+                />
                 </View>
 
                 <View style={{width: '49%'}}>
@@ -118,16 +132,10 @@ const FindAProfessional = ({route, navigation}) => {
                 />
               </View>
 
-              <View style={{height: 70}}>
-                <Text style={{...styles.h3, color: '#000'}}>Price Range</Text>
-                <Slider
-                  style={{flex: 1, height: 10}}
-                  minimumValue={0}
-                  maximumValue={1}
-                  minimumTrackTintColor={COLORS.PRIMARY}
-                  maximumTrackTintColor="#000000"
-                />
-                <Text style={styles.h2}>$100</Text>
+              <View>
+                <Text style={{...styles.h3, color: '#000', marginBottom:10}}>Price Range</Text>
+                <SliderScreen setMinPrice={setMinPrice} setMaxPrice={setMaxPrice}/>
+                <Text style={{...styles.h2, marginTop:10}}>{`${minPrice} - ${maxPrice}`}</Text>
               </View>
             </View>
 
