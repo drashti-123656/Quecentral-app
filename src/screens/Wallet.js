@@ -20,13 +20,12 @@ import {
   walletDetails as walletDetailsAPI,
   walletHistory as walletHistoryAPI,
 } from './../services/api';
-import Card from './../components/cards/Card'
+import Card from './../components/cards/Card';
 import RazorpayCheckout from 'react-native-razorpay';
 
 const Wallet = () => {
   const {name, email, mobileno} = useSelector(state => state.userData);
 
-  
   const [walletInfo, setWalletInfo] = useState({});
   const [amount, setAmount] = useState('');
   const [paymentGateway, setPaymentGateway] = useState('paypal');
@@ -61,41 +60,38 @@ const Wallet = () => {
   const addWalletHandler = () => {
     {
       var options = {
-      description: 'Add money to wallet',
-      image: 'https://i.imgur.com/3g7nmJC.png',
-      currency: 'INR',
-      key: 'rzp_test_7DBE92V0ZiWCac',
-      amount: amount*100,
-      name: 'Queue Central',
-    //  order_id: 'order_DslnoIgkIDL8Zt',//Replace this with an order_id created using Orders API.
-      prefill: {
-        email: email,
-        contact: mobileno,
-        name: name
-      },
-      theme: {color: COLORS.PRIMARY}
+        description: 'Add money to wallet',
+        image: 'https://i.imgur.com/3g7nmJC.png',
+        currency: 'INR',
+        key: 'rzp_test_7DBE92V0ZiWCac',
+        amount: amount * 100,
+        name: 'Queue Central',
+        //  order_id: 'order_DslnoIgkIDL8Zt',//Replace this with an order_id created using Orders API.
+        prefill: {
+          email: email,
+          contact: mobileno,
+          name: name,
+        },
+        theme: {color: COLORS.PRIMARY},
+      };
+      RazorpayCheckout.open(options)
+        .then(data => {
+          console.log(data);
+        })
+        .catch(error => {
+          // handle failure
+          showMessage({
+            message: `Error: ${error.code} | ${error.description}`,
+            type: 'info',
+            backgroundColor: COLORS.warningRed,
+          });
+          alert(`Error: ${error.code} | ${error.description}`);
+        });
     }
-    RazorpayCheckout.open(options).then((data) => {
-      // handle success
-      console.log(data);
-    }).catch((error) => {
-      // handle failure
-      showMessage({
-        message: `Error: ${error.code} | ${error.description}`,
-        type: 'info',
-        backgroundColor: COLORS.warningRed,
-      });
-      alert(`Error: ${error.code} | ${error.description}`);
-    });
-  }
-  }
-
+  };
 
   return (
-    <View style={styles.container}>
-
-
-  
+    <View style={styles.container}> 
       <ScrollView style={{padding: 20}}>
         <View style={styles.myWalletCont}>
           <Text style={{fontWeight: 'bold'}}>My Wallet</Text>
@@ -250,7 +246,9 @@ const Wallet = () => {
                     justifyContent: 'space-between',
                     alignItems: 'center',
                   }}>
-                  <Text style={{...styles.h1, fontSize: 15}}>{item.reason}</Text>
+                  <Text style={{...styles.h1, fontSize: 15}}>
+                    {item.reason}
+                  </Text>
                   <Text
                     style={{
                       ...styles.h1,
@@ -260,9 +258,7 @@ const Wallet = () => {
                 </View>
                 <Text>
                   Gateway :{' '}
-                  <Text style={{fontWeight: 'normal'}}>
-                    {'Razorpay'}
-                  </Text>
+                  <Text style={{fontWeight: 'normal'}}>{'Razorpay'}</Text>
                 </Text>
                 <View
                   style={{

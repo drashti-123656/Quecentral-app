@@ -5,8 +5,8 @@ import Settings from './../screens/Settings';
 import EditProfile from './../screens/EditProfile';
 import Wallet from './../screens/Wallet';
 import {COLORS} from './../utils/theme';
-import Notifications from './../screens/Notifications'
-import Transactions from './../screens/Transactions'
+import Notifications from './../screens/Notifications';
+import Transactions from './../screens/Transactions';
 
 const dashboardStack = createNativeStackNavigator();
 
@@ -60,7 +60,7 @@ const SettingsStack = () => {
         }}
       />
 
-<dashboardStack.Screen
+      <dashboardStack.Screen
         name="Transactions"
         component={Transactions}
         options={{
