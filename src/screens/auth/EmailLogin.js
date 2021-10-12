@@ -91,6 +91,7 @@ const EmailLogin = ({navigation}) => {
                   value={values.email}
                   placeholder={'Enter email'}
                   onChangeText={handleChange('email')}
+                  placeholderTextColor="#a1a1a1"
                 />
                 {errors.email && touched.email ? (
                   <Text style={styles.error}>{errors.email}</Text>
@@ -101,6 +102,7 @@ const EmailLogin = ({navigation}) => {
                   value={values.password}
                   placeholder={'Enter password'}
                   onChangeText={handleChange('password')}
+                  placeholderTextColor="#a1a1a1"
                 />
 
                 {errors.password && touched.password ? (
@@ -183,6 +185,7 @@ const styles = StyleSheet.create({
     padding: 10,
     borderRadius: 10,
     borderColor: '#2BBBA0',
+    color:'#000'
   },
   error: {
     fontSize: 12,

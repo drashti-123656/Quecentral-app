@@ -23,6 +23,8 @@ const CustomInput = ({
         value={value}
         placeholder={placeholder}
         keyboardType={keyboardType}
+        placeholderTextColor="#a1a1a1"
+
       />
     </View>
   );
@@ -46,6 +48,7 @@ const CustomInputWithTitle = props => {
         placeholder={props.placeholder}
         editable={props.editable}
         multiline={props.multiline}
+        placeholderTextColor="#a1a1a1"
       />
     </View>
   );
@@ -78,6 +81,7 @@ const CouponInputWithTitle = props => {
           placeholder={props.placeholder}
           editable={props.editable}
           multiline={props.multiline}
+          placeholderTextColor="#a1a1a1"
         />
         {props.couponError === 'couponISAvailable' ? (
           <Image
@@ -111,5 +115,6 @@ const styles = StyleSheet.create({
     padding: 10,
     borderRadius: 10,
     borderColor: '#2BBBA0',
+    color:'#000'
   },
 });

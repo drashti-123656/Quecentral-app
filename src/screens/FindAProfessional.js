@@ -83,10 +83,11 @@ const FindAProfessional = ({route, navigation}) => {
                   paddingHorizontal: 10,
                 }}>
                 <TextInput
-                  style={{flex: 1}}
+                  style={{flex: 1, color:'#000'}}
                   value={searchText}
                   onChangeText={setSearchText}
                   placeholder="Search Service"
+                  placeholderTextColor="#a1a1a1"
                 />
 
                 <TouchableOpacity onPress={searchHandler}>

@@ -60,7 +60,7 @@ const Signup = ({navigation}) => {
     const response = await signupAPI(data);
 
     if (response.data.response.response_code == 200) {
-      setAlertDisplay(true);
+    //  setAlertDisplay(true);
       const URlEncodedData = new URLSearchParams({
         email: formData.email,
         password: formData.password,
@@ -79,7 +79,7 @@ const Signup = ({navigation}) => {
   };
 
 
-  const signIn = async () => {
+  const handleSignInGoogle = async () => {
     try { 
       await GoogleSignin.hasPlayServices();
       const userInfo = await GoogleSignin.signIn();
@@ -113,6 +113,7 @@ const Signup = ({navigation}) => {
         <AlertModel
           alertDisplay={alertDisplay}
           setAlertDisplay={setAlertDisplay}
+        
         />
 
         <Text
@@ -157,7 +158,7 @@ const Signup = ({navigation}) => {
               ) : null}
 
               <CustomInput
-                placeholder={'enter mobile number'}
+                placeholder={'Enter mobile number'}
                 value={values.mobileno}
                 onChangeText={handleChange('mobileno')}
                 keyboardType="numeric"
@@ -214,7 +215,7 @@ const Signup = ({navigation}) => {
           style={{width: 192, height: 48}}
           size={GoogleSigninButton.Size.Wide}
           color={GoogleSigninButton.Color.Dark}
-          onPress={signIn}
+          onPress={handleSignInGoogle}
         />
 
         <Text style={{textAlign: 'center', marginBottom: 30}}>

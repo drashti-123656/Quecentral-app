@@ -60,6 +60,7 @@ const Dashboard = ({navigation}) => {
             value={searchKey}
             onChangeText={setSearchKey}
             placeholder="Search Service"
+            placeholderTextColor="#a1a1a1"
           />
           <TouchableOpacity
             onPress={() =>
