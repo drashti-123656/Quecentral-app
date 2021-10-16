@@ -154,7 +154,8 @@ const FindAProfessional = ({route, navigation}) => {
               {loading ? (
                 <ActivityIndicator color={COLORS.PRIMARY} />
               ) : (
-                searchresultData.map((item, i) => (
+                <>
+               { searchresultData.map((item, i) => (
                   <View key={i} style={{paddingHorizontal: 10}}>
                     <ServiceCard
                       service_id={item.service_id}
@@ -165,7 +166,7 @@ const FindAProfessional = ({route, navigation}) => {
                       currency={item.currency}
                     />
                   </View>
-                ))
+                ))}</>
               )}
             </View>
           </ScrollView>

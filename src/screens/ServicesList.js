@@ -39,6 +39,7 @@ const ServicesList = props => {
         serviceListData.map((item, id) => (
           <ServiceCard
             key={id}
+            service_id={item.service_id}
             service_title={item.service_title}
             ratings={item.ratings}
             location={item.location}

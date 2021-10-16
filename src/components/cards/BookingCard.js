@@ -11,6 +11,7 @@ import {COLORS} from './../../utils/theme';
 import {BASE_URL} from './../../utils/global';
 import LinearGradient from 'react-native-linear-gradient';
 import {useNavigation} from '@react-navigation/native';
+import moment from 'moment'
 
 const BookingCard = ({
   service_id,
@@ -84,7 +85,7 @@ const BookingCard = ({
             }}>
             {`${from_time} - ${to_time}`}
           </Text>
-          <Text style={styles.h2}>16 Jul 2021</Text>
+          <Text style={styles.h2}>{ moment(service_date,'YYYY-MM-DD').format('DD-MM-YYYY')}</Text>
         </View>
       </View>
 

@@ -49,6 +49,7 @@ const ServiceDetails = props => {
       end={{x: 1, y: 0}}
       colors={['#72E5D8', '#41C8B1', '#16AE8F']}
       style={styles.container}>
+        {console.log(serviceOverview.ratings)}
       <View style={styles.headerBar}>
         <Text style={{...styles.h1, color: '#fff', marginLeft: 10}}>
           Service Details
@@ -149,7 +150,7 @@ const ServiceDetails = props => {
                       ...styles.rowCont,
                       justifyContent: 'space-between',
                     }}>
-                    <Stars rating={seller_overview.rating} />
+                    <Stars rating={ serviceOverview.ratings} />
 
                     <TouchableOpacity
                       onPress={() => props.navigation.navigate('BookService',{ service_amount: serviceOverview.service_amount, serviceId })}

@@ -111,6 +111,10 @@ const BookService = props => {
   };
 
   const validateCoupon = async () => {
+    if(coupon ===''){
+      setCouponError('Enter coupon name');
+      return;
+    }
     let formData = new URLSearchParams({
       coupon_code: coupon,
     });
@@ -121,6 +125,7 @@ const BookService = props => {
       setAmount(JSON.stringify((service_amount*(100-response.data.data[0].discount))/100))
       setCouponError('couponISAvailable');
     } else {
+      setAmount(service_amount)
       setCouponError(response.data.response.response_message);
     }
   };

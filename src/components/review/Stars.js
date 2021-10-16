@@ -1,7 +1,7 @@
 import React from 'react'
 import { StyleSheet, View, Image } from 'react-native'
 
-const Stars = ({ rating = 4 }) => {
+const Stars = ({ rating = 2 }) => {
     return (
         <View style={{ flexDirection: "row", marginBottom: 5 }}>
             <Image
