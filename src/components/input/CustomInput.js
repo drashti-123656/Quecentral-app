@@ -9,12 +9,14 @@ import {
 } from 'react-native';
 import {COLORS} from '../../utils/theme';
 
-const CustomInput = ({
-  value,
-  onChangeText,
-  placeholder,
-  keyboardType = 'default',
-}) => {
+const CustomInput = (props) => {
+  const {
+    value,
+    onChangeText,
+    placeholder,
+    keyboardType = 'default',
+  } = props;
+
   return (
     <View>
       <TextInput
@@ -23,8 +25,7 @@ const CustomInput = ({
         value={value}
         placeholder={placeholder}
         keyboardType={keyboardType}
-        placeholderTextColor="#a1a1a1"
-
+        {...props}
       />
     </View>
   );
@@ -75,6 +76,7 @@ const CouponInputWithTitle = props => {
           style={{
             flex: 1,
             padding: 10,
+            color:'#000'
           }}
           onChangeText={props.onChangeText}
           value={props.value}

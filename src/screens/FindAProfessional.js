@@ -11,14 +11,14 @@ import {
   Dimensions,
 } from 'react-native';
 import CategoriesPicker from './../components/picker/CategoriesPicker';
-import Picker from './../components/picker/Picker'
+import Picker from './../components/picker/Picker';
 import {COLORS} from './../utils/theme';
 import {CustomInputWithTitle} from './../components/input/CustomInput';
 import ServiceCard from './../components/cards/ServiceCard';
 import {categoryList, searchService as searchServiceAPI} from '../services/api';
+import NoResultFound from './../components/molecules/NoResultFound';
 
 import SliderScreen from './../components/Slider/Slider';
-
 
 const FindAProfessional = ({route, navigation}) => {
   const {searchKey} = route.params;
@@ -26,7 +26,7 @@ const FindAProfessional = ({route, navigation}) => {
   const [searchresultData, setSearchResultData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [searchText, setSearchText] = useState(searchKey);
-  const [sortBy, setSortBy] = useState({id:0, value:''});
+  const [sortBy, setSortBy] = useState({id: 0, value: ''});
   const [Categories, setCategories] = useState({category_name: 'All'});
   const [location, setLocation] = useState('');
   const [minPrice, setMinPrice] = useState(0);
@@ -38,13 +38,17 @@ const FindAProfessional = ({route, navigation}) => {
 
   const searchHandler = async () => {
     setLoading(true);
-    let formdata = new URLSearchParams({
-      text: searchText,
-      category: Categories.id,
-      min_price: minPrice,
-      max_price: maxPrice,
-      sort_by: sortBy.id
-    });
+    let data = {min_price: minPrice, max_price: maxPrice, sort_by: sortBy.id};
+    if(searchText !== ''){
+      data.text = searchText
+    }
+    if(Categories !== undefined){
+      data.category = Categories.id
+    }
+
+    let formdata = new URLSearchParams(data);
+
+    console.log(data);
     const response = await searchServiceAPI(formdata);
     if (response.data.response.response_code == 200) {
       setSearchResultData(response.data.data);
@@ -83,7 +87,7 @@ const FindAProfessional = ({route, navigation}) => {
                   paddingHorizontal: 10,
                 }}>
                 <TextInput
-                  style={{flex: 1, color:'#000'}}
+                  style={{flex: 1, color: '#000'}}
                   value={searchText}
                   onChangeText={setSearchText}
                   placeholder="Search Service"
@@ -105,16 +109,16 @@ const FindAProfessional = ({route, navigation}) => {
                   marginBottom: 5,
                 }}>
                 <View style={{width: '49%'}}>
-                <Picker 
-                title={'Sort By'}
-                value={sortBy}
-                data={[
-                  {id:1, value:'Price low to high'},
-                  {id:2, value:'Price high to low'},
-                  {id:3, value:'Newest'}
-                ]}
-                onSelect={setSortBy}
-                />
+                  <Picker
+                    title={'Sort By'}
+                    value={sortBy}
+                    data={[
+                      {id: 1, value: 'Price low to high'},
+                      {id: 2, value: 'Price high to low'},
+                      {id: 3, value: 'Newest'},
+                    ]}
+                    onSelect={setSortBy}
+                  />
                 </View>
 
                 <View style={{width: '49%'}}>
@@ -134,9 +138,18 @@ const FindAProfessional = ({route, navigation}) => {
               </View>
 
               <View>
-                <Text style={{...styles.h3, color: '#000', marginBottom:10}}>Price Range</Text>
-                <SliderScreen setMinPrice={setMinPrice} setMaxPrice={setMaxPrice}/>
-                <Text style={{...styles.h2, marginTop:10}}>{`${minPrice} - ${maxPrice}`}</Text>
+                <Text style={{...styles.h3, color: '#000', marginBottom: 10}}>
+                  Price Range
+                </Text>
+                <SliderScreen
+                  setMinPrice={setMinPrice}
+                  setMaxPrice={setMaxPrice}
+                />
+                <Text
+                  style={{
+                    ...styles.h2,
+                    marginTop: 10,
+                  }}>{`\u20B9 ${minPrice} -  \u20B9 ${maxPrice}`}</Text>
               </View>
             </View>
 
@@ -154,19 +167,21 @@ const FindAProfessional = ({route, navigation}) => {
               {loading ? (
                 <ActivityIndicator color={COLORS.PRIMARY} />
               ) : (
-                <>
-               { searchresultData.map((item, i) => (
-                  <View key={i} style={{paddingHorizontal: 10}}>
-                    <ServiceCard
-                      service_id={item.service_id}
-                      location={item.service_location}
-                      image={item.service_image}
-                      service_title={item.service_title}
-                      service_amount={item.service_amount}
-                      currency={item.currency}
-                    />
-                  </View>
-                ))}</>
+                <View>
+                  {searchresultData.length == 0 && <NoResultFound />}
+                  {searchresultData.map((item, i) => (
+                    <View key={i} style={{paddingHorizontal: 10}}>
+                      <ServiceCard
+                        service_id={item.service_id}
+                        location={item.service_location}
+                        image={item.service_image}
+                        service_title={item.service_title}
+                        service_amount={item.service_amount}
+                        currency={item.currency}
+                      />
+                    </View>
+                  ))}
+                </View>
               )}
             </View>
           </ScrollView>

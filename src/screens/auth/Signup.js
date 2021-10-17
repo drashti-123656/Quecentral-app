@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useRef} from 'react';
 import {StyleSheet, Text, Modal, View, Image, TextInput} from 'react-native';
 import {
   GoogleSignin,
@@ -15,20 +15,23 @@ import LoginButton from './../../components/button/LoginButton';
 import {signup as signupAPI} from './../../services/auth';
 import {login as signIn, reset} from './../../redux/actions/auth';
 import {useSelector, useDispatch} from 'react-redux';
-import {Formik} from 'formik'; 
+import {Formik} from 'formik';
 import {SignupSchema} from './../../utils/schema';
+import InputPassword from './../../components/molecules/InputPassword';
+var {FBLogin, FBLoginManager} = require('react-native-facebook-login');
 
 GoogleSignin.configure();
 
 GoogleSignin.configure({
-  
-  webClientId: '627271039306-pmpu3n4npmlls97vkj0i9kunip66gr23.apps.googleusercontent.com', // client ID of type WEB for your server (needed to verify user ID and offline access)
+  webClientId:
+    '627271039306-pmpu3n4npmlls97vkj0i9kunip66gr23.apps.googleusercontent.com', // client ID of type WEB for your server (needed to verify user ID and offline access)
   offlineAccess: true, // if you want to access Google API on behalf of the user FROM YOUR SERVER
   accountName: '', // [Android] specifies an account name on the device that should be used
- });
+});
 
 const Signup = ({navigation}) => {
   const dispatch = useDispatch();
+  const inputRef = useRef();
 
   const [termsCondition, setTermsCondition] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -60,7 +63,7 @@ const Signup = ({navigation}) => {
     const response = await signupAPI(data);
 
     if (response.data.response.response_code == 200) {
-    //  setAlertDisplay(true);
+      //  setAlertDisplay(true);
       const URlEncodedData = new URLSearchParams({
         email: formData.email,
         password: formData.password,
@@ -78,12 +81,11 @@ const Signup = ({navigation}) => {
     setLoading(false);
   };
 
-
   const handleSignInGoogle = async () => {
-    try { 
+    try {
       await GoogleSignin.hasPlayServices();
       const userInfo = await GoogleSignin.signIn();
-      console.log(userInfo)
+      console.log(userInfo);
     } catch (error) {
       if (error.code === statusCodes.SIGN_IN_CANCELLED) {
         // user cancelled the login flow
@@ -113,7 +115,6 @@ const Signup = ({navigation}) => {
         <AlertModel
           alertDisplay={alertDisplay}
           setAlertDisplay={setAlertDisplay}
-        
         />
 
         <Text
@@ -162,16 +163,19 @@ const Signup = ({navigation}) => {
                 value={values.mobileno}
                 onChangeText={handleChange('mobileno')}
                 keyboardType="numeric"
+                maxLength={10}
               />
               {errors.mobileno && touched.mobileno ? (
                 <Text style={styles.error}>{errors.mobileno}</Text>
               ) : null}
 
-              <CustomInput
+              <InputPassword
                 placeholder={'Password'}
                 value={values.password}
                 onChangeText={handleChange('password')}
+                placeholderTextColor="#a1a1a1"
               />
+
               {errors.password && touched.password ? (
                 <Text style={styles.error}>{errors.password}</Text>
               ) : null}
@@ -180,7 +184,7 @@ const Signup = ({navigation}) => {
                 style={{
                   flexDirection: 'row',
                   alignItems: 'center',
-                  marginBottom: 10,
+                  margin: 10,
                   marginLeft: 12,
                 }}>
                 <CheckBox
@@ -211,15 +215,53 @@ const Signup = ({navigation}) => {
           )}
         </Formik>
 
-        <GoogleSigninButton
-          style={{width: 192, height: 48}}
-          size={GoogleSigninButton.Size.Wide}
-          color={GoogleSigninButton.Color.Dark}
-          onPress={handleSignInGoogle}
-        />
+        <View style={styles.GoogleFacebookContainer}>
+          <GoogleSigninButton
+            style={{width:'100%', height: 48}}
+            size={GoogleSigninButton.Size.Wide}
+            color={GoogleSigninButton.Color.Dark}
+            onPress={handleSignInGoogle}
+          />
 
-        <Text style={{textAlign: 'center', marginBottom: 30}}>
-          Already have an account ?
+          <Text style={{fontWeight:'bold', textAlign:'center', padding:5}}> OR </Text>
+          <FBLogin
+            ref={inputRef}
+            loginBehavior={FBLoginManager.LoginBehaviors.Native}
+            permissions={["email","user_friends"]}
+            onLogin={function(data){
+              console.log("Logged in!");
+              console.log(data);
+             
+            }}
+            onLogout={function(){
+              console.log("Logged out.");
+         //     _this.setState({ user : null });
+            }}
+            onLoginFound={function(data){
+              console.log("Existing login found.");
+              console.log(data);
+            //  _this.setState({ user : data.credentials });
+            }}
+            onLoginNotFound={function(){
+              console.log("No user logged in.");
+            //  _this.setState({ user : null });
+            }}
+            onError={function(data){
+              console.log("ERROR");
+              console.log(data);
+            }}
+            onCancel={function(){
+              console.log("User cancelled.");
+            }}
+            onPermissionsMissing={function(data){
+              console.log("Check permissions!");
+              console.log(data);
+            }}
+             />
+        </View>
+
+        <Text style={{textAlign: 'center', marginBottom: 30, marginTop:10}}>
+          Already have an account?{' '}
           <Text
             onPress={() => navigation.navigate('EmailLogin')}
             style={{color: '#2BBBA0', fontWeight: 'bold'}}>
@@ -262,5 +304,8 @@ const styles = StyleSheet.create({
     color: COLORS.warningRed,
     marginHorizontal: 12,
     textAlign: 'right',
+  },
+  GoogleFacebookContainer: {
+    marginHorizontal:'20%'
   },
 });

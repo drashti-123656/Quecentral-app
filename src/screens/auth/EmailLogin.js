@@ -16,6 +16,7 @@ import {showMessage, hideMessage} from 'react-native-flash-message';
 import {COLORS} from './../../utils/theme';
 import {Formik} from 'formik';
 import {SigninSchema} from './../../utils/schema';
+import InputPassword from './../../components/molecules/InputPassword';
 
 const EmailLogin = ({navigation}) => {
   const dispatch = useDispatch();
@@ -97,8 +98,7 @@ const EmailLogin = ({navigation}) => {
                   <Text style={styles.error}>{errors.email}</Text>
                 ) : null}
 
-                <TextInput
-                  style={styles.input}
+                <InputPassword
                   value={values.password}
                   placeholder={'Enter password'}
                   onChangeText={handleChange('password')}
@@ -121,7 +121,12 @@ const EmailLogin = ({navigation}) => {
                     style={{width: 15, height: 15}}
                   /> */}
 
-                  <Text style={{textAlign: 'right', padding: 12, fontWeight:'bold'}}>
+                  <Text
+                    style={{
+                      textAlign: 'right',
+                      padding: 12,
+                      fontWeight: 'bold',
+                    }}>
                     Forgot password ?
                   </Text>
                 </TouchableOpacity>
@@ -185,7 +190,7 @@ const styles = StyleSheet.create({
     padding: 10,
     borderRadius: 10,
     borderColor: '#2BBBA0',
-    color:'#000'
+    color: '#000',
   },
   error: {
     fontSize: 12,

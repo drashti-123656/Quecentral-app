@@ -190,6 +190,8 @@ dependencies {
     implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.0.0'
 
      implementation 'com.google.android.gms:play-services-auth:19.2.0'
+     
+     implementation project(':react-native-facebook-login')
 
     implementation project(':react-native-razorpay')
     

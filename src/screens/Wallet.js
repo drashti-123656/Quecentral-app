@@ -172,6 +172,7 @@ const Wallet = () => {
               height: 50,
               paddingHorizontal: 20,
               marginBottom: 10,
+              color:'#000'
             }}
             placeholder={'$ Enter Amount'}
             value={amount}

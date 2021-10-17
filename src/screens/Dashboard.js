@@ -38,6 +38,7 @@ const Dashboard = ({navigation}) => {
     let response = await homeAPI(formData);
     setCategoryList(response.data.data.category_list);
     setPopularServices(response.data.data.popular_services);
+    console.log(response.data.data.popular_services)
     setLaoding(false);
   };
 
@@ -56,7 +57,7 @@ const Dashboard = ({navigation}) => {
       <View style={styles.bodyContainer}>
         <View style={{...styles.rowCont, ...styles.search}}>
           <TextInput
-            style={{flex: 1}}
+            style={{flex: 1, color:'#000'}}
             value={searchKey}
             onChangeText={setSearchKey}
             placeholder="Search Service"

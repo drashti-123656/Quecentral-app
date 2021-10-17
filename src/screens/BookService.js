@@ -34,7 +34,9 @@ const BookService = props => {
   const [enableTimeSlot, setEnableTimeSlot] = useState(false);
   const [selectedDay, setSelectedDay] = useState({});
   const [timeSlots, setTimeSlots] = useState([]);
-  const [selectedTime, setSelectedTime] = useState({placeholder:'Choose time'});
+  const [selectedTime, setSelectedTime] = useState({
+    placeholder: 'Choose time',
+  });
   const [DateError, setDateError] = useState('');
 
   const [coupon, setCoupon] = useState('');
@@ -49,6 +51,12 @@ const BookService = props => {
   const submitHandler = async () => {
     setBookinLoading(true);
 
+    if (selectedDay.dateString === undefined) {
+      setDateError('Please select date');
+      setBookinLoading(false);
+      return;
+    }
+
     let formData = new URLSearchParams({
       from_time: selectedTime.start_time ? selectedTime.start_time : null,
       to_time: selectedTime.end_time ? selectedTime.end_time : null,
@@ -59,7 +67,7 @@ const BookService = props => {
       location: serviceLocation,
       notes: notes,
       amount: service_amount,
-      coupon_id:couponDetails.id
+      coupon_id: couponDetails.id,
     });
 
     const response = await bookServiceAPI(formData);
@@ -111,7 +119,7 @@ const BookService = props => {
   };
 
   const validateCoupon = async () => {
-    if(coupon ===''){
+    if (coupon === '') {
       setCouponError('Enter coupon name');
       return;
     }
@@ -122,10 +130,14 @@ const BookService = props => {
 
     if (response.data.response.response_code == 200) {
       setCouponDetails(response.data.data[0]);
-      setAmount(JSON.stringify((service_amount*(100-response.data.data[0].discount))/100))
+      setAmount(
+        JSON.stringify(
+          (service_amount * (100 - response.data.data[0].discount)) / 100,
+        ),
+      );
       setCouponError('couponISAvailable');
     } else {
-      setAmount(service_amount)
+      setAmount(service_amount);
       setCouponError(response.data.response.response_message);
     }
   };

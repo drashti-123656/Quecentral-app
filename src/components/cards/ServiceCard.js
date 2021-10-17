@@ -60,7 +60,7 @@ const ServiceCard = ({
                 style={{width: 15, height: 15}}
                 PlaceholderContent={<ActivityIndicator />}
               />
-              <Text style={styles.h3}>{location}</Text>
+              <Text numberOfLines={1} ellipsizeMode ={'tail'} style={styles.h3}>{location}</Text>
             </View>
           </View>
           <Text
@@ -92,6 +92,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     marginTop: 3,
+    flex:1
   },
   h1: {
     fontWeight: 'bold',
