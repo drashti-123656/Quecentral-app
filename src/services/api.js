@@ -72,6 +72,9 @@ export const validateCoupon = (data) => {
     return http.post('valid-coupan', data)
 }
 
+export const walletTransaction = (data) => {
+    return http.post('wallet-transaction-user', data)
+}
 
 
 

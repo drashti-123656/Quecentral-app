@@ -18,6 +18,7 @@ const ServiceCard = ({
   image,
   location,
   service_title,
+  mobileno,
   service_amount,
   currency,
   ratings,
@@ -52,7 +53,7 @@ const ServiceCard = ({
                 style={{width: 15, height: 15}}
                 PlaceholderContent={<ActivityIndicator />}
               />
-              <Text style={styles.h3}>xxxxxxxxxx</Text>
+              <Text style={styles.h3}>{mobileno}</Text>
             </View>
             <View style={{...styles.rowCont, marginLeft: 10}}>
               <Image

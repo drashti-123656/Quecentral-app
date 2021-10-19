@@ -17,7 +17,6 @@ import ServiceCard from './../components/cards/ServiceCard';
 import {home as homeAPI} from '../services/api';
 import {BASE_URL} from './../utils/global/';
 
-
 const Dashboard = ({navigation}) => {
   const [loading, setLaoding] = useState(false);
   const [dasboardData, setDashboardData] = useState({});
@@ -38,7 +37,7 @@ const Dashboard = ({navigation}) => {
     let response = await homeAPI(formData);
     setCategoryList(response.data.data.category_list);
     setPopularServices(response.data.data.popular_services);
-    console.log(response.data.data.popular_services)
+    console.log(response.data.data.popular_services);
     setLaoding(false);
   };
 
@@ -46,8 +45,7 @@ const Dashboard = ({navigation}) => {
     <View style={styles.container}>
       <View style={styles.headerBar}>
         <Text style={{...styles.h1, color: '#fff'}}>Dashboard</Text>
-        <TouchableOpacity
-        onPress={() => navigation.navigate('Notifications')}>
+        <TouchableOpacity onPress={() => navigation.navigate('Notifications')}>
           <Image
             source={require('./../assets/icons/bell.png')}
             style={{width: 25, height: 25, tintColor: '#fff'}}
@@ -57,7 +55,7 @@ const Dashboard = ({navigation}) => {
       <View style={styles.bodyContainer}>
         <View style={{...styles.rowCont, ...styles.search}}>
           <TextInput
-            style={{flex: 1, color:'#000'}}
+            style={{flex: 1, color: '#000'}}
             value={searchKey}
             onChangeText={setSearchKey}
             placeholder="Search Service"
@@ -74,11 +72,14 @@ const Dashboard = ({navigation}) => {
               style={{width: 25, height: 25}}
             />
           </TouchableOpacity>
-        </View>                         
+        </View>
 
         <ScrollView showsVerticalScrollIndicator={false}>
           <View style={styles.wrapper}>
-            <Swiper style={{borderRadius:10}} showsButtons={false} autoplay={true}>
+            <Swiper
+              style={{borderRadius: 10}}
+              showsButtons={false}
+              autoplay={true}>
               <Image
                 source={require('./../assets/images/home.png')}
                 style={styles.image}
@@ -126,7 +127,9 @@ const Dashboard = ({navigation}) => {
                 marginVertical: 10,
               }}>
               <Text style={styles.h2}>Categories</Text>
-              <ViewMore onPress={() => navigation.navigate('CategoriesStack')} />
+              <ViewMore
+                onPress={() => navigation.navigate('CategoriesStack')}
+              />
             </View>
 
             {loading ? (
@@ -138,7 +141,9 @@ const Dashboard = ({navigation}) => {
                 style={{marginVertical: 5}}>
                 {categoryList.map((item, i) => (
                   <TouchableOpacity
-                    onPress={() => navigation.navigate('ServicesList', { categoryID: item.id })}
+                    onPress={() =>
+                      navigation.navigate('ServicesList', {categoryID: item.id})
+                    }
                     key={i}
                     style={{alignItems: 'center', marginRight: 32}}>
                     <View style={styles.iconCont}>
@@ -182,6 +187,7 @@ const Dashboard = ({navigation}) => {
                 service_id={item.service_id}
                 service_title={item.service_title}
                 image={item.service_image}
+                mobileno={item.mobileno}
                 currency={item.currency_code}
                 service_amount={item.service_amount}
                 ratings={item.ratings}

@@ -19,6 +19,7 @@ import {BASE_URL} from '../utils/global';
 import {
   walletDetails as walletDetailsAPI,
   walletHistory as walletHistoryAPI,
+  walletTransaction as walletTransactionAPI
 } from './../services/api';
 import Card from './../components/cards/Card';
 import RazorpayCheckout from 'react-native-razorpay';
@@ -75,7 +76,23 @@ const Wallet = () => {
         theme: {color: COLORS.PRIMARY},
       };
       RazorpayCheckout.open(options)
-        .then(data => {
+        .then(async(data) => {
+          let formData = new URLSearchParams({
+            transaction_id: data.razorpay_payment_id,
+            transaction_amount: amount
+          })
+          let response = await walletTransactionAPI(formData)
+          console.log(response)
+          if(response.data.response.response_code == 200){
+            fetchWalletDetails();
+            fetchWalletHistory();
+          }else{
+            showMessage({
+              message: response.data.response.response_message,
+              type: 'info',
+              backgroundColor: COLORS.warningRed,
+            });
+          }
           console.log(data);
         })
         .catch(error => {

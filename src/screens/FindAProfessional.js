@@ -176,6 +176,7 @@ const FindAProfessional = ({route, navigation}) => {
                         location={item.service_location}
                         image={item.service_image}
                         service_title={item.service_title}
+                        mobileno={item.mobileno}
                         service_amount={item.service_amount}
                         currency={item.currency}
                       />

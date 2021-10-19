@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">QueueCentral</string>
     <string name="server_client_id">627271039306-pmpu3n4npmlls97vkj0i9kunip66gr23.apps.googleusercontent.com</string>
- <string name="fb_app_id">1164572397403638</string>
-    <string name="fb_login_protocol_scheme">fb1164572397403638</string>
+ <string name="fb_app_id">590348305488355</string>
+    <string name="fb_login_protocol_scheme">fb590348305488355</string>
 </resources>

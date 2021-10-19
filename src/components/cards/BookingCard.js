@@ -21,6 +21,7 @@ const BookingCard = ({
   from_time,
   to_time,
   location,
+  mobileno,
   service_amount,
 }) => {
   
@@ -54,7 +55,7 @@ const BookingCard = ({
               style={{width: 15, height: 15, marginRight: 5}}
               PlaceholderContent={<ActivityIndicator />}
             />
-            <Text style={styles.h3}>xxxxxxxxxx</Text>
+            <Text style={styles.h3}>{mobileno}</Text>
           </View>
           <View
             style={{...styles.rowCont, marginLeft: 10, alignItems: 'center'}}>
