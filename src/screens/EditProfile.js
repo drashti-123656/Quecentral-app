@@ -151,16 +151,16 @@ const EditProfile = ({route}) => {
           queryString={101}
         />
 
-        <View style={{opacity: Object.keys(State).length === 0 ? 0.5 : 1}}>
+        {/* <View style={{opacity: Object.keys(State).length === 0 ? 0.5 : 1}}> */}
           <RegionPicker
             title={'City'}
             mode={'city'}
             value={city}
             onSelect={setCity}
-            queryString={State.id}
-            editable={Object.keys(State).length === 0 ? false : true}
+            queryString={State !== undefined ? State.id : 1}
+       //     editable={Object.keys(State).length === 0 || undefined ? false : true}
           />
-        </View>
+        {/* </View> */}
         <CustomInputWithTitle
           title={'Postal code'}
           placeholder={'Enter postal code'}

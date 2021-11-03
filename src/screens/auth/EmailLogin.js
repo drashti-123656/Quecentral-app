@@ -33,6 +33,7 @@ const EmailLogin = ({navigation}) => {
     let formData = new URLSearchParams({
       email: data.email,
       password: data.password,
+      login_type: 1
     });
 
     dispatch(signIn(formData));

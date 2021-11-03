@@ -12,6 +12,8 @@ import TimePicker from './../components/picker/TimePicker';
 import CalendarPicker from './../components/picker/CalendarPicker';
 import {COLORS} from './../utils/theme';
 import SuccessAlertModal from '../components/model/SuccessAlertModal';
+import CheckBox from '@react-native-community/checkbox';
+import {showMessage, hideMessage} from 'react-native-flash-message';
 
 import {
   serviceAvailability as serviceAvailabilityAPI,
@@ -43,6 +45,9 @@ const BookService = props => {
   const [couponDetails, setCouponDetails] = useState({});
   const [couponError, setCouponError] = useState('');
   const [amount, setAmount] = useState('');
+  const [openOthers, setOpenOthers] = useState(false);
+  const [othersName, setOthersName] = useState('');
+  const [othersNo, setOthersNo] = useState('');
 
   useEffect(() => {
     setAmount(service_amount);
@@ -53,6 +58,16 @@ const BookService = props => {
 
     if (selectedDay.dateString === undefined) {
       setDateError('Please select date');
+      setBookinLoading(false);
+      return;
+    }
+
+    if (othersName == ''|| othersNo=='') {
+      showMessage({
+        message: 'Others name or mobile number can not be empty',
+        type: 'info',
+        backgroundColor: COLORS.warningRed,
+      });
       setBookinLoading(false);
       return;
     }
@@ -68,6 +83,9 @@ const BookService = props => {
       notes: notes,
       amount: service_amount,
       coupon_id: couponDetails.id,
+      type:openOthers ? 'others' : 'self',
+      other_user_name: othersName,
+      other_user_contact: othersNo,
     });
 
     const response = await bookServiceAPI(formData);
@@ -149,14 +167,14 @@ const BookService = props => {
         text={alertData.message}
         onPressOkay={setAlertData}
       />
-      <View style={{marginVertical: 10}}>
+      {/* <View style={{marginVertical: 10}}>
         <CustomInputWithTitle
           title={'Service Location'}
           placeholder={'Service Location'}
           value={serviceLocation}
           onChangeText={setServiceLocation}
         />
-      </View>
+      </View> */}
 
       <View style={styles.rowCont}>
         <View style={{flex: 1, marginRight: 5}}>
@@ -223,6 +241,48 @@ const BookService = props => {
           <SmallGenralButton title={'Apply'} onPress={validateCoupon} />
         </View>
       </View>
+
+      <View
+        style={{
+          flexDirection: 'row',
+          alignItems: 'center',
+          marginBottom: 10,
+        }}>
+        <CheckBox
+          disabled={false}
+          value={openOthers}
+          onValueChange={newValue => setOpenOthers(newValue)}
+          tintColors={{true: COLORS.PRIMARY, false: COLORS.PRIMARY}}
+          tintColor={COLORS.PRIMARY} // for IOS
+          boxType={'square'} // for IOS
+          onCheckColor={COLORS.PRIMARY}
+          onTintColor={COLORS.PRIMARY}
+        />
+        <Text style={styles.TermsCondition}>Book for other</Text>
+      </View>
+
+      {openOthers && (
+        <View>
+          <View style={{marginVertical: 10}}>
+            <CustomInputWithTitle
+              title={'Name'}
+              placeholder={'Name'}
+              value={othersName}
+              onChangeText={setOthersName}
+            />
+          </View>
+          <View style={{marginVertical: 10}}>
+            <CustomInputWithTitle
+              title={'Phone Number'}
+              placeholder={'Phone number'}
+              value={othersNo}
+              onChangeText={setOthersNo}
+              keyboardType="numeric"
+              maxLength={10}
+            />
+          </View>
+        </View>
+      )}
 
       <CustomInputWithTitle
         title={'Notes'}

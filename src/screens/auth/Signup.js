@@ -20,14 +20,16 @@ import {SignupSchema} from './../../utils/schema';
 import InputPassword from './../../components/molecules/InputPassword';
 var {FBLogin, FBLoginManager} = require('react-native-facebook-login');
 
-GoogleSignin.configure();
+
 
 GoogleSignin.configure({
   webClientId:
     '627271039306-pmpu3n4npmlls97vkj0i9kunip66gr23.apps.googleusercontent.com', // client ID of type WEB for your server (needed to verify user ID and offline access)
-  offlineAccess: true, // if you want to access Google API on behalf of the user FROM YOUR SERVER
+  offlineAccess: true,
+  access_type: "offline" ,// if you want to access Google API on behalf of the user FROM YOUR SERVER
   accountName: '', // [Android] specifies an account name on the device that should be used
 });
+
 
 const Signup = ({navigation}) => {
   const dispatch = useDispatch();
@@ -85,7 +87,40 @@ const Signup = ({navigation}) => {
     try {
       await GoogleSignin.hasPlayServices();
       const userInfo = await GoogleSignin.signIn();
-      console.log(userInfo);
+      const tokens = await GoogleSignin.getTokens();
+      console.log(tokens);
+
+      const data = new URLSearchParams({
+        //  usertype: 1,
+        // device_id:
+        //    'cc7cRipyIg8:APA91bGehTWOt96uZi-fLYeTaH3G1KNP_8HozxYiwd8YUwvGMqIz_W216kBcEq7wj64pkEj47NCThmhCFcR9o95iOhNaU68ygA0I-ZVniH3m7rJm9IRcLUcBdV-T8H66kvgR-oj-c2tD',
+        device_type: 'android',
+        login_type: 3,
+        name: userInfo.user.name,
+        email: userInfo.user.email,
+        country_code: 91,
+        login_token: tokens.accessToken,
+      });
+
+      console.log(tokens.accessToken)
+      const response = await signupAPI(data);
+
+      if (response.data.response.response_code == 200 || 201) {
+        //  setAlertDisplay(true);
+        const URlEncodedData = new URLSearchParams({
+          login_type: 3,
+          email: userInfo.user.email,
+          login_token: tokens.accessToken,
+        });
+
+        dispatch(signIn(URlEncodedData));
+      } else {
+        showMessage({
+          message: response.data.response.response_message,
+          type: 'info',
+          backgroundColor: COLORS.warningRed,
+        });
+      }
     } catch (error) {
       if (error.code === statusCodes.SIGN_IN_CANCELLED) {
         // user cancelled the login flow
@@ -217,50 +252,52 @@ const Signup = ({navigation}) => {
 
         <View style={styles.GoogleFacebookContainer}>
           <GoogleSigninButton
-            style={{width:'100%', height: 48}}
+            style={{width: '100%', height: 48}}
             size={GoogleSigninButton.Size.Wide}
             color={GoogleSigninButton.Color.Dark}
             onPress={handleSignInGoogle}
           />
 
-          <Text style={{fontWeight:'bold', textAlign:'center', padding:5}}> OR </Text>
+          <Text style={{fontWeight: 'bold', textAlign: 'center', padding: 5}}>
+            {' '}
+            OR{' '}
+          </Text>
           <FBLogin
             ref={inputRef}
             loginBehavior={FBLoginManager.LoginBehaviors.Native}
-            permissions={["email","user_friends"]}
-            onLogin={function(data){
-              console.log("Logged in!");
-              console.log(data);
-             
-            }}
-            onLogout={function(){
-              console.log("Logged out.");
-         //     _this.setState({ user : null });
-            }}
-            onLoginFound={function(data){
-              console.log("Existing login found.");
-              console.log(data);
-            //  _this.setState({ user : data.credentials });
-            }}
-            onLoginNotFound={function(){
-              console.log("No user logged in.");
-            //  _this.setState({ user : null });
-            }}
-            onError={function(data){
-              console.log("ERROR");
+            permissions={['email']}
+            onLogin={function (data) {
+              console.log('Logged in!');
               console.log(data);
             }}
-            onCancel={function(){
-              console.log("User cancelled.");
+            onLogout={function () {
+              console.log('Logged out.');
+              //     _this.setState({ user : null });
             }}
-            onPermissionsMissing={function(data){
-              console.log("Check permissions!");
+            onLoginFound={function (data) {
+              console.log('Existing login found.');
+              console.log(data);
+              //  _this.setState({ user : data.credentials });
+            }}
+            onLoginNotFound={function () {
+              console.log('No user logged in.');
+              //  _this.setState({ user : null });
+            }}
+            onError={function (data) {
+              console.log('ERROR');
               console.log(data);
             }}
-             />
+            onCancel={function () {
+              console.log('User cancelled.');
+            }}
+            onPermissionsMissing={function (data) {
+              console.log('Check permissions!');
+              console.log(data);
+            }}
+          />
         </View>
 
-        <Text style={{textAlign: 'center', marginBottom: 30, marginTop:10}}>
+        <Text style={{textAlign: 'center', marginBottom: 30, marginTop: 10}}>
           Already have an account?{' '}
           <Text
             onPress={() => navigation.navigate('EmailLogin')}
@@ -306,6 +343,6 @@ const styles = StyleSheet.create({
     textAlign: 'right',
   },
   GoogleFacebookContainer: {
-    marginHorizontal:'20%'
+    marginHorizontal: '20%',
   },
 });

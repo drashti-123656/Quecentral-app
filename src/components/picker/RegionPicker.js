@@ -54,7 +54,7 @@ const RegionPicker = ({
   return (
     <View>
       <Text style={styles.title}>{title}</Text>
-      {value.name ? (
+      {value !== undefined ? (
         <TouchableOpacity
           style={styles.input}
           onPress={() => editable && setShowModal(true)}>
