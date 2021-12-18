@@ -34,7 +34,7 @@ const FindAProfessional = ({route, navigation}) => {
 
   useEffect(() => {
     searchHandler();
-  }, []);
+  }, [Categories, sortBy, searchText, minPrice, maxPrice]);
 
   const searchHandler = async () => {
     setLoading(true);
