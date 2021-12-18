@@ -7,7 +7,6 @@ import {
   Image,
   TextInput,
   ScrollView,
-  Button,
 } from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
 import {login as signIn, reset} from './../../redux/actions/auth';
