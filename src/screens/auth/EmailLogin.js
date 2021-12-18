@@ -11,7 +11,7 @@ import {
 import {useSelector, useDispatch} from 'react-redux';
 import {login as signIn, reset} from './../../redux/actions/auth';
 import LoginButton from './../../components/button/LoginButton';
-import {showMessage, hideMessage} from 'react-native-flash-message';
+import {showMessage} from 'react-native-flash-message';
 import {COLORS} from './../../utils/theme';
 import {Formik} from 'formik';
 import {SigninSchema} from './../../utils/schema';
