@@ -14,7 +14,7 @@ import {login as signIn, reset} from './../../redux/actions/auth';
 import LoginButton from './../../components/button/LoginButton';
 import {showMessage, hideMessage} from 'react-native-flash-message';
 import {COLORS} from './../../utils/theme';
-import {generateOTP as generateOTPAPI} from './../../services/auth';
+import {generateOTP as generateOTPAPI, login as loginAPI} from './../../services/auth';
 
 const Login = ({navigation}) => {
   const dispatch = useDispatch();
@@ -30,9 +30,10 @@ const Login = ({navigation}) => {
     setLoading(true);
     if (!otpSent) {
       let generateOtpData = new URLSearchParams({
-        usertype: 1,
+        device_type: 'android',
         mobileno,
         country_code: 91,
+        login_type: 1,
       });
 
       let response = await generateOTPAPI(generateOtpData);

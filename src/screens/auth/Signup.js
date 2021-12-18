@@ -19,25 +19,70 @@ import {Formik} from 'formik';
 import {SignupSchema} from './../../utils/schema';
 import InputPassword from './../../components/molecules/InputPassword';
 var {FBLogin, FBLoginManager} = require('react-native-facebook-login');
-
+import {generateOTP as generateOTPAPI} from './../../services/auth';
+import OtpModel from './../../components/model/OtpModel';
+import {checkLogintype as checkLogintypeAPI} from './../../services/auth';
 
 
 GoogleSignin.configure({
   webClientId:
     '627271039306-pmpu3n4npmlls97vkj0i9kunip66gr23.apps.googleusercontent.com', // client ID of type WEB for your server (needed to verify user ID and offline access)
   offlineAccess: true,
-  access_type: "offline" ,// if you want to access Google API on behalf of the user FROM YOUR SERVER
+  access_type: 'offline', // if you want to access Google API on behalf of the user FROM YOUR SERVER
   accountName: '', // [Android] specifies an account name on the device that should be used
 });
-
 
 const Signup = ({navigation}) => {
   const dispatch = useDispatch();
   const inputRef = useRef();
+  const userInputRef = useRef();
 
   const [termsCondition, setTermsCondition] = useState(false);
   const [loading, setLoading] = useState(false);
   const [alertDisplay, setAlertDisplay] = useState(false);
+  const [OtpView, setOtpView] = useState(false);
+
+
+  const handleOtpSubmit = async (otp) => {
+
+      const response = await checkLogintypeAPI();
+      if (response.data.response.response_code === '200') {
+        if(response.data.data.login_type === 'mobile'){
+          let formData = new URLSearchParams({
+            mobileno: userInputRef.current.mobileno,
+            otp,
+            country_code: '91',
+          });
+          dispatch(signIn(formData));
+        }else{
+          let formData = new URLSearchParams({
+            email: userInputRef.current.email,
+            password: userInputRef.current.password,
+            login_type: 1
+          });
+      
+          dispatch(signIn(formData));
+        }
+      }
+ 
+
+   
+
+  
+  }
+
+  const genrateOtp = async() => {
+    const generateOtpData = new URLSearchParams({
+      //  usertype: 1,
+      // device_id:
+      //    'cc7cRipyIg8:APA91bGehTWOt96uZi-fLYeTaH3G1KNP_8HozxYiwd8YUwvGMqIz_W216kBcEq7wj64pkEj47NCThmhCFcR9o95iOhNaU68ygA0I-ZVniH3m7rJm9IRcLUcBdV-T8H66kvgR-oj-c2tD',
+      device_type: 'android',
+      mobileno: userInputRef.current.mobileno,
+      country_code: 91,
+      login_type: 1,
+    });
+  const response = await generateOTPAPI(generateOtpData);
+  }
 
   const handleSignUp = async formData => {
     if (!termsCondition) {
@@ -50,28 +95,37 @@ const Signup = ({navigation}) => {
     }
     setLoading(true);
 
-    const data = new URLSearchParams({
-      //  usertype: 1,
-      // device_id:
-      //    'cc7cRipyIg8:APA91bGehTWOt96uZi-fLYeTaH3G1KNP_8HozxYiwd8YUwvGMqIz_W216kBcEq7wj64pkEj47NCThmhCFcR9o95iOhNaU68ygA0I-ZVniH3m7rJm9IRcLUcBdV-T8H66kvgR-oj-c2tD',
-      device_type: 'android',
-      mobileno: formData.mobileno,
-      name: formData.name,
-      email: formData.email,
-      password: formData.password,
-      country_code: 91,
-    });
-
-    const response = await signupAPI(data);
-
-    if (response.data.response.response_code == 200) {
-      //  setAlertDisplay(true);
-      const URlEncodedData = new URLSearchParams({
+ 
+      const generateOtpData = new URLSearchParams({
+        //  usertype: 1,
+        // device_id:
+        //    'cc7cRipyIg8:APA91bGehTWOt96uZi-fLYeTaH3G1KNP_8HozxYiwd8YUwvGMqIz_W216kBcEq7wj64pkEj47NCThmhCFcR9o95iOhNaU68ygA0I-ZVniH3m7rJm9IRcLUcBdV-T8H66kvgR-oj-c2tD',
+        device_type: 'android',
+        mobileno: formData.mobileno,
+        name: formData.name,
         email: formData.email,
         password: formData.password,
+        country_code: 91,
+        login_type: 1,
       });
+    
 
-      dispatch(signIn(URlEncodedData));
+    const response = await generateOTPAPI(generateOtpData);
+    if (response.data.response.response_code == 200) {
+      userInputRef.current ={
+        //  usertype: 1,
+        // device_id:
+        //    'cc7cRipyIg8:APA91bGehTWOt96uZi-fLYeTaH3G1KNP_8HozxYiwd8YUwvGMqIz_W216kBcEq7wj64pkEj47NCThmhCFcR9o95iOhNaU68ygA0I-ZVniH3m7rJm9IRcLUcBdV-T8H66kvgR-oj-c2tD',
+        device_type: 'android',
+        mobileno: formData.mobileno,
+        name: formData.name,
+        email: formData.email,
+        password: formData.password,
+        country_code: 91,
+        login_type: 1,
+      } 
+      setOtpView(true);
+  
     } else {
       showMessage({
         message: response.data.response.response_message,
@@ -88,7 +142,6 @@ const Signup = ({navigation}) => {
       await GoogleSignin.hasPlayServices();
       const userInfo = await GoogleSignin.signIn();
       const tokens = await GoogleSignin.getTokens();
-      console.log(tokens);
 
       const data = new URLSearchParams({
         //  usertype: 1,
@@ -102,7 +155,6 @@ const Signup = ({navigation}) => {
         login_token: tokens.accessToken,
       });
 
-      console.log(tokens.accessToken)
       const response = await signupAPI(data);
 
       if (response.data.response.response_code == 200 || 201) {
@@ -115,6 +167,7 @@ const Signup = ({navigation}) => {
 
         dispatch(signIn(URlEncodedData));
       } else {
+        setOtpView(true);
         showMessage({
           message: response.data.response.response_message,
           type: 'info',
@@ -306,6 +359,8 @@ const Signup = ({navigation}) => {
           </Text>
         </Text>
       </View>
+
+      <OtpModel display={OtpView} setDisplay={setOtpView} handleOtpSubmit={handleOtpSubmit} genrateOtp={genrateOtp}/>
     </KeyboardAwareScrollView>
   );
 };

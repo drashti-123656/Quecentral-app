@@ -114,6 +114,7 @@ const EditProfile = ({route}) => {
             title={'Email'}
             placeholder={userDetails.email}
             value={email}
+            onChangeText={setEmail}
             editable={false}
           />
         </View>
@@ -133,7 +134,7 @@ const EditProfile = ({route}) => {
           placeholder={'Enter mobile number'}
           value={mobileno}
           onChangeText={setMobileno}
-          editable={false}
+          editable={true}
         />
 
         <CustomInputWithTitle
@@ -141,6 +142,7 @@ const EditProfile = ({route}) => {
           placeholder={'Enter address'}
           value={address}
           onChangeText={setAddress}
+          
         />
 
         <RegionPicker
