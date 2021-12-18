@@ -1,9 +1,7 @@
 name: react-native-android-build-apk
 on:
   push:
-    branches:
-      - master
-      - feature/otp-login
+    branches: [ feature/otp-login ]      
 jobs:
   install-and-test:
     runs-on: ubuntu-latest
