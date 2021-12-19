@@ -9,7 +9,6 @@ import {
   Pressable,
   ActivityIndicator,
 } from 'react-native';
-import {categoryList as categoryListAPI} from '../../services/api';
 import {COLORS} from '../../utils/theme';
 import {Calendar} from 'react-native-calendars';
 import {date} from 'yup';
