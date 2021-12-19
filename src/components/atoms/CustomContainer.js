@@ -1,5 +1,5 @@
 import React from 'react';
-import {StyleSheet, Text, View, TouchableWithoutFeedback} from 'react-native';
+import {StyleSheet, View, TouchableWithoutFeedback} from 'react-native';
 
 const CustomContainer = ({bg, onPress, children}) => {
   return (
