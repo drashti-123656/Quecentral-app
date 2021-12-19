@@ -4,10 +4,8 @@ import {
   Text,
   View,
   TextInput,
-  TouchableOpacity,
   Image,
 } from 'react-native';
-import {COLORS} from '../../utils/theme';
 
 const CustomInput = (props) => {
   const {
