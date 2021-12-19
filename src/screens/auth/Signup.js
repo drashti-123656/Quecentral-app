@@ -7,7 +7,7 @@ import {
 } from '@react-native-google-signin/google-signin';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import CheckBox from '@react-native-community/checkbox';
-import {showMessage, hideMessage} from 'react-native-flash-message';
+import {showMessage} from 'react-native-flash-message';
 import {COLORS} from './../../utils/theme';
 import AlertModel from './../../components/model/AlertModel';
 import {CustomInput} from './../../components/input/CustomInput';
