@@ -58,7 +58,7 @@ const SuccessAlertModal = ({value, text, onPressOkay}) => {
             }
             style={styles.okayBttn}>
             <Text
-             style={styles.okayBttnText}>
+              style={{color: '#fff', textAlign: 'center', fontWeight: 'bold'}}>
               Okay
             </Text>
           </TouchableOpacity>
@@ -108,5 +108,4 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     marginTop: 30,
   },
-  okayBttnText:{color: '#fff', textAlign: 'center', fontWeight: 'bold'}
 });

@@ -9,7 +9,6 @@ import {
   Pressable,
 } from 'react-native';
 import {availability as availabilityAPI} from '../../services/api';
-import {COLORS} from '../../utils/theme';
 import {hoursSplitter} from '../../utils/helper';
 
 const TimePicker = props => {
