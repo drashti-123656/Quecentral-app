@@ -96,7 +96,7 @@ const Login = ({navigation}) => {
             }}>
             Login
           </Text>
-
+ 
           <TextInput
             style={styles.input}
             value={mobileno}
