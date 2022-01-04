@@ -14,7 +14,11 @@ import {login as signIn, reset} from './../../redux/actions/auth';
 import LoginButton from './../../components/button/LoginButton';
 import {showMessage, hideMessage} from 'react-native-flash-message';
 import {COLORS} from './../../utils/theme';
-import {generateOTP as generateOTPAPI, login as loginAPI} from './../../services/auth';
+import {
+  generateOTP as generateOTPAPI,
+  login as loginAPI,
+} from './../../services/auth';
+import PhoneNumberInput from './../../components/atoms/PhoneNumberInput';
 
 const Login = ({navigation}) => {
   const dispatch = useDispatch();
@@ -97,14 +101,20 @@ const Login = ({navigation}) => {
             Login
           </Text>
 
-          <TextInput
+          {/* <TextInput
             style={styles.input}
             value={mobileno}
             placeholder={'Enter mobile number'}
             onChangeText={setMobileno}
             keyboardType="numeric"
-          />
-
+          /> */}
+          <View style={styles.loginPhoneView}>
+            <PhoneNumberInput
+              value={mobileno}
+              placeholder={'Enter mobile number'}
+              onChangeText={setMobileno}
+            />
+          </View>
           <View style={{opacity: otpSent ? 1 : 0.2}}>
             <TextInput
               style={styles.input}
@@ -161,6 +171,9 @@ const styles = StyleSheet.create({
     backgroundColor: '#2BBBA0',
     flex: 1,
     justifyContent: 'flex-end',
+  },
+  loginPhoneView: {
+    margin: 12,
   },
   headerCont: {
     height: 190,

@@ -7,7 +7,7 @@ import Signup from './../screens/auth/Signup';
 import Dashboard from './../screens/Dashboard';
 import Login from './../screens/auth/Login';
 import {checkLogintype as checkLogintypeAPI} from './../services/auth';
-
+import phonenumber from '../components/atoms/PhoneNumberInput';
 const Stack = createStackNavigator();
 
 const AuthNavigation = () => {
