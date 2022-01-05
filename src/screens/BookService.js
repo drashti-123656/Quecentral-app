@@ -14,7 +14,7 @@ import {COLORS} from './../utils/theme';
 import SuccessAlertModal from '../components/model/SuccessAlertModal';
 import CheckBox from '@react-native-community/checkbox';
 import {showMessage, hideMessage} from 'react-native-flash-message';
-import PhoneNumberInput from '../components/atoms/PhoneNumberInput';
+
 import {
   serviceAvailability as serviceAvailabilityAPI,
   validateCoupon as validateCouponAPI,
@@ -272,7 +272,7 @@ const BookService = props => {
             />
           </View>
           <View style={{marginVertical: 10}}>
-            <PhoneNumberInput
+            <CustomInputWithTitle
               title={'Phone Number'}
               placeholder={'Phone number'}
               value={othersNo}

@@ -22,7 +22,7 @@ var {FBLogin, FBLoginManager} = require('react-native-facebook-login');
 import {generateOTP as generateOTPAPI} from './../../services/auth';
 import OtpModel from './../../components/model/OtpModel';
 import {checkLogintype as checkLogintypeAPI} from './../../services/auth';
-import PhoneNumberInput from './../../components/atoms/PhoneNumberInput';
+
 
 GoogleSignin.configure({
   webClientId:
@@ -42,29 +42,36 @@ const Signup = ({navigation}) => {
   const [alertDisplay, setAlertDisplay] = useState(false);
   const [OtpView, setOtpView] = useState(false);
 
-  const handleOtpSubmit = async otp => {
-    const response = await checkLogintypeAPI();
-    if (response.data.response.response_code === '200') {
-      if (response.data.data.login_type === 'mobile') {
-        let formData = new URLSearchParams({
-          mobileno: userInputRef.current.mobileno,
-          otp,
-          country_code: '91',
-        });
-        dispatch(signIn(formData));
-      } else {
-        let formData = new URLSearchParams({
-          email: userInputRef.current.email,
-          password: userInputRef.current.password,
-          login_type: 1,
-        });
 
-        dispatch(signIn(formData));
+  const handleOtpSubmit = async (otp) => {
+
+      const response = await checkLogintypeAPI();
+      if (response.data.response.response_code === '200') {
+        if(response.data.data.login_type === 'mobile'){
+          let formData = new URLSearchParams({
+            mobileno: userInputRef.current.mobileno,
+            otp,
+            country_code: '91',
+          });
+          dispatch(signIn(formData));
+        }else{
+          let formData = new URLSearchParams({
+            email: userInputRef.current.email,
+            password: userInputRef.current.password,
+            login_type: 1
+          });
+      
+          dispatch(signIn(formData));
+        }
       }
-    }
-  };
+ 
 
-  const genrateOtp = async () => {
+   
+
+  
+  }
+
+  const genrateOtp = async() => {
     const generateOtpData = new URLSearchParams({
       //  usertype: 1,
       // device_id:
@@ -74,8 +81,8 @@ const Signup = ({navigation}) => {
       country_code: 91,
       login_type: 1,
     });
-    const response = await generateOTPAPI(generateOtpData);
-  };
+  const response = await generateOTPAPI(generateOtpData);
+  }
 
   const handleSignUp = async formData => {
     if (!termsCondition) {
@@ -88,22 +95,8 @@ const Signup = ({navigation}) => {
     }
     setLoading(true);
 
-    const generateOtpData = new URLSearchParams({
-      //  usertype: 1,
-      // device_id:
-      //    'cc7cRipyIg8:APA91bGehTWOt96uZi-fLYeTaH3G1KNP_8HozxYiwd8YUwvGMqIz_W216kBcEq7wj64pkEj47NCThmhCFcR9o95iOhNaU68ygA0I-ZVniH3m7rJm9IRcLUcBdV-T8H66kvgR-oj-c2tD',
-      device_type: 'android',
-      mobileno: formData.mobileno,
-      name: formData.name,
-      email: formData.email,
-      password: formData.password,
-      country_code: 91,
-      login_type: 1,
-    });
-
-    const response = await generateOTPAPI(generateOtpData);
-    if (response.data.response.response_code == 200) {
-      userInputRef.current = {
+ 
+      const generateOtpData = new URLSearchParams({
         //  usertype: 1,
         // device_id:
         //    'cc7cRipyIg8:APA91bGehTWOt96uZi-fLYeTaH3G1KNP_8HozxYiwd8YUwvGMqIz_W216kBcEq7wj64pkEj47NCThmhCFcR9o95iOhNaU68ygA0I-ZVniH3m7rJm9IRcLUcBdV-T8H66kvgR-oj-c2tD',
@@ -114,8 +107,25 @@ const Signup = ({navigation}) => {
         password: formData.password,
         country_code: 91,
         login_type: 1,
-      };
+      });
+    
+
+    const response = await generateOTPAPI(generateOtpData);
+    if (response.data.response.response_code == 200) {
+      userInputRef.current ={
+        //  usertype: 1,
+        // device_id:
+        //    'cc7cRipyIg8:APA91bGehTWOt96uZi-fLYeTaH3G1KNP_8HozxYiwd8YUwvGMqIz_W216kBcEq7wj64pkEj47NCThmhCFcR9o95iOhNaU68ygA0I-ZVniH3m7rJm9IRcLUcBdV-T8H66kvgR-oj-c2tD',
+        device_type: 'android',
+        mobileno: formData.mobileno,
+        name: formData.name,
+        email: formData.email,
+        password: formData.password,
+        country_code: 91,
+        login_type: 1,
+      } 
       setOtpView(true);
+  
     } else {
       showMessage({
         message: response.data.response.response_message,
@@ -236,22 +246,13 @@ const Signup = ({navigation}) => {
                 <Text style={styles.error}>{errors.email}</Text>
               ) : null}
 
-              {/* <CustomInput
+              <CustomInput
                 placeholder={'Enter mobile number'}
                 value={values.mobileno}
-                onChangeText={handleChange('mobileno')}
-                keyboardType="numeric"
-                maxLength={10}
-              /> */}
-
-              <PhoneNumberInput
-                value={values.mobileno}
-                placeholder={'Enter mobile number'}
                 onChangeText={handleChange('mobileno')}
                 keyboardType="numeric"
                 maxLength={10}
               />
-
               {errors.mobileno && touched.mobileno ? (
                 <Text style={styles.error}>{errors.mobileno}</Text>
               ) : null}
@@ -359,12 +360,7 @@ const Signup = ({navigation}) => {
         </Text>
       </View>
 
-      <OtpModel
-        display={OtpView}
-        setDisplay={setOtpView}
-        handleOtpSubmit={handleOtpSubmit}
-        genrateOtp={genrateOtp}
-      />
+      <OtpModel display={OtpView} setDisplay={setOtpView} handleOtpSubmit={handleOtpSubmit} genrateOtp={genrateOtp}/>
     </KeyboardAwareScrollView>
   );
 };

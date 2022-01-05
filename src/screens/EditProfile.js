@@ -16,8 +16,6 @@ import {BASE_URL} from './../utils/global';
 import LoginButton from './../components/button/LoginButton';
 import {CustomInputWithTitle} from './../components/input/CustomInput';
 import {updateUser as updateUserAPI} from '../services/api';
-import PhoneNumberInput from './../../src/components/atoms/PhoneNumberInput';
-
 
 const EditProfile = ({route}) => {
   const {userDetails} = route.params;
@@ -130,22 +128,14 @@ const EditProfile = ({route}) => {
           onChangeText={setName}
           editable={false}
         />
-{/* 
+
         <CustomInputWithTitle
           title={'Mobile number'}
           placeholder={'Enter mobile number'}
           value={mobileno}
           onChangeText={setMobileno}
           editable={true}
-        /> */}
-        
-        <PhoneNumberInput
-            value={mobileno}
-            title={'Mobile number'}
-            placeholder={'Enter mobile number'}
-            onChangeText={setMobileno}
-            editable={true}
-          />
+        />
 
         <CustomInputWithTitle
           title={'Address'}
