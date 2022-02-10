@@ -127,12 +127,12 @@ const Login = ({navigation}) => {
               style={styles.roundArrow_Image}
             />
 
-            <Text style={styles.footertext}>
+            <Text style={styles.footerText}>
               Didn't recieve the otp? Send OTP
             </Text>
           </TouchableOpacity>
 
-          <View style={styles.logincontainer}>
+          <View style={styles.loginContainer}>
             <LoginButton
               title={otpSent ? 'Login' : 'Send OTP'}
               onPress={() => handleLogin()}
@@ -143,7 +143,7 @@ const Login = ({navigation}) => {
             Don't have an account ?
             <Text
               onPress={() => navigation.navigate('Signup')}
-              style={styles.bottomtext}>
+              style={styles.bottomText}>
               {' '}
               Signup
             </Text>
@@ -176,7 +176,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     
   },
-  logincontainer:{
+  loginContainer:{
 margin:12
   },
 
@@ -194,10 +194,10 @@ margin:12
     borderRadius: 10,
     borderColor: '#2BBBA0',
   },
-  footertext:{
+  footerText:{
     textAlign: 'right', padding: 12
   },
-  bottomtext:{
+  bottomText:{
   color: '#2BBBA0', fontWeight: 'bold'},
   imageIcon:{
     width: 60, 
