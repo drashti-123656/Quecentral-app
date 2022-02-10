@@ -96,7 +96,7 @@ const AuthNavigation = () => {
             tabPress: () => {
               
               Alert.alert(
-               
+                "",
                 "Are you sure you want to Logout?",
                 [
                   {
