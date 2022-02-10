@@ -1,5 +1,5 @@
 import React, {useEffect} from 'react';
-import {StyleSheet, Text, View, Image} from 'react-native';
+import {StyleSheet, Text, View, Image,Alert} from 'react-native';
 import {useSelector} from 'react-redux';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {COLORS} from './../utils/theme';
@@ -8,11 +8,13 @@ import SettingsStack from './SettingsStack';
 import Logout from './../screens/auth/Logout';
 import BookingListStack from './BookingListStack';
 import http from './../services/httpServices';
-
+import { useDispatch } from 'react-redux'
+import { logout } from '../redux/actions/auth'
 const Tab = createBottomTabNavigator();
 
 const AuthNavigation = () => {
   const {token} = useSelector(state => state.authData);
+  const dispatch = useDispatch()
 
   useEffect(() => {
     http.setToken(token);
@@ -29,28 +31,28 @@ const AuthNavigation = () => {
             return (
               <Image
                 source={require('./../assets/icons/home.png')}
-                style={{width: 22, height: 22, tintColor: '#fff'}}
+                style={styles.Image_icon}
               />
             );
           } else if (route.name === 'BookingListStack') {
             return (
               <Image
                 source={require('./../assets/icons/list.png')}
-                style={{width: 22, height: 22, tintColor: '#fff'}}
+                style={styles.Image_icon}
               />
             );
           } else if (route.name === 'SettingsStack') {
             return (
               <Image
                 source={require('./../assets/icons/setting.png')}
-                style={{width: 22, height: 22, tintColor: '#fff'}}
+                style={styles.Image_icon}
               />
             );
           } else if (route.name === 'Logout') {
             return (
               <Image
                 source={require('./../assets/icons/logout.png')}
-                style={{width: 22, height: 22, tintColor: '#fff'}}
+                style={styles.Image_icon}
               />
             );
           }
@@ -85,7 +87,29 @@ const AuthNavigation = () => {
       <Tab.Screen
         name="Logout"
         component={Logout}
-        options={{headerShown: false}}
+        
+          options={{
+            title: 'Logout',
+            headerShown: false,
+          }}
+          listeners={({ navigation, route }) => ({
+            tabPress: () => {
+              
+              Alert.alert(
+               
+                "Are you sure you want to Logout?",
+                [
+                  {
+                    text: "Cancel",
+                    onPress: () => navigation.navigate('Home'),
+                    style: "cancel"
+                  },
+                  { text: "Yes", onPress: () => dispatch(logout()) }
+                ]
+              );
+            },
+          })}
+       
       />
     </Tab.Navigator>
   );
@@ -93,4 +117,6 @@ const AuthNavigation = () => {
 
 export default AuthNavigation;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  Image_icon:{width: 22, height: 22, tintColor: '#fff'},
+});

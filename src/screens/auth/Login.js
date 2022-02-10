@@ -82,7 +82,7 @@ const Login = ({navigation}) => {
         <View style={styles.headerCont}>
           <Image
             source={require('./../../assets/icons/icon.png')}
-            style={{width: 60, height: 70}}
+            style={styles.imageIcon}
           />
           <Text style={styles.TitleText}>Queue Central</Text>
         </View>
@@ -124,15 +124,15 @@ const Login = ({navigation}) => {
             }}>
             <Image
               source={require('./../../assets/icons/rounded-arrow.png')}
-              style={{width: 15, height: 15}}
+              style={styles.roundArrow_Image}
             />
 
-            <Text style={{textAlign: 'right', padding: 12}}>
+            <Text style={styles.footerText}>
               Didn't recieve the otp? Send OTP
             </Text>
           </TouchableOpacity>
 
-          <View style={{margin: 12}}>
+          <View style={styles.loginContainer}>
             <LoginButton
               title={otpSent ? 'Login' : 'Send OTP'}
               onPress={() => handleLogin()}
@@ -143,7 +143,7 @@ const Login = ({navigation}) => {
             Don't have an account ?
             <Text
               onPress={() => navigation.navigate('Signup')}
-              style={{color: '#2BBBA0', fontWeight: 'bold'}}>
+              style={styles.bottomText}>
               {' '}
               Signup
             </Text>
@@ -162,6 +162,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'flex-end',
   },
+  
   headerCont: {
     height: 190,
     padding: 10,
@@ -173,7 +174,12 @@ const styles = StyleSheet.create({
     fontSize: 30,
     fontWeight: 'bold',
     textAlign: 'center',
+    
   },
+  loginContainer:{
+margin:12
+  },
+
   bodyContainer: {
     flex: 1,
     backgroundColor: '#fff',
@@ -188,4 +194,14 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     borderColor: '#2BBBA0',
   },
+  footerText:{
+    textAlign: 'right', padding: 12
+  },
+  bottomText:{
+  color: '#2BBBA0', fontWeight: 'bold'},
+  imageIcon:{
+    width: 60, 
+    height: 70
+  },
+ roundArrow_Image:{width: 15, height: 15}
 });
