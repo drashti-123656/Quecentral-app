@@ -9,8 +9,10 @@ import {
 } from 'react-native';
 import {COLORS} from '../../utils/theme';
 import { BlurView, VibrancyView } from "@react-native-community/blur";
+import { useNavigation } from '@react-navigation/native';
 
 const SuccessAlertModal = ({value, text, onPressOkay}) => {
+  const navigation = useNavigation(); 
   return (
     <Modal animationType="fade" visible={value.alertDisplay} transparent={true}>
       <View style={{flex: 1, justifyContent: 'center'}}>
@@ -49,13 +51,7 @@ const SuccessAlertModal = ({value, text, onPressOkay}) => {
           )}
           <Text style={styles.h1}>{text}</Text>
           <TouchableOpacity
-            onPress={() =>
-              onPressOkay({
-                alertDisplay: false,
-                message: '',
-                bookingStatus: false,
-              })
-            }
+            onPress={() => navigation.goBack()}
             style={styles.okayBttn}>
             <Text
               style={{color: '#fff', textAlign: 'center', fontWeight: 'bold'}}>

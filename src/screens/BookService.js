@@ -62,14 +62,27 @@ const BookService = props => {
       return;
     }
 
-    if (othersName == ''|| othersNo=='') {
+    if(notes ==''){
+      setNotes(true);
+      setBookinLoading(false);
+      return;
+    }
+
+
+    if (openOthers === true ){
+    if(othersName == ''||  othersNo=='' ) {
       showMessage({
         message: 'Others name or mobile number can not be empty',
         type: 'info',
         backgroundColor: COLORS.warningRed,
       });
+    }
       setBookinLoading(false);
       return;
+    }
+    if(notes ==''){
+      setNotes(true);
+      setBookinLoading(false);
     }
 
     let formData = new URLSearchParams({
