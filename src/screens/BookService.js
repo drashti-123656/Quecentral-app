@@ -62,14 +62,7 @@ const BookService = props => {
       return;
     }
 
-    if(notes ==''){
-      setNotes(true);
-      setBookinLoading(false);
-      return;
-    }
-
-
-    if (openOthers === true ){
+     if (openOthers === true ){
     if(othersName == ''||  othersNo=='' ) {
       showMessage({
         message: 'Others name or mobile number can not be empty',
@@ -80,10 +73,7 @@ const BookService = props => {
       setBookinLoading(false);
       return;
     }
-    if(notes ==''){
-      setNotes(true);
-      setBookinLoading(false);
-    }
+    
 
     let formData = new URLSearchParams({
       from_time: selectedTime.start_time ? selectedTime.start_time : null,
