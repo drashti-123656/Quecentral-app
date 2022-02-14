@@ -1,7 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 import {
-  CustomInput,
   CustomInputWithTitle,
   CouponInputWithTitle,
 } from './../components/input/CustomInput';
