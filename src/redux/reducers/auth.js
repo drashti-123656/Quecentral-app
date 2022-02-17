@@ -5,9 +5,11 @@ import {
     ERROR,
     RESET,
     LOGOUT,
+    RECEIVE_BOOKINGLIST_DATA,
 } from '../reduxConstants'
 
 const initialState = {
+    listData:[],
     authData: { isLoggedIn: false, token: null },
     userData: { OTPVerification: false },
     miscData: {
@@ -21,6 +23,8 @@ const reducer = (state = initialState, action) => {
     const newState = { ...state };
 
     switch (action.type) {
+
+     
         case LOGIN:
             return {
                 ...state,
@@ -56,8 +60,21 @@ const reducer = (state = initialState, action) => {
                 ...state,
                 miscData: { error: false, success: false, errorMsg: '' },
             };
-    }
+
+        case RECEIVE_BOOKINGLIST_DATA:
+                return {
+                    ...state,
+                    listData:action.listData 
+                }
+    
+       
+}
     return newState
 };
+
+
+
+
+
 
 export default reducer;

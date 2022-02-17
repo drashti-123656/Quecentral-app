@@ -1,7 +1,6 @@
 import React, {useEffect} from 'react';
 import {View, StyleSheet, Dimensions, Image, ActivityIndicator} from 'react-native';
 import { COLORS } from './../utils/theme'
-
 const Splash = () => {
 
     return(
@@ -13,7 +12,9 @@ const Splash = () => {
                 width:'100%',
                 justifyContent:'center',
                 
-            }}><ActivityIndicator size="large" color={COLORS.PRIMARY} /></View>
+            }}>
+                <ActivityIndicator size="large" color={COLORS.PRIMARY} />
+                </View>
         </View>
     )
 }

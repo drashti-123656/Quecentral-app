@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text } from 'react-native';
 import Navigate from './src/navigation/Navigate'
-import { watchLoginUser, watchSignup } from './src/redux/saga/watchers/auth'
+import { watchBookingList, watchLoginUser, watchSignup } from './src/redux/saga/watchers/auth'
 import FlashMessage from "react-native-flash-message";
 import { createStore, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
@@ -30,6 +30,7 @@ const persistedStore = persistStore(store)
 function* rootSaga() {
   yield fork(watchLoginUser);
   yield fork(watchSignup);
+  yield fork(watchBookingList);
 }
 sagaMiddleware.run(rootSaga)
 

@@ -3,6 +3,7 @@ import {
     SIGNUP,
     RESET,
     LOGOUT,
+    REQUEST_BOOOKINGLIST_DATA,
   } from '../reduxConstants';
   
 export const login = (user) => ({
@@ -21,4 +22,10 @@ export const logout = () => ({
 
 export const reset = () => ({
   type: RESET,
+});
+
+export const requestBookingListData = () => ({ 
+  type: REQUEST_BOOOKINGLIST_DATA ,
+  
+  
 });

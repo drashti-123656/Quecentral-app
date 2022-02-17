@@ -3,11 +3,14 @@ import { put, call } from 'redux-saga/effects';
 import {
     AUTH_SUCCESS,
     ERROR,
+    REQUEST_BOOOKINGLIST_DATA,
+    RECEIVE_BOOKINGLIST_DATA
 } from '../../reduxConstants';
-
+import { bookingList } from '../../../services/api';
 import {
     login,
     signup,
+    
 } from './../../../services/auth';
 
 export function* userLoginAuth({ user }) {
@@ -55,3 +58,29 @@ export function* userSignupAuth({ user }) {
 
     }
 }
+export function* userReceiveAll() {
+    try {
+        const { data } = yield call(bookingList);
+
+        
+
+        if (data.response.response_code == 200) {
+            
+            yield put({
+                type: RECEIVE_BOOKINGLIST_DATA,
+                listData:data.data
+            
+            });
+        } else {
+            yield put({
+                type: ERROR,
+                miscData: { error: true, errorMsg: data.response.response_message },
+            });
+        }
+
+
+    } catch {
+
+    }
+}
+
