@@ -1,7 +1,7 @@
 import { createStore, combineReducers, applyMiddleware} from 'redux'
-import reducer from './reducers/auth'
-
-const reducer = combineReducers(reducer)
+// import reducer from './reducers/auth'
+import rootReducer from './rootReducer'
+// const reducer = combineReducers(reducer)
 
 const initialState = {
     listData:[],
@@ -10,6 +10,6 @@ const initialState = {
 };
 
 
-const store = createStore(reducer)
+const store = createStore(rootReducer)
 
 export default store 

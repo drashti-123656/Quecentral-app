@@ -9,14 +9,14 @@ import {
 import {COLORS} from '../utils/theme';
 import BookingCard from './../components/cards/BookingCard';
 import { useDispatch, useSelector } from "react-redux";
-import {requestBookingListData} from '../redux/actions/auth';
+import {requestBookingListData} from '../redux/bookingList/action';
 
 const BookingList = () => {
   const [loading, setLoading] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
   
 const dispatch = useDispatch();
- const bookingListData = useSelector(state => state.listData);
+ const bookingListData = useSelector(state => state.bookingListReducer.listData);
   useEffect(() => {
     dispatch(requestBookingListData());
   }, []);

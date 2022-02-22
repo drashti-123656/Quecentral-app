@@ -1,7 +1,8 @@
 import React from 'react';
 import { View, Text } from 'react-native';
 import Navigate from './src/navigation/Navigate'
-import { watchBookingList, watchLoginUser, watchSignup } from './src/redux/saga/watchers/auth'
+import {  watchLoginUser, watchSignup } from './src/redux/saga/watchers/auth'
+import {watchBookingList} from './src/redux/rootSaga'
 import FlashMessage from "react-native-flash-message";
 import { createStore, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
@@ -14,14 +15,14 @@ import { PersistGate } from 'redux-persist/integration/react'
 import { persistStore, persistReducer } from 'redux-persist'
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import reducer from './src/redux/reducers/auth'
+import rootReducer from './src/redux/rootReducer';
 
 const persistConfig = {
   key: 'root',
   storage: AsyncStorage,
 }
 
-const persistedReducer = persistReducer(persistConfig, reducer)
+const persistedReducer = persistReducer(persistConfig, rootReducer )
 
 const sagaMiddleware = createSagaMiddleware();
 const store = createStore(persistedReducer, applyMiddleware(sagaMiddleware))
