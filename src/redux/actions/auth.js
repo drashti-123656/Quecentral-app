@@ -22,3 +22,4 @@ export const logout = () => ({
 export const reset = () => ({
   type: RESET,
 });
+

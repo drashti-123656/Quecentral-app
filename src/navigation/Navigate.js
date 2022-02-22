@@ -9,7 +9,7 @@ import DashboardNavigation from './DashboardNavigation'
 const Stack = createStackNavigator();
 
 const Navigate = () => {
-    const { isLoggedIn } = useSelector(state => state.authData)
+    const { isLoggedIn } = useSelector(state => state.reducer.authData)
     return (
         <NavigationContainer>
             <Stack.Navigator >

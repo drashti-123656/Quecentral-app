@@ -15,5 +15,5 @@ export const signup = (data) => {
 export const checkLogintype = () => {
     return http.get('login_type');
   };
-
-
+  
+  

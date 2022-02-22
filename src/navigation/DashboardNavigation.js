@@ -13,7 +13,7 @@ import { logout } from '../redux/actions/auth'
 const Tab = createBottomTabNavigator();
 
 const AuthNavigation = () => {
-  const {token} = useSelector(state => state.authData);
+  const {token} = useSelector(state => state.reducer.authData);
   const dispatch = useDispatch()
 
   useEffect(() => {

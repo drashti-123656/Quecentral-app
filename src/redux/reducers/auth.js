@@ -21,6 +21,8 @@ const reducer = (state = initialState, action) => {
     const newState = { ...state };
 
     switch (action.type) {
+
+     
         case LOGIN:
             return {
                 ...state,
@@ -56,8 +58,14 @@ const reducer = (state = initialState, action) => {
                 ...state,
                 miscData: { error: false, success: false, errorMsg: '' },
             };
-    }
+
+}
     return newState
 };
+
+
+
+
+
 
 export default reducer;
