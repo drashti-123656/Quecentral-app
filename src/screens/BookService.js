@@ -279,8 +279,8 @@ const BookService = props => {
               title={'Phone Number'}
               placeholder={'Phone number'}
               value={othersNo}
-              onChangeText={setOthersNo}
               keyboardType="numeric"
+              onChangeText={setOthersNo}
               maxLength={10}
             />
           </View>
