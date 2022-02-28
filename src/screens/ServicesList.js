@@ -43,7 +43,6 @@ const ServicesList = props => {
             service_title={item.service_title}
             ratings={item.ratings}
             location={item.location}
-            mobileno={item.mobileno}
             currency={item.currency}
             image={item.service_image}
             service_amount={item.service_amount}
