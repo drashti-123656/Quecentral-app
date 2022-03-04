@@ -6,6 +6,7 @@ const LoginButton = ({ title, onPress, loading }) => {
         <TouchableOpacity
             onPress={onPress}
             style={styles.container}
+            disabled={loading}
         >
             {loading ? 
            <ActivityIndicator color={'white'}/>: 

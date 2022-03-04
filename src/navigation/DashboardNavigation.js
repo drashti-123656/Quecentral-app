@@ -12,7 +12,9 @@ import http from './../services/httpServices';
 const Tab = createBottomTabNavigator();
 
 const AuthNavigation = () => {
-  const {token} = useSelector(state => state.authData);
+  const {
+    authData: {token},
+  } = useSelector(({auth}) => auth);
 
   useEffect(() => {
     http.setToken(token);

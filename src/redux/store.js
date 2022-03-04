@@ -1,13 +1,8 @@
-import { createStore, combineReducers, applyMiddleware} from 'redux'
-import reducer from './reducers/auth'
+import {combineReducers} from 'redux';
+import reducer from './reducers/auth';
+import editProfileReducer from './reducers/editProfileReducer';
 
-const reducer = combineReducers(reducer)
-
-const initialState = {
-    authData: { isLoggedIn: false, token: null },
-    userData: { OTPVerification: false },
-};
-
-const store = createStore(reducer)
-
-export default store 
+export default combineReducers({
+  auth: reducer,
+  editProfileReducer,
+});

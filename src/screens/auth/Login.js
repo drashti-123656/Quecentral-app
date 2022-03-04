@@ -22,7 +22,9 @@ import PhoneNumberInput from './../../components/atoms/PhoneNumberInput';
 
 const Login = ({navigation}) => {
   const dispatch = useDispatch();
-  const {error, errorMsg} = useSelector(state => state.miscData);
+  const {error, errorMsg} = useSelector(({auth}) => auth);
+
+  
 
   const [otpSent, setOtpSent] = useState(false);
   const [mobileno, setMobileno] = useState('');

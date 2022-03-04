@@ -1,70 +1,70 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useCallback} from 'react';
 import {
   StyleSheet,
   Text,
   View,
   TouchableOpacity,
   Image,
-  ScrollView,
 } from 'react-native';
-import {showMessage, hideMessage} from 'react-native-flash-message';
+import {useSelector, useDispatch} from 'react-redux';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
-import RegionPicker from '../components/picker/RegionPicker';
-import {COLORS} from './../utils/theme';
 import {BASE_URL} from './../utils/global';
 import LoginButton from './../components/button/LoginButton';
 import {CustomInputWithTitle} from './../components/input/CustomInput';
-import {updateUser as updateUserAPI} from '../services/api';
 import PhoneNumberInput from './../../src/components/atoms/PhoneNumberInput';
+import {Formik} from 'formik';
+import MultiSelect from 'react-native-multiple-select';
+import {
+  fetchCityAction,
+  fetchStateAction,
+  resetProfileStateAction,
+  updateProfileAction,
+} from '../redux/actions/editProfile';
+import CalendarPicker from '../components/picker/CalendarPicker';
+import moment from 'moment';
+import {genderData} from '../utils/helper';
+import SuccessAlert from '../components/molecules/alert/SuccessAlert';
 
+const EditProfile = ({route, navigation}) => {
+  const dispatch = useDispatch();
 
-const EditProfile = ({route}) => {
+  const {statesList, cityList, isUpdating, profileUpdateSuccess} = useSelector(
+    ({editProfileReducer}) => editProfileReducer,
+  );
+
   const {userDetails} = route.params;
 
-  const [name, setName] = useState(userDetails.name);
-  const [mobileno, setMobileno] = useState(userDetails.mobileno);
-  const [email, setEmail] = useState(userDetails.email);
-  const [State, setState] = useState({id: userDetails.state_id, name: ''});
-  const [city, setCity] = useState({id: userDetails.city_id, name: ''});
-  const [address, setAddress] = useState(userDetails.address);
-  const [postalCode, setPostalCode] = useState(userDetails.pincode);
   const [ProfilePic, setProfilePic] = useState(null);
-  const [loading, setLoading] = useState(false);
+
+
+
+  const handleSuccessOkayButton = () => {
+    navigation.goBack();
+    dispatch(resetProfileStateAction());
+  }
 
   useEffect(() => {
-    console.log(userDetails);
+    dispatch(fetchStateAction({countryCode: 101}));
+    dispatch(fetchCityAction([userDetails.state_id]));
   }, []);
 
-  const handleSubmit = async () => {
-    setLoading(true);
-    let formdata = new URLSearchParams({
-      name: name,
-      email: email,
-      address: address,
-      mobileno: mobileno,
-      state_id: State.id,
-      city_id: city.id,
+  const handleSubmit = async values => {
+    const payload = {
+      name: values.name,
+      email: values.email,
+      address: values.address,
+      mobileno: values.mobileno,
+      state_id: values.state[0],
+      city_id: values.city[0],
       user_currency: 'INR',
-      pincode: postalCode,
+      pincode: values.postalCode,
+      dob: moment(values.dob.dateString).format('DD-MM-YYYY'),
+      gender: values.gender[0],
       type: 1,
-    });
-    let response = await updateUserAPI(formdata);
+    };
 
-    if (response.data.response.response_code == 200) {
-      showMessage({
-        message: response.data.response.response_message,
-        type: 'info',
-        backgroundColor: COLORS.warningGreen,
-      });
-    } else {
-      showMessage({
-        message: response.data.response.response_message,
-        type: 'info',
-        backgroundColor: COLORS.warningGreen,
-      });
-    }
-    setLoading(false);
+    dispatch(updateProfileAction(payload));
   };
 
   const handleChooseProfilePic = () => {
@@ -79,115 +79,203 @@ const EditProfile = ({route}) => {
     <KeyboardAwareScrollView
       contentContainerStyle={{flexGrow: 1}}
       style={styles.container}>
-      <View style={{...styles.rowCont, marginVertical: 20}}>
-        <View>
-          {userDetails.profile_img == '' ? (
-            <Image
-              source={require('./../assets/icons/user.png')}
-              style={{...styles.profilePic, marginRight: 20}}
-            />
-          ) : (
-            <Image
-              source={{uri: `${BASE_URL}${userDetails.profile_img}`}}
-              style={{...styles.profilePic, marginRight: 20}}
-            />
-          )}
-          <TouchableOpacity
-            onPress={handleChooseProfilePic}
-            style={{
-              position: 'absolute',
-              width: 100,
-              height: 100,
-              backgroundColor: '#333',
-              opacity: 0.5,
-              borderRadius: 100,
-              justifyContent: 'center',
-              alignItems: 'center',
-              zIndex: 1,
-            }}>
-            <Image
-              source={require('./../assets/icons/camera.png')}
-              style={{width: 40, height: 40, tintColor: '#fff'}}
-            />
-          </TouchableOpacity>
-        </View>
-        <View style={{flex: 1}}>
-          <CustomInputWithTitle
-            title={'Email'}
-            placeholder={userDetails.email}
-            value={email}
-            onChangeText={setEmail}
-            editable={false}
-          />
-        </View>
-      </View>
+      {console.log('userDetails==>', userDetails)}
 
-      <View style={{flex: 1, justifyContent: 'space-between'}}>
-        <CustomInputWithTitle
-          title={'Name'}
-          placeholder={'Edit name'}
-          value={name}
-          onChangeText={setName}
-          editable={false}
-        />
-{/* 
-        <CustomInputWithTitle
-          title={'Mobile number'}
-          placeholder={'Enter mobile number'}
-          value={mobileno}
-          onChangeText={setMobileno}
-          editable={true}
-        /> */}
-        
-        <PhoneNumberInput
-            value={mobileno}
-            title={'Mobile number'}
-            placeholder={'Enter mobile number'}
-            onChangeText={setMobileno}
-            editable={true}
-          />
+      <Formik
+        initialValues={{
+          email: userDetails.email,
+          name: userDetails.name,
+          mobileno: userDetails.mobileno,
+          address: userDetails.address,
+          state: [userDetails.state_id],
+          city: [userDetails.city_id],
+          dob: {
+            dateString: userDetails.dob
+              ? userDetails.dob
+              : moment().format('YYYY-MM-DD'),
+          },
+          gender: [userDetails.gender],
+          postalCode: userDetails.pincode,
+        }}
+        onSubmit={values => handleSubmit(values)}>
+        {({handleChange, handleBlur, handleSubmit, setFieldValue, values}) => (
+          <View>
+            <View style={{...styles.rowCont, marginVertical: 20}}>
+              <View>
+                {userDetails.profile_img == '' ? (
+                  <Image
+                    source={require('./../assets/icons/user.png')}
+                    style={{...styles.profilePic, marginRight: 20}}
+                  />
+                ) : (
+                  <Image
+                    source={{uri: `${BASE_URL}${userDetails.profile_img}`}}
+                    style={{...styles.profilePic, marginRight: 20}}
+                  />
+                )}
+                <TouchableOpacity
+                  onPress={handleChooseProfilePic}
+                  style={{
+                    position: 'absolute',
+                    width: 100,
+                    height: 100,
+                    backgroundColor: '#333',
+                    opacity: 0.5,
+                    borderRadius: 100,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    zIndex: 1,
+                  }}>
+                  <Image
+                    source={require('./../assets/icons/camera.png')}
+                    style={{width: 40, height: 40, tintColor: '#fff'}}
+                  />
+                </TouchableOpacity>
+              </View>
+              <View style={{flex: 1}}>
+                <CustomInputWithTitle
+                  onChangeText={handleChange('email')}
+                  onBlur={handleBlur('email')}
+                  value={values.email}
+                  title={'Email'}
+                  placeholder={userDetails.email}
+                  editable={false}
+                />
+              </View>
+            </View>
+            <View style={{flex: 1, justifyContent: 'space-between'}}>
+              <CustomInputWithTitle
+                onChangeText={handleChange('name')}
+                onBlur={handleBlur('name')}
+                value={values.name}
+                title={'Name'}
+                placeholder={'Edit name'}
+              />
 
-        <CustomInputWithTitle
-          title={'Address'}
-          placeholder={'Enter address'}
-          value={address}
-          onChangeText={setAddress}
-          
-        />
+              <PhoneNumberInput
+                onChangeText={handleChange('mobileno')}
+                onBlur={handleBlur('mobileno')}
+                value={values.mobileno}
+                title={'Mobile number'}
+                placeholder={'Enter mobile number'}
+                editable={false}
+              />
 
-        <RegionPicker
-          title={'states'}
-          mode={'states'}
-          value={State}
-          onSelect={setState}
-          queryString={101}
-        />
+              <CustomInputWithTitle
+                onChangeText={handleChange('address')}
+                onBlur={handleBlur('address')}
+                value={values.address}
+                title={'Address'}
+                placeholder={'Enter address'}
+              />
 
-        {/* <View style={{opacity: Object.keys(State).length === 0 ? 0.5 : 1}}> */}
-          <RegionPicker
-            title={'City'}
-            mode={'city'}
-            value={city}
-            onSelect={setCity}
-            queryString={State !== undefined ? State.id : 1}
-       //     editable={Object.keys(State).length === 0 || undefined ? false : true}
-          />
-        {/* </View> */}
-        <CustomInputWithTitle
-          title={'Postal code'}
-          placeholder={'Enter postal code'}
-          value={postalCode}
-          onChangeText={setPostalCode}
-        />
+              <MultiSelect
+                hideTags
+                items={statesList}
+                uniqueKey="id"
+                displayKey="name"
+                single
+                //  ref={(component) => { this.multiSelect = component }}
+                onSelectedItemsChange={value => {
+                  setFieldValue('state', value);
+                  dispatch(fetchCityAction(value));
+                }}
+                selectedItems={values.state}
+                selectText="Pick State"
+                searchInputPlaceholderText="Search Items..."
+                onChangeInput={text => console.log(text)}
+                altFontFamily="ProximaNova-Light"
+                tagRemoveIconColor="#CCC"
+                tagBorderColor="#CCC"
+                tagTextColor="#CCC"
+                selectedItemTextColor="#CCC"
+                selectedItemIconColor="#CCC"
+                itemTextColor="#000"
+                searchInputStyle={styles.brandSearchInputStyle}
+                submitButtonColor="#CCC"
+                submitButtonText="Submit"
+              />
 
-        <View style={{marginBottom: 20, marginTop: 10}}>
-          <LoginButton
-            title={'Update'}
-            onPress={handleSubmit}
-            loading={loading}
-          />
-        </View>
-      </View>
+              <MultiSelect
+                hideTags
+                items={cityList}
+                uniqueKey="id"
+                displayKey="name"
+                single
+                //  ref={(component) => { this.multiSelect = component }}
+                onSelectedItemsChange={value => setFieldValue('city', value)}
+                selectedItems={values.city}
+                selectText="Pick City"
+                searchInputPlaceholderText="Search Items..."
+                onChangeInput={text => console.log(text)}
+                altFontFamily="ProximaNova-Light"
+                tagRemoveIconColor="#CCC"
+                tagBorderColor="#CCC"
+                tagTextColor="#CCC"
+                selectedItemTextColor="#CCC"
+                selectedItemIconColor="#CCC"
+                itemTextColor="#000"
+                searchInputStyle={styles.brandSearchInputStyle}
+                submitButtonColor="#CCC"
+                submitButtonText="Submit"
+              />
+              <CalendarPicker
+                title={'Select date'}
+                value={values.dob}
+                onSelect={value => setFieldValue('dob', value)}
+                //   minDate={new Date().toISOString().slice(0, 10)}
+                //   loading={loading}
+                placeholder={'Choose Date'}
+              />
+
+              <MultiSelect
+                hideTags
+                items={genderData}
+                uniqueKey="id"
+                displayKey="name"
+                single
+                //  ref={(component) => { this.multiSelect = component }}
+                onSelectedItemsChange={value => setFieldValue('gender', value)}
+                selectedItems={values.gender}
+                selectText="Pick Gender"
+                searchInputPlaceholderText="Search Items..."
+                onChangeInput={text => console.log(text)}
+                altFontFamily="ProximaNova-Light"
+                tagRemoveIconColor="#CCC"
+                tagBorderColor="#CCC"
+                tagTextColor="#CCC"
+                selectedItemTextColor="#CCC"
+                selectedItemIconColor="#CCC"
+                itemTextColor="#000"
+                searchInputStyle={styles.brandSearchInputStyle}
+                submitButtonColor="#CCC"
+                submitButtonText="Submit"
+              />
+
+              <CustomInputWithTitle
+                title={'Postal code'}
+                placeholder={'Enter postal code'}
+                value={values.postalCode}
+                onChangeText={handleChange('postalCode')}
+                keyboardType="numeric"
+              />
+
+              <View style={{marginBottom: 20, marginTop: 10}}>
+                <LoginButton
+                  title={'Update'}
+                  onPress={handleSubmit}
+                  loading={isUpdating}
+                />
+              </View>
+            </View>
+          </View>
+        )}
+      </Formik>
+      <SuccessAlert
+        visible={profileUpdateSuccess}
+        message={'profile successfully updated'}
+        onPressOkay={handleSuccessOkayButton}
+      />
     </KeyboardAwareScrollView>
   );
 };
@@ -224,5 +312,15 @@ const styles = StyleSheet.create({
     padding: 10,
     borderRadius: 10,
     borderColor: '#2BBBA0',
+  },
+  brandSearchInputStyle: {
+    height: 100,
+  },
+  filtersContainer: {
+    flexGrow: 1,
+    paddingBottom: 50,
+  },
+  statusContainer: {
+    zIndex: 99,
   },
 });

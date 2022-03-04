@@ -14,14 +14,16 @@ import { PersistGate } from 'redux-persist/integration/react'
 import { persistStore, persistReducer } from 'redux-persist'
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import reducer from './src/redux/reducers/auth'
+import rootReducer from './src/redux/store'
+import {watchEditProfile} from './src/redux/saga/watchers/editProfile';
+import reducer from './src/redux/reducers/auth';
 
 const persistConfig = {
   key: 'root',
   storage: AsyncStorage,
 }
 
-const persistedReducer = persistReducer(persistConfig, reducer)
+const persistedReducer = persistReducer(persistConfig, rootReducer)
 
 const sagaMiddleware = createSagaMiddleware();
 const store = createStore(persistedReducer, applyMiddleware(sagaMiddleware))
@@ -30,6 +32,7 @@ const persistedStore = persistStore(store)
 function* rootSaga() {
   yield fork(watchLoginUser);
   yield fork(watchSignup);
+  yield fork(watchEditProfile);
 }
 sagaMiddleware.run(rootSaga)
 
