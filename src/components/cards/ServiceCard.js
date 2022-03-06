@@ -45,15 +45,11 @@ const ServiceCard = ({
         />
         <View style={{flex: 1, marginLeft: 10}}>
           <Text style={styles.h1}>{service_title}</Text>
+        
           <Stars rating={ratings} />
           <View style={{flexDirection: 'row', alignItems: 'center'}}>
             <View style={styles.rowCont}>
-              <Image
-                source={require('./../../assets/icons/call.png')}
-                style={{width: 15, height: 15}}
-                PlaceholderContent={<ActivityIndicator />}
-              />
-              <Text style={styles.h3}>{mobileno}</Text>
+              
             </View>
             <View style={{...styles.rowCont, marginLeft: 10}}>
               <Image

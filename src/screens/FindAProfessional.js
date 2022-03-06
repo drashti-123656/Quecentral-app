@@ -21,11 +21,10 @@ import NoResultFound from './../components/molecules/NoResultFound';
 import SliderScreen from './../components/Slider/Slider';
 
 const FindAProfessional = ({route, navigation}) => {
-  const {searchKey} = route.params;
 
   const [searchresultData, setSearchResultData] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [searchText, setSearchText] = useState(searchKey);
+  const [searchText, setSearchText] = useState('');
   const [sortBy, setSortBy] = useState({id: 0, value: ''});
   const [Categories, setCategories] = useState({category_name: 'All'});
   const [location, setLocation] = useState('');
@@ -65,29 +64,15 @@ const FindAProfessional = ({route, navigation}) => {
       </View>
       <View style={styles.bodyContainer}>
         <View
-          style={{
-            position: 'absolute',
-            top: -30,
-            left: 0,
-            right: 0,
-            height: Dimensions.get('window').height - 20,
-          }}>
+          style={styles.mainContainer}>
           <ScrollView
             showsVerticalScrollIndicator={true}
             contentContainerStyle={{zIndex: 1}}>
             <View style={styles.filterOptionsCont}>
               <View
-                style={{
-                  marginBottom: 5,
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                  borderColor: COLORS.PRIMARY,
-                  borderWidth: 1,
-                  borderRadius: 10,
-                  paddingHorizontal: 10,
-                }}>
+                style={styles.searchDevice}>
                 <TextInput
-                  style={{flex: 1, color: '#000'}}
+                  style={styles.searchTitle}
                   value={searchText}
                   onChangeText={setSearchText}
                   placeholder="Search Service"
@@ -97,18 +82,23 @@ const FindAProfessional = ({route, navigation}) => {
                 <TouchableOpacity onPress={searchHandler}>
                   <Image
                     source={require('./../assets/icons/search.png')}
-                    style={{width: 25, height: 25}}
+                    style={styles.serchIcon}
                   />
                 </TouchableOpacity>
               </View>
-
+              <View style={styles.locationTitle}>
+                <CustomInputWithTitle
+                  title={'Location'}
+                  placeholder={'Enter location'}
+                />
+              </View>
               <View
                 style={{
                   ...styles.rowCont,
                   justifyContent: 'space-between',
                   marginBottom: 5,
                 }}>
-                <View style={{width: '49%'}}>
+                <View style={styles.sortbyTitle}>
                   <Picker
                     title={'Sort By'}
                     value={sortBy}
@@ -121,7 +111,7 @@ const FindAProfessional = ({route, navigation}) => {
                   />
                 </View>
 
-                <View style={{width: '49%'}}>
+                <View style={styles.sortbyTitle}>
                   <CategoriesPicker
                     title={'Categories'}
                     value={Categories}
@@ -130,12 +120,7 @@ const FindAProfessional = ({route, navigation}) => {
                 </View>
               </View>
 
-              <View style={{marginBottom: 5}}>
-                <CustomInputWithTitle
-                  title={'Location'}
-                  placeholder={'Enter location'}
-                />
-              </View>
+             
 
               <View>
                 <Text style={{...styles.h3, color: '#000', marginBottom: 10}}>
@@ -153,14 +138,9 @@ const FindAProfessional = ({route, navigation}) => {
               </View>
             </View>
 
-            <View style={{backgroundColor: '#fff', zIndex: 1}}>
+            <View style={styles.searchContainer}>
               <View
-                style={{
-                  flexDirection: 'row',
-                  justifyContent: 'space-between',
-                  alignItems: 'center',
-                  margin: 10,
-                }}>
+                style={styles.searchResutcontainer}>
                 <Text style={styles.h2}>Search results</Text>
               </View>
 
@@ -170,7 +150,7 @@ const FindAProfessional = ({route, navigation}) => {
                 <View>
                   {searchresultData.length == 0 && <NoResultFound />}
                   {searchresultData.map((item, i) => (
-                    <View key={i} style={{paddingHorizontal: 10}}>
+                    <View key={i} style={styles.serviceCard}>
                       <ServiceCard
                         service_id={item.service_id}
                         location={item.service_location}
@@ -199,6 +179,13 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: COLORS.PRIMARY,
   },
+  mainContainer:{
+    position: 'absolute',
+    top: -30,
+    left: 0,
+    right: 0,
+    height: Dimensions.get('window').height - 20,
+  },
   headerBar: {
     height: 50,
     justifyContent: 'center',
@@ -211,6 +198,12 @@ const styles = StyleSheet.create({
   h1: {
     fontSize: 20,
     fontWeight: 'bold',
+  },
+  searchResutcontainer:{
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    margin: 10,
   },
   h2: {
     fontSize: 15,
@@ -227,6 +220,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
+  serviceCard:{paddingHorizontal: 10},
   filterOptionsCont: {
     padding: 10,
     marginHorizontal: 10,
@@ -268,4 +262,18 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     borderColor: '#a1a1a1',
   },
+  serchIcon:{width: 25, height: 25},
+  searchDevice:{
+    marginBottom: 5,
+    flexDirection: 'row',
+    alignItems: 'center',
+    borderColor: COLORS.PRIMARY,
+    borderWidth: 1,
+    borderRadius: 10,
+    paddingHorizontal: 10,
+  },
+  searchTitle:{flex: 1, color: '#000'},
+  locationTitle:{marginBottom: 5},
+  sortbyTitle:{width: '49%'},
+  searchContainer:{backgroundColor: '#fff', zIndex: 1}
 });

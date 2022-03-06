@@ -26,3 +26,8 @@ export const UPDATE_PROFILE_SUCCESS = 'UPDATE_PROFILE_SUCCESS'
 export const UPDATE_PROFILE_FAILED = 'UPDATE_PROFILE_FAILED'
 export const RESET_PROFILE_UPDATE_STATE = 'RESET_PROFILE_UPDATE_STATE'
 /* edit profile start */
+
+/* bookings start */
+export const FETCH_BOOKINGS = 'FETCH_BOOKINGS'
+export const FETCH_BOOKINGS_SUCCESS = 'FETCH_BOOKINGS_SUCCESS'
+/* bookings start */

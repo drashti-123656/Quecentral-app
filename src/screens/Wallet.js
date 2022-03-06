@@ -25,7 +25,7 @@ import Card from './../components/cards/Card';
 import RazorpayCheckout from 'react-native-razorpay';
 
 const Wallet = () => {
-  const {name, email, mobileno} = useSelector(state => state.userData);
+  const {userData : {name, email, mobileno}} = useSelector(({auth}) => auth);
 
   const [walletInfo, setWalletInfo] = useState({});
   const [amount, setAmount] = useState('');

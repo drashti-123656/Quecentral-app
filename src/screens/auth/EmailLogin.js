@@ -52,11 +52,11 @@ const EmailLogin = ({navigation}) => {
 
   return (
     <View style={styles.container}>
-      <ScrollView contentContainerStyle={styles.scrollview}>
+      <ScrollView contentContainerStyle={{flexGrow: 1}}>
         <View style={styles.headerCont}>
           <Image
             source={require('./../../assets/icons/icon.png')}
-            style={styles.logo}
+            style={{width: 60, height: 70}}
           />
           <Text style={styles.TitleText}>Queue Central</Text>
         </View>
@@ -122,12 +122,16 @@ const EmailLogin = ({navigation}) => {
                   /> */}
 
                   <Text
-                    style={styles.forgetpasswordbutton}>
+                    style={{
+                      textAlign: 'right',
+                      padding: 12,
+                      fontWeight: 'bold',
+                    }}>
                     Forgot password ?
                   </Text>
                 </TouchableOpacity>
 
-                <View style={styles.viewlogin}>
+                <View style={{margin: 12}}>
                   <LoginButton
                     title={'Login'}
                     onPress={handleSubmit}
@@ -142,7 +146,7 @@ const EmailLogin = ({navigation}) => {
             Don't have an account ?
             <Text
               onPress={() => navigation.navigate('Signup')}
-              style={styles.signup}>
+              style={{color: '#2BBBA0', fontWeight: 'bold'}}>
               {' '}
               Signup
             </Text>
@@ -156,31 +160,10 @@ const EmailLogin = ({navigation}) => {
 export default EmailLogin;
 
 const styles = StyleSheet.create({
- 
-  scrollview:{
-    flexGrow: 1
-  },
-  logo:{
-    width: 60, 
-    height: 70
-  },
   container: {
     backgroundColor: '#2BBBA0',
     flex: 1,
     justifyContent: 'flex-end',
-  },
-  viewlogin: {
-    margin: 12
-  },
-  
-  signup: {
-    color: '#2BBBA0', 
-    fontWeight: 'bold'
-  },
-  forgetpasswordbutton:{
-    textAlign: 'right',
-    padding: 12,
-    fontWeight: 'bold',
   },
   headerCont: {
     height: 190,

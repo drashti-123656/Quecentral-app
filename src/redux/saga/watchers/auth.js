@@ -3,11 +3,13 @@ import {takeLatest} from 'redux-saga/effects';
 import {
     LOGIN,
     SIGNUP,
+    
   } from '../../reduxConstants';
 
   import {
     userLoginAuth,
     userSignupAuth,
+   
   } from './../workers/auth';
 
 
@@ -18,4 +20,6 @@ import {
   export function* watchSignup() {
     yield takeLatest(SIGNUP, userSignupAuth);
   }
+  
+  
   

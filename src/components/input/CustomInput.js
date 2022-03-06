@@ -46,6 +46,7 @@ const CustomInputWithTitle = props => {
         value={props.value}
         placeholder={props.placeholder}
         editable={props.editable}
+        keyboardType={props.keyboardType}
         multiline={props.multiline}
         placeholderTextColor="#a1a1a1"
         keyboardType={props.keyboardType}

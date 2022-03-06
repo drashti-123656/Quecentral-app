@@ -8,31 +8,24 @@ import {
 } from 'react-native';
 import {COLORS} from '../utils/theme';
 import BookingCard from './../components/cards/BookingCard';
-import {bookingList} from '../services/api';
+import { useDispatch, useSelector } from "react-redux";
+import {fetchBookingsAction} from './../redux/actions/bookings';
 
 const BookingList = () => {
-  const [bookingListData, setBookingListData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
-
-  useEffect(async () => {
-    setLoading(true);
-    await fetchBookingList();
-    setLoading(false);
+  
+const dispatch = useDispatch();
+ const {bookingsList} = useSelector(({bookingsReducer}) => bookingsReducer);
+  useEffect(() => {
+    dispatch(fetchBookingsAction());
   }, []);
 
-  const fetchBookingList = async () => {
-    const response = await bookingList();
-    if (response.data.response.response_code == 200) {
-      setBookingListData(response.data.data);
-    }
-  };
-
-  const refreshScreen = async () => {
+ const refreshScreen = async () => {
     setRefreshing(true);
-    await fetchBookingList();
+    requestBookingListData();
     setRefreshing(false);
-  };
+  }; 
 
   return (
     <View style={styles.screen}>
@@ -42,7 +35,7 @@ const BookingList = () => {
         </View>
       ) : (
         <FlatList
-          data={bookingListData}
+          data={bookingsList}
           refreshControl={
             <RefreshControl refreshing={refreshing} onRefresh={refreshScreen} />
           }

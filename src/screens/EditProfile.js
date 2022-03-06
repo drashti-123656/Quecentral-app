@@ -12,7 +12,7 @@ import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 import {BASE_URL} from './../utils/global';
 import LoginButton from './../components/button/LoginButton';
 import {CustomInputWithTitle} from './../components/input/CustomInput';
-import PhoneNumberInput from './../../src/components/atoms/PhoneNumberInput';
+import PhoneNumberInput from './../components/atoms/CustomContainer';
 import {Formik} from 'formik';
 import MultiSelect from 'react-native-multiple-select';
 import {
@@ -286,6 +286,7 @@ const styles = StyleSheet.create({
   container: {
     padding: 10,
     paddingHorizontal: 20,
+    backgroundColor:"white"
   },
   rowCont: {
     flexDirection: 'row',

@@ -13,7 +13,7 @@ export default CustomContainer;
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '$BG_COLOR',
+    backgroundColor: '#2BBBA0',
     flex: 1,
   },
 });

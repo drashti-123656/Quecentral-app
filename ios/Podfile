@@ -12,6 +12,8 @@ target 'QueueCentral' do
     :hermes_enabled => false
   )
 
+  pod 'lottie-react-native', :path => '../node_modules/lottie-react-native'
+
   target 'QueueCentralTests' do
     inherit! :complete
     # Pods for testing

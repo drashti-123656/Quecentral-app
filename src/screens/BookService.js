@@ -14,7 +14,7 @@ import {COLORS} from './../utils/theme';
 import SuccessAlertModal from '../components/model/SuccessAlertModal';
 import CheckBox from '@react-native-community/checkbox';
 import {showMessage, hideMessage} from 'react-native-flash-message';
-import PhoneNumberInput from '../components/atoms/PhoneNumberInput';
+
 import {
   serviceAvailability as serviceAvailabilityAPI,
   validateCoupon as validateCouponAPI,
@@ -62,15 +62,18 @@ const BookService = props => {
       return;
     }
 
-    if (othersName == ''|| othersNo=='') {
+     if (openOthers === true ){
+    if(othersName == ''||  othersNo=='' ) {
       showMessage({
         message: 'Others name or mobile number can not be empty',
         type: 'info',
         backgroundColor: COLORS.warningRed,
       });
+    }
       setBookinLoading(false);
       return;
     }
+    
 
     let formData = new URLSearchParams({
       from_time: selectedTime.start_time ? selectedTime.start_time : null,
@@ -272,12 +275,12 @@ const BookService = props => {
             />
           </View>
           <View style={{marginVertical: 10}}>
-            <PhoneNumberInput
+            <CustomInputWithTitle
               title={'Phone Number'}
               placeholder={'Phone number'}
               value={othersNo}
-              onChangeText={setOthersNo}
               keyboardType="numeric"
+              onChangeText={setOthersNo}
               maxLength={10}
             />
           </View>
