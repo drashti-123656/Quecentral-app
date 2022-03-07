@@ -48,10 +48,7 @@ const ServiceCard = ({
         
           <Stars rating={ratings} />
           <View style={{flexDirection: 'row', alignItems: 'center'}}>
-            <View style={styles.rowCont}>
-              
-            </View>
-            <View style={{...styles.rowCont, marginLeft: 10}}>
+            <View style={{...styles.rowCont}}>
               <Image
                 source={require('./../../assets/icons/location.png')}
                 style={{width: 15, height: 15}}

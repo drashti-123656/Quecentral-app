@@ -6,7 +6,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import rootReducer from './rootReducer';
 import {watchLoginUser, watchSignup} from './saga/watchers/auth';
 import {watchEditProfile} from './saga/watchers/editProfile';
-import {watchBookingList} from './rootSaga';
+import {watchBookingList} from './saga/watchers/bookings';
+import {watchSearchServices} from './saga/watchers/searchServices';
 
 const persistConfig = {
   key: 'root',
@@ -24,6 +25,7 @@ function* rootSaga() {
   yield fork(watchSignup);
   yield fork(watchEditProfile);
   yield fork(watchBookingList);
+  yield fork(watchSearchServices);
 }
 sagaMiddleware.run(rootSaga);
 
