@@ -12,7 +12,7 @@ export const updateUser = (data) => {
     return http.post('update_user', data)
 }
 
-export const searchService = (data) => {
+export const searchServiceAPI = (data) => {
     return http.post('search_services', data)
 }
 

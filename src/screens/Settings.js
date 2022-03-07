@@ -42,12 +42,12 @@ const Settings = ({navigation}) => {
             {userDetails.profile_img == '' ? (
               <Image
                 source={require('./../assets/icons/user.png')}
-                style={{...styles.profilePic, marginRight: 20}}
+                style={{...styles.profilePic, marginRight: 10}}
               />
             ) : (
               <Image
                 source={{uri: `${BASE_URL}${userDetails.profile_img}`}}
-                style={{...styles.profilePic, marginRight: 20}}
+                style={{...styles.profilePic, marginRight: 10}}
               />
             )}
 

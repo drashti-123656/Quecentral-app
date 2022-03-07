@@ -1,5 +1,7 @@
-import {takeLatest} from "redux-saga/effects";
+import {takeLatest} from 'redux-saga/effects';
+import {FETCH_BOOKINGS} from '../../reduxConstants';
+import {fetchBookingsWorker} from './../workers/bookings'
 
 export function* watchBookingList() {
-  yield takeLatest(REQUEST_BOOOKINGLIST_DATA, userReceiveAll);
+  yield takeLatest(FETCH_BOOKINGS, fetchBookingsWorker);
 }
