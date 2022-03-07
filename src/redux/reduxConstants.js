@@ -31,3 +31,8 @@ export const RESET_PROFILE_UPDATE_STATE = 'RESET_PROFILE_UPDATE_STATE'
 export const FETCH_BOOKINGS = 'FETCH_BOOKINGS'
 export const FETCH_BOOKINGS_SUCCESS = 'FETCH_BOOKINGS_SUCCESS'
 /* bookings start */
+
+/* search start */
+export const FETCH_SERVICES = 'FETCH_SERVICES'
+export const FETCH_SERVICES_SUCCESS = 'FETCH_SERVICES_SUCCESS'
+/* search start */
