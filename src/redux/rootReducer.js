@@ -1,12 +1,12 @@
-import { combineReducers } from 'redux'
-import bookingListReducer from '../redux/bookingList/reducer';
-import reducer from './reducers/auth'
-import { persistReducer } from 'redux-persist';
+import {combineReducers} from 'redux';
+import reducer from './reducers/auth';
+import editProfileReducer from './reducers/editProfileReducer';
+import bookingsReducer from './reducers/bookingsReducer';
 
-
-const rootReducer= combineReducers({
- reducer,
-  bookingListReducer ,
-
+const rootReducer = combineReducers({
+  auth: reducer,
+  editProfileReducer,
+  bookingsReducer,
 });
+
 export default rootReducer;

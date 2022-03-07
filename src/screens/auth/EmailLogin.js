@@ -19,7 +19,7 @@ import InputPassword from './../../components/molecules/InputPassword';
 
 const EmailLogin = ({navigation}) => {
   const dispatch = useDispatch();
-  const {error, errorMsg} = useSelector(state => state.reducer.miscData);
+  const {error, errorMsg} = useSelector(({auth}) => auth);
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');

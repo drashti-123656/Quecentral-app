@@ -1,15 +1,30 @@
-import { createStore, combineReducers, applyMiddleware} from 'redux'
-// import reducer from './reducers/auth'
-import rootReducer from './rootReducer'
-// const reducer = combineReducers(reducer)
+import {createStore, applyMiddleware} from 'redux';
+import createSagaMiddleware from 'redux-saga';
+import {fork} from 'redux-saga/effects';
+import {persistStore, persistReducer} from 'redux-persist';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import rootReducer from './rootReducer';
+import {watchLoginUser, watchSignup} from './saga/watchers/auth';
+import {watchEditProfile} from './saga/watchers/editProfile';
+import {watchBookingList} from './rootSaga';
 
-const initialState = {
-    listData:[],
-    authData: { isLoggedIn: false, token: null },
-    userData: { OTPVerification: false },
+const persistConfig = {
+  key: 'root',
+  storage: AsyncStorage,
 };
 
+const persistedReducer = persistReducer(persistConfig, rootReducer);
 
-const store = createStore(rootReducer)
+const sagaMiddleware = createSagaMiddleware();
+const store = createStore(persistedReducer, applyMiddleware(sagaMiddleware));
+const persistedStore = persistStore(store);
 
-export default store 
+function* rootSaga() {
+  yield fork(watchLoginUser);
+  yield fork(watchSignup);
+  yield fork(watchEditProfile);
+  yield fork(watchBookingList);
+}
+sagaMiddleware.run(rootSaga);
+
+export {store, persistedStore};

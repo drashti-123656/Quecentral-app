@@ -20,7 +20,7 @@ export const getReviews = () => {
     return http.get('get_reviews')
 }
 
-export const bookingList = () => {
+export const bookingListAPI = () => {
     return http.get('bookinglist_users?status=1')
 }
 

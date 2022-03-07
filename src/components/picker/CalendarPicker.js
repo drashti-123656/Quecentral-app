@@ -17,8 +17,6 @@ import serviceAvailability from './../../services/api';
 const CalendarPicker = props => {
   const [showModal, setShowModal] = useState(false);
 
-  useEffect(() => {}, []);
-
   return (
     <View>
       <Text style={styles.title}>{props.title}</Text>
@@ -35,10 +33,10 @@ const CalendarPicker = props => {
         </TouchableOpacity>
       ) : (
         <TouchableOpacity
-        style={styles.input}
-        onPress={() => setShowModal(true)}>
-        <Text style={{color:'#a1a1a1'}}>{props.placeholder}</Text>
-      </TouchableOpacity>
+          style={styles.input}
+          onPress={() => setShowModal(true)}>
+          <Text style={{color: '#a1a1a1'}}>{props.placeholder}</Text>
+        </TouchableOpacity>
       )}
 
       <Modal animationType="fade" visible={showModal} transparent={true}>

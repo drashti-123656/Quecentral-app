@@ -12,3 +12,14 @@ export const hoursSplitter = (fromTime, toTime) => {
 
   return splitedHours;
 };
+
+export const genderData = [
+  {
+    id: 'male',
+    name: 'male',
+  },
+  {
+    id: 'female',
+    name: 'female',
+  },
+]
