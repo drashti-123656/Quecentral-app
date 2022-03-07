@@ -49,6 +49,7 @@ const CustomInputWithTitle = props => {
         keyboardType={props.keyboardType}
         multiline={props.multiline}
         placeholderTextColor="#a1a1a1"
+        keyboardType={props.keyboardType}
       />
     </View>
   );

@@ -1,5 +1,5 @@
 import React, {useEffect} from 'react';
-import {StyleSheet, Text, View, Image,Alert} from 'react-native';
+import {StyleSheet, Text, View, Image, Alert} from 'react-native';
 import {useSelector} from 'react-redux';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {COLORS} from './../utils/theme';
@@ -8,13 +8,15 @@ import SettingsStack from './SettingsStack';
 import Logout from './../screens/auth/Logout';
 import BookingListStack from './BookingListStack';
 import http from './../services/httpServices';
-import { useDispatch } from 'react-redux'
-import { logout } from '../redux/actions/auth'
+import {useDispatch} from 'react-redux';
+import {logout} from '../redux/actions/auth';
 const Tab = createBottomTabNavigator();
 
 const AuthNavigation = () => {
-  const {token} = useSelector(state => state.reducer.authData);
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
+  const {
+    authData: {token},
+  } = useSelector(({auth}) => auth);
 
   useEffect(() => {
     http.setToken(token);
@@ -87,29 +89,22 @@ const AuthNavigation = () => {
       <Tab.Screen
         name="Logout"
         component={Logout}
-        
-          options={{
-            title: 'Logout',
-            headerShown: false,
-          }}
-          listeners={({ navigation, route }) => ({
-            tabPress: () => {
-              
-              Alert.alert(
-                "",
-                "Are you sure you want to Logout?",
-                [
-                  {
-                    text: "Cancel",
-                    onPress: () => navigation.navigate('Home'),
-                    style: "cancel"
-                  },
-                  { text: "Yes", onPress: () => dispatch(logout()) }
-                ]
-              );
-            },
-          })}
-       
+        options={{
+          title: 'Logout',
+          headerShown: false,
+        }}
+        listeners={({navigation, route}) => ({
+          tabPress: () => {
+            Alert.alert('', 'Are you sure you want to Logout?', [
+              {
+                text: 'Cancel',
+                onPress: () => navigation.navigate('Home'),
+                style: 'cancel',
+              },
+              {text: 'Yes', onPress: () => dispatch(logout())},
+            ]);
+          },
+        })}
       />
     </Tab.Navigator>
   );
@@ -118,5 +113,5 @@ const AuthNavigation = () => {
 export default AuthNavigation;
 
 const styles = StyleSheet.create({
-  Image_icon:{width: 22, height: 22, tintColor: '#fff'},
+  Image_icon: {width: 22, height: 22, tintColor: '#fff'},
 });

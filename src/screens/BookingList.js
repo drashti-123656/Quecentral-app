@@ -9,16 +9,16 @@ import {
 import {COLORS} from '../utils/theme';
 import BookingCard from './../components/cards/BookingCard';
 import { useDispatch, useSelector } from "react-redux";
-import {requestBookingListData} from '../redux/bookingList/action';
+import {fetchBookingsAction} from './../redux/actions/bookings';
 
 const BookingList = () => {
   const [loading, setLoading] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
   
 const dispatch = useDispatch();
- const bookingListData = useSelector(state => state.bookingListReducer.listData);
+ const {bookingsList} = useSelector(({bookingsReducer}) => bookingsReducer);
   useEffect(() => {
-    dispatch(requestBookingListData());
+    dispatch(fetchBookingsAction());
   }, []);
 
  const refreshScreen = async () => {
@@ -35,7 +35,7 @@ const dispatch = useDispatch();
         </View>
       ) : (
         <FlatList
-          data={bookingListData}
+          data={bookingsList}
           refreshControl={
             <RefreshControl refreshing={refreshing} onRefresh={refreshScreen} />
           }

@@ -16,6 +16,7 @@ import {ViewMore, BookNow} from './../components/button/GeneralButton';
 import ServiceCard from './../components/cards/ServiceCard';
 import {home as homeAPI} from '../services/api';
 import {BASE_URL} from './../utils/global/';
+import SearchBar from '../components/search/SearchBar';
 
 const Dashboard = ({navigation}) => {
   const [loading, setLaoding] = useState(false);
@@ -53,26 +54,7 @@ const Dashboard = ({navigation}) => {
         </TouchableOpacity>
       </View>
       <View style={styles.bodyContainer}>
-        <View style={{...styles.rowCont, ...styles.search}}>
-          <TextInput
-            style={{flex: 1, color: '#000'}}
-            value={searchKey}
-            onChangeText={setSearchKey}
-            placeholder="Search Service"
-            placeholderTextColor="#a1a1a1"
-          />
-          <TouchableOpacity
-            onPress={() =>
-              navigation.navigate('FindAProfessional', {
-                searchKey: searchKey,
-              })
-            }>
-            <Image
-              source={require('./../assets/icons/search.png')}
-              style={{width: 25, height: 25}}
-            />
-          </TouchableOpacity>
-        </View>
+        <SearchBar value={searchKey} onChangeText={setSearchKey} />
 
         <ScrollView showsVerticalScrollIndicator={false}>
           <View style={styles.wrapper}>
