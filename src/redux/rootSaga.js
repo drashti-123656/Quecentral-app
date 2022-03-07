@@ -1,18 +1,7 @@
 import {takeLatest} from 'redux-saga/effects';
+import {fetchBookingsWorker} from './saga/workers/bookings';
+import {FETCH_BOOKINGS} from './reduxConstants';
 
-import {
-   
-    REQUEST_BOOOKINGLIST_DATA,
-  } from '../redux/bookingList/contants';
-
-  import {
-    
-    userReceiveAll
-  } from '../redux/bookingList/saga';
-
-
- export function* watchBookingList() {
-    yield takeLatest(REQUEST_BOOOKINGLIST_DATA, userReceiveAll);
-  }
-  
-  
+export function* watchBookingList() {
+  yield takeLatest(FETCH_BOOKINGS, fetchBookingsWorker);
+}

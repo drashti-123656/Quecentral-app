@@ -21,11 +21,10 @@ import NoResultFound from './../components/molecules/NoResultFound';
 import SliderScreen from './../components/Slider/Slider';
 
 const FindAProfessional = ({route, navigation}) => {
-  const {searchKey} = route.params;
 
   const [searchresultData, setSearchResultData] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [searchText, setSearchText] = useState(searchKey);
+  const [searchText, setSearchText] = useState('');
   const [sortBy, setSortBy] = useState({id: 0, value: ''});
   const [Categories, setCategories] = useState({category_name: 'All'});
   const [location, setLocation] = useState('');

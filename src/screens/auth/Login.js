@@ -18,7 +18,9 @@ import {generateOTP as generateOTPAPI, login as loginAPI} from './../../services
 
 const Login = ({navigation}) => {
   const dispatch = useDispatch();
-  const {error, errorMsg} = useSelector(state => state.reducer.miscData);
+  const {error, errorMsg} = useSelector(({auth}) => auth);
+
+  
 
   const [otpSent, setOtpSent] = useState(false);
   const [mobileno, setMobileno] = useState('');
