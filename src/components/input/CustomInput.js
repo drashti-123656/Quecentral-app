@@ -49,7 +49,6 @@ const CustomInputWithTitle = props => {
         keyboardType={props.keyboardType}
         multiline={props.multiline}
         placeholderTextColor="#a1a1a1"
-        keyboardType={props.keyboardType}
       />
     </View>
   );
@@ -109,6 +108,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 12,
     fontWeight: 'bold',
+    marginTop:15
   },
   input: {
     height: 50,
@@ -117,6 +117,6 @@ const styles = StyleSheet.create({
     padding: 10,
     borderRadius: 10,
     borderColor: '#2BBBA0',
-    color:'#000'
+    color:'#000',
   },
 });

@@ -75,6 +75,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     fontSize: 12,
     marginBottom: 5,
+    marginTop:15
   },
   modalCont: {
     padding: 10,

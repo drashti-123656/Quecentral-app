@@ -5,6 +5,7 @@ import {
   View,
   TouchableOpacity,
   Image,
+  SafeAreaView,
 } from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
@@ -37,12 +38,10 @@ const EditProfile = ({route, navigation}) => {
 
   const [ProfilePic, setProfilePic] = useState(null);
 
-
-
   const handleSuccessOkayButton = () => {
     navigation.goBack();
     dispatch(resetProfileStateAction());
-  }
+  };
 
   useEffect(() => {
     dispatch(fetchStateAction({countryCode: 101}));
@@ -168,57 +167,76 @@ const EditProfile = ({route, navigation}) => {
                 title={'Address'}
                 placeholder={'Enter address'}
               />
+              <View>
+                <Text style={styles.title}> Select state</Text>
 
-              <MultiSelect
-                hideTags
-                items={statesList}
-                uniqueKey="id"
-                displayKey="name"
-                single
-                //  ref={(component) => { this.multiSelect = component }}
-                onSelectedItemsChange={value => {
-                  setFieldValue('state', value);
-                  dispatch(fetchCityAction(value));
-                }}
-                selectedItems={values.state}
-                selectText="Pick State"
-                searchInputPlaceholderText="Search Items..."
-                onChangeInput={text => console.log(text)}
-                altFontFamily="ProximaNova-Light"
-                tagRemoveIconColor="#CCC"
-                tagBorderColor="#CCC"
-                tagTextColor="#CCC"
-                selectedItemTextColor="#CCC"
-                selectedItemIconColor="#CCC"
-                itemTextColor="#000"
-                searchInputStyle={styles.brandSearchInputStyle}
-                submitButtonColor="#CCC"
-                submitButtonText="Submit"
-              />
+                <MultiSelect
+                  hideTags
+                  items={statesList}
+                  uniqueKey="id"
+                  displayKey="name"
+                  single
+                  //  ref={(component) => { this.multiSelect = component }}
+                  onSelectedItemsChange={value => {
+                    setFieldValue('state', value);
+                    dispatch(fetchCityAction(value));
+                  }}
+                  selectedItems={values.state}
+                  selectText="  Pick State"
+                  searchInputPlaceholderText=" Search Items..."
+                  onChangeInput={text => console.log(text)}
+                  altFontFamily="ProximaNova-Light"
+                  tagRemoveIconColor="#CCC"
+                  tagBorderColor="#CCC"
+                  tagTextColor="#CCC"
+                  selectedItemTextColor="white"
+                  selectedItemIconColor="white"
+                  itemTextColor="#000"
+                  searchInputStyle={styles.brandSearchInputStyle}
+                  submitButtonColor="#CCC"
+                  submitButtonText="Submit"
+                  styleListContainer={styles.listContainer}
+                  styleDropdownMenu={styles.dropdownMenu}
+                  styleDropdownMenuSubsection={styles.dropdownMenusubsection}
+                  styleInputGroup={styles.inputGroup}
+                  styleItemsContainer={styles.itemContainer}
+                  styleSelectorContainer={styles.selectorContainer}
+                  styleRowList={styles.rowList}
+                />
+              </View>
 
-              <MultiSelect
-                hideTags
-                items={cityList}
-                uniqueKey="id"
-                displayKey="name"
-                single
-                //  ref={(component) => { this.multiSelect = component }}
-                onSelectedItemsChange={value => setFieldValue('city', value)}
-                selectedItems={values.city}
-                selectText="Pick City"
-                searchInputPlaceholderText="Search Items..."
-                onChangeInput={text => console.log(text)}
-                altFontFamily="ProximaNova-Light"
-                tagRemoveIconColor="#CCC"
-                tagBorderColor="#CCC"
-                tagTextColor="#CCC"
-                selectedItemTextColor="#CCC"
-                selectedItemIconColor="#CCC"
-                itemTextColor="#000"
-                searchInputStyle={styles.brandSearchInputStyle}
-                submitButtonColor="#CCC"
-                submitButtonText="Submit"
-              />
+              <View>
+                <Text style={styles.titleCity}> Select city</Text>
+                <MultiSelect
+                  hideTags
+                  items={cityList}
+                  uniqueKey="id"
+                  displayKey="name"
+                  single
+                  //  ref={(component) => { this.multiSelect = component }}
+                  onSelectedItemsChange={value => setFieldValue('city', value)}
+                  selectedItems={values.city}
+                  selectText="  Pick City"
+                  styleDropdownMenuSubsection={styles.citydropdoenSubSection}
+                  searchInputPlaceholderText="Search Items..."
+                  onChangeInput={text => console.log(text)}
+                  altFontFamily="ProximaNova-Light"
+                  tagRemoveIconColor="#CCC"
+                  tagBorderColor="#CCC"
+                  styleListContainer={{height: 100}}
+                  tagTextColor="#CCC"
+                  selectedItemTextColor="white"
+                  selectedItemIconColor="white"
+                  itemTextColor="#000"
+                  searchInputStyle={styles.brandSearchInputStyle}
+                  submitButtonColor="#CCC"
+                  submitButtonText="Submit"
+                  styleInputGroup={styles.inputGroup}
+                  styleItemsContainer={styles.itemContainer}
+                  styleRowList={styles.rowList}
+                />
+              </View>
+
               <CalendarPicker
                 title={'Select date'}
                 value={values.dob}
@@ -228,30 +246,38 @@ const EditProfile = ({route, navigation}) => {
                 placeholder={'Choose Date'}
               />
 
-              <MultiSelect
-                hideTags
-                items={genderData}
-                uniqueKey="id"
-                displayKey="name"
-                single
-                //  ref={(component) => { this.multiSelect = component }}
-                onSelectedItemsChange={value => setFieldValue('gender', value)}
-                selectedItems={values.gender}
-                selectText="Pick Gender"
-                searchInputPlaceholderText="Search Items..."
-                onChangeInput={text => console.log(text)}
-                altFontFamily="ProximaNova-Light"
-                tagRemoveIconColor="#CCC"
-                tagBorderColor="#CCC"
-                tagTextColor="#CCC"
-                selectedItemTextColor="#CCC"
-                selectedItemIconColor="#CCC"
-                itemTextColor="#000"
-                searchInputStyle={styles.brandSearchInputStyle}
-                submitButtonColor="#CCC"
-                submitButtonText="Submit"
-              />
-
+              <View>
+                <Text style={styles.titleCity}> Select gender</Text>
+                <MultiSelect
+                  hideTags
+                  items={genderData}
+                  uniqueKey="id"
+                  displayKey="name"
+                  single
+                  //  ref={(component) => { this.multiSelect = component }}
+                  onSelectedItemsChange={value =>
+                    setFieldValue('gender', value)
+                  }
+                  selectedItems={values.gender}
+                  selectText="  Pick Gender"
+                  styleDropdownMenuSubsection={styles.genderdropDownMenuSection}
+                  styleInputGroup={styles.inputGroup}
+                  styleItemsContainer={styles.itemContainer}
+                  searchInputPlaceholderText="Search Items..."
+                  onChangeInput={text => console.log(text)}
+                  altFontFamily="ProximaNova-Light"
+                  tagRemoveIconColor="#CCC"
+                  tagBorderColor="#CCC"
+                  tagTextColor="#CCC"
+                  selectedItemTextColor="white"
+                  selectedItemIconColor="white"
+                  itemTextColor="#000"
+                  searchInputStyle={styles.brandSearchInputStyle}
+                  submitButtonColor="#CCC"
+                  submitButtonText="Submit"
+                  styleRowList={styles.rowList}
+                />
+              </View>
               <CustomInputWithTitle
                 title={'Postal code'}
                 placeholder={'Enter postal code'}
@@ -286,7 +312,36 @@ const styles = StyleSheet.create({
   container: {
     padding: 10,
     paddingHorizontal: 20,
-    backgroundColor:"white"
+    backgroundColor: 'white',
+  },
+  citydropdoenSubSection: {
+    borderWidth: 1,
+    borderRadius: 10,
+    borderColor: '#2BBBA0',
+    height: 50,
+    marginTop: 20,
+  },
+  rowList: {
+    borderWidth: 1,
+    borderColor: 'white',
+    padding: 10,
+  },
+  genderdropDownMenuSection: {
+    borderWidth: 1,
+    borderRadius: 10,
+    borderColor: '#2BBBA0',
+    height: 50,
+    marginTop: 20,
+  },
+  itemContainer: {
+    backgroundColor: '#2BBBA0',
+  },
+  dropdown: {
+    backgroundColor: 'red',
+  },
+  selectorContainer: {
+    marginHorizontal: 10,
+    marginTop: 10,
   },
   rowCont: {
     flexDirection: 'row',
@@ -297,14 +352,53 @@ const styles = StyleSheet.create({
     height: 100,
     borderRadius: 50,
   },
+  dropdownMenusubsection: {
+    borderWidth: 1,
+    borderRadius: 10,
+    borderColor: '#2BBBA0',
+    overflow: 'hidden',
+  },
   h1: {
     fontSize: 20,
     fontWeight: 'bold',
     color: '#000',
   },
+  dropdownMenu: {
+    borderRadius: 10,
+    borderWidth: 1,
+    marginTop: 10,
+    borderStyle: 'solid',
+    borderWidth: 0,
+    borderColor: '#20232a',
+    height: 50,
+  },
+
+  title: {
+    fontWeight: 'bold',
+    marginTop: 5,
+    fontSize: 12,
+  },
+  titleCity: {
+    marginTop: 5,
+    fontWeight: 'bold',
+    fontSize: 12,
+  },
+  titleGender: {
+    marginTop: 5,
+    fontWeight: 'bold',
+    fontSize: 12,
+  },
   h2: {
     fontWeight: 'bold',
     color: '#333',
+  },
+  listContainer: {
+    height: 256,
+  },
+  inputGroup: {
+    borderWidth: 1,
+    borderColor: '#2BBBA0',
+    marginTop: 10,
   },
   input: {
     height: 50,
@@ -315,7 +409,9 @@ const styles = StyleSheet.create({
     borderColor: '#2BBBA0',
   },
   brandSearchInputStyle: {
-    height: 100,
+    height: 45,
+    fontSize: 20,
+    textDecorationLine: 'underline',
   },
   filtersContainer: {
     flexGrow: 1,
