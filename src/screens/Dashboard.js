@@ -48,7 +48,7 @@ const Dashboard = ({navigation}) => {
         <TouchableOpacity onPress={() => navigation.navigate('Notifications')}>
           <Image
             source={require('./../assets/icons/bell.png')}
-            style={styles.iconNoti}
+            style={styles.iconNotification}
           />
         </TouchableOpacity>
       </View>
@@ -272,7 +272,7 @@ const styles = EStyleSheet.create({
     height: 60,
     borderRadius: 100,
   },
-  iconNoti: {
+  iconNotification: {
       width: 25, 
       height: 25, 
       tintColor: '#fff',
