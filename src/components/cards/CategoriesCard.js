@@ -2,6 +2,7 @@ import React from 'react';
 import {StyleSheet, Text, View, Image, TouchableOpacity} from 'react-native';
 import {BASE_URL} from './../../utils/global';
 import { useNavigation } from '@react-navigation/native';
+import EStyleSheet from 'react-native-extended-stylesheet';
 
 const CategoriesCard = ({id, category_name, category_image, category_count}) => {
   const navigation = useNavigation();
@@ -30,12 +31,12 @@ const CategoriesCard = ({id, category_name, category_image, category_count}) => 
 
 export default CategoriesCard;
 
-const styles = StyleSheet.create({
+const styles = EStyleSheet.create({
   card: {
-    backgroundColor: '#fff',
+    backgroundColor: '$ALPHA_TEXT',
     padding: 10,
     borderRadius: 10,
-    shadowColor: '#000',
+    shadowColor: '$ALPHA_PRIMARY',
     shadowOffset: {
       width: 0,
       height: 2,
@@ -53,13 +54,13 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   h1: {
-    color: '#333',
+    color: '$WHITE',
     fontWeight: 'bold',
     textAlign: 'center',
   },
   h2:{
       fontWeight:'bold',
-      color:'#333',
+      color:'$WHITE',
       fontSize:12,
       marginLeft:5
   },
@@ -67,7 +68,7 @@ const styles = StyleSheet.create({
       position:'absolute',
       top:5,
       right:5,
-      backgroundColor:'#fff',
+      backgroundColor:'$HEADER',
       paddingHorizontal:5,
       borderRadius:10,
       flexDirection:'row',
