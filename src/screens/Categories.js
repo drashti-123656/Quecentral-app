@@ -63,6 +63,6 @@ export default Categories;
 const styles = EStyleSheet.create({
   screen: {
     flex: 1,
-    backgroundColor: '$BLACK',
+    backgroundColor: '$BACKGROUND',
   },
 });
