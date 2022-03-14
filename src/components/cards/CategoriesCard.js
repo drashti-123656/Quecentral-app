@@ -33,7 +33,7 @@ export default CategoriesCard;
 
 const styles = EStyleSheet.create({
   card: {
-    backgroundColor: '$ALPHA_TEXT',
+    backgroundColor: '$CARD_BACKGROUND',
     padding: 10,
     borderRadius: 10,
     shadowColor: '$ALPHA_PRIMARY',
@@ -60,7 +60,7 @@ const styles = EStyleSheet.create({
   },
   h2:{
       fontWeight:'bold',
-      color:'$WHITE',
+      color:'$BLACK',
       fontSize:12,
       marginLeft:5
   },
@@ -68,7 +68,7 @@ const styles = EStyleSheet.create({
       position:'absolute',
       top:5,
       right:5,
-      backgroundColor:'$HEADER',
+      backgroundColor:'$GRAY_LIGHT',
       paddingHorizontal:5,
       borderRadius:10,
       flexDirection:'row',
