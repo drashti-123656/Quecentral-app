@@ -1,9 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {
-  StyleSheet,
   Text,
   View,
-  TextInput,
   Image,
   ActivityIndicator,
   TouchableOpacity,
@@ -17,6 +15,7 @@ import ServiceCard from './../components/cards/ServiceCard';
 import {home as homeAPI} from '../services/api';
 import {BASE_URL} from './../utils/global/';
 import SearchBar from '../components/search/SearchBar';
+import EStyleSheet from 'react-native-extended-stylesheet';
 
 const Dashboard = ({navigation}) => {
   const [loading, setLaoding] = useState(false);
@@ -45,11 +44,11 @@ const Dashboard = ({navigation}) => {
   return (
     <View style={styles.container}>
       <View style={styles.headerBar}>
-        <Text style={{...styles.h1, color: '#fff'}}>Dashboard</Text>
+        <Text style={{...styles.h1}}>Dashboard</Text>
         <TouchableOpacity onPress={() => navigation.navigate('Notifications')}>
           <Image
             source={require('./../assets/icons/bell.png')}
-            style={{width: 25, height: 25, tintColor: '#fff'}}
+            style={styles.iconNoti}
           />
         </TouchableOpacity>
       </View>
@@ -59,7 +58,7 @@ const Dashboard = ({navigation}) => {
         <ScrollView showsVerticalScrollIndicator={false}>
           <View style={styles.wrapper}>
             <Swiper
-              style={{borderRadius: 10}}
+              style={styles.swiper}
               showsButtons={false}
               autoplay={true}>
               <Image
@@ -79,35 +78,19 @@ const Dashboard = ({navigation}) => {
               start={{x: 0, y: 0}}
               end={{x: 0.8, y: 0}}
               colors={['transparent', 'transparent', '#000']}
-              style={{
-                position: 'absolute',
-                width: '100%',
-                height: '100%',
-                backgroundColor: 'transparent',
-              }}></LinearGradient>
+              style={styles.gradient}></LinearGradient>
 
             <View
-              style={{
-                position: 'absolute',
-                top: 0,
-                right: 20,
-                bottom: 0,
-                justifyContent: 'center',
-              }}>
-              <Text style={{...styles.h1, color: '#fff'}}>Best Service</Text>
-              <Text style={{...styles.h1, color: '#fff'}}>Provider</Text>
+              style={styles.swiper_text}>
+              <Text style={{...styles.h1}}>Best Service</Text>
+              <Text style={{...styles.h1}}>Provider</Text>
               <BookNow />
             </View>
           </View>
 
-          <View style={{marginBottom: 10}}>
+          <View style={styles.flatlist}>
             <View
-              style={{
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-                alignItems: 'center',
-                marginVertical: 10,
-              }}>
+              style={styles.categories}>
               <Text style={styles.h2}>Categories</Text>
               <ViewMore
                 onPress={() => navigation.navigate('CategoriesStack')}
@@ -115,32 +98,29 @@ const Dashboard = ({navigation}) => {
             </View>
 
             {loading ? (
-              <ActivityIndicator color={COLORS.PRIMARY} />
+              <ActivityIndicator color={EStyleSheet.value('$PRIMARY')} />
             ) : (
               <ScrollView
                 horizontal={true}
                 showsHorizontalScrollIndicator={false}
-                style={{marginVertical: 5}}>
+                style={styles.scrollview}>
                 {categoryList.map((item, i) => (
                   <TouchableOpacity
                     onPress={() =>
                       navigation.navigate('ServicesList', {categoryID: item.id})
                     }
                     key={i}
-                    style={{alignItems: 'center', marginRight: 32}}>
+                    style={styles.service_list}>
                     <View style={styles.iconCont}>
                       <Image
                         source={{uri: `${BASE_URL}${item.category_image}`}}
-                        style={{width: 60, height: 60, borderRadius: 100}}
+                        style={styles.category_image}
                         PlaceholderContent={<ActivityIndicator />}
                       />
                     </View>
                     <Text
                       style={{
-                        ...styles.h3,
-                        width: 60,
-                        marginTop: 5,
-                        textAlign: 'center',
+                        ...styles.h3
                       }}>
                       {item.category_name}
                     </Text>
@@ -151,17 +131,12 @@ const Dashboard = ({navigation}) => {
           </View>
 
           <View
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-              marginBottom: 10,
-            }}>
+            style={styles.services}>
             <Text style={styles.h2}>Popular Services</Text>
           </View>
 
           {loading ? (
-            <ActivityIndicator color={COLORS.PRIMARY} />
+            <ActivityIndicator color={EStyleSheet.value('$PRIMARY')} />
           ) : (
             popularServices.map((item, i) => (
               <ServiceCard
@@ -184,10 +159,10 @@ const Dashboard = ({navigation}) => {
 
 export default Dashboard;
 
-const styles = StyleSheet.create({
+const styles = EStyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: COLORS.PRIMARY,
+    backgroundColor: '$PRIMARY',
   },
   headerBar: {
     height: 50,
@@ -197,23 +172,64 @@ const styles = StyleSheet.create({
   },
   bodyContainer: {
     flex: 0.94,
-    backgroundColor: '#fff',
+    backgroundColor: '$BACKGROUND',
     marginTop: 'auto',
     paddingHorizontal: 10,
+  },
+  categories: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      marginVertical: 10,
+  },
+  swiper: {
+    borderRadius: 10,
+  },
+  flatlist: {
+    marginBottom: 10
+  },
+  service_list:{
+    alignItems: 'center', 
+    marginRight: 32
+  },
+  swiper_text: {
+    position: 'absolute',
+    top: 0,
+    right: 20,
+    bottom: 0,
+    justifyContent: 'center',
+  },
+  gradient: {
+    position: 'absolute',
+    width: '100%',
+    height: '100%',
+    backgroundColor: 'transparent',
+  },
+  category_image:{
+    width: 60,
+    height: 60, 
+    borderRadius: 100
+  },
+  scrollview: {
+    marginVertical: 5,
   },
   h1: {
     fontSize: 20,
     fontWeight: 'bold',
+    color: '$HEADER',
   },
   h2: {
     fontSize: 15,
     fontWeight: 'bold',
-    color: '#333',
+    color: '$TEXT',
   },
   h3: {
     fontSize: 12,
     fontWeight: 'bold',
-    color: '#333',
+    color: '$TEXT',
+    width: 60,
+    marginTop: 5,
+    textAlign: 'center',
   },
   rowCont: {
     flexDirection: 'row',
@@ -239,6 +255,12 @@ const styles = StyleSheet.create({
     shadowRadius: 4.65,
     elevation: 8,
   },
+  services: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 10,
+  },
   image: {
     borderRadius: 10,
   },
@@ -249,6 +271,11 @@ const styles = StyleSheet.create({
     width: 60,
     height: 60,
     borderRadius: 100,
+  },
+  iconNoti: {
+      width: 25, 
+      height: 25, 
+      tintColor: '#fff',
   },
   wrapper: {
     marginTop: 40,
