@@ -1,6 +1,5 @@
 import React from 'react';
 import {
-  StyleSheet,
   Text,
   View,
   Image,
@@ -12,6 +11,7 @@ import {COLORS} from './../../utils/theme';
 import {BASE_URL} from './../../utils/global';
 import Stars from './../../components/review/Stars';
 import LinearGradient from 'react-native-linear-gradient';
+import EStyleSheet from 'react-native-extended-stylesheet';
 
 const ServiceCard = ({
   service_id,
@@ -36,7 +36,7 @@ const ServiceCard = ({
         pointerEvents={'none'}
         start={{x: 0, y: 0}}
         end={{x: 1, y: 0}}
-        colors={['#E6FFF9', '#fff', '#fff']}
+        colors={[EStyleSheet.value('$ALPHA_PRIMARY'), EStyleSheet.value('$CARD_BACKGROUND') , EStyleSheet.value('$CARD_BACKGROUND')]}
         style={styles.container}>
         <Image
           source={{uri: `${BASE_URL}${image}`}}
@@ -63,7 +63,7 @@ const ServiceCard = ({
               position: 'absolute',
               top: 0,
               right: 5,
-              color: COLORS.PRIMARY,
+              color: EStyleSheet.value('$PRIMARY'),
             }}>{`${currency} ${service_amount}`}</Text>
         </View>
       </LinearGradient>
@@ -73,13 +73,14 @@ const ServiceCard = ({
 
 export default ServiceCard;
 
-const styles = StyleSheet.create({
+const styles = EStyleSheet.create({
   container: {
     flexDirection: 'row',
     padding: 10,
     borderWidth: 1,
     borderColor: COLORS.PRIMARY,
     borderRadius: 5,
+    backgroundColor: '$CARD_BACKGROUND',
     marginBottom: 10,
   },
   rowCont: {
@@ -91,6 +92,7 @@ const styles = StyleSheet.create({
   h1: {
     fontWeight: 'bold',
     marginBottom: 7,
+    color: '$TEXT',
   },
   h3: {
     fontSize: 12,
