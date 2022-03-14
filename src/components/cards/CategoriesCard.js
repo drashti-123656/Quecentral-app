@@ -54,7 +54,7 @@ const styles = EStyleSheet.create({
     marginBottom: 10,
   },
   h1: {
-    color: '$WHITE',
+    color: '$TEXT',
     fontWeight: 'bold',
     textAlign: 'center',
   },
