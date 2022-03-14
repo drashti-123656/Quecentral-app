@@ -25,9 +25,9 @@ const AuthNavigation = () => {
   return (
     <Tab.Navigator
       screenOptions={({route}) => ({
-        headerStyle: {backgroundColor: 'transparent'},
+        headerStyle: {backgroundColor: COLORS.PRIMARY},
         headerTintColor: '#fff',
-        tabBarStyle: {backgroundColor: 'transparent'},
+        tabBarStyle: {backgroundColor: COLORS.PRIMARY},
         tabBarIcon: ({focused, color, size}) => {
           if (route.name === 'Home') {
             return (
