@@ -2,6 +2,7 @@ import React from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 import {COLORS} from './../../utils/theme';
 import LinearGradient from 'react-native-linear-gradient';
+import EStyleSheet from 'react-native-extended-stylesheet';
 
 const Card = props => {
   return (
@@ -9,7 +10,7 @@ const Card = props => {
       pointerEvents={'none'}
       start={{x: 0, y: 0}}
       end={{x: 1, y: 0}}
-      colors={['#E6FFF9', '#F3FFFD', '#fff']}
+      colors={[EStyleSheet.value('$ALPHA_PRIMARY'), EStyleSheet.value('$CARD_BACKGROUND') , EStyleSheet.value('$CARD_BACKGROUND')]}
       style={{...styles.container, ...props.style}}>
       {props.children}
     </LinearGradient>
@@ -22,7 +23,5 @@ const styles = StyleSheet.create({
   container: {
     padding: 10,
     borderRadius: 10,
-    borderWidth: 1,
-    borderColor: COLORS.PRIMARY,
   },
 });

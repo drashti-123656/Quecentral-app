@@ -5,6 +5,7 @@ import {
   } from './../services/api';
 import Card from './../components/cards/Card'
 import { COLORS } from './../utils/theme'
+import EStyleSheet from 'react-native-extended-stylesheet';
 
 const Transactions = () => {
 
@@ -28,7 +29,7 @@ const Transactions = () => {
         <ScrollView style={styles.screen}>
          
 
-          {loading && <ActivityIndicator color={COLORS.PRIMARY} />}
+          {loading && <ActivityIndicator color={EStyleSheet.value('$PRIMARY')} />}
 
           {wallet_transactions.map((item, i) => (
             <Card key={i} style={styles.itemContainer}>
@@ -43,33 +44,25 @@ const Transactions = () => {
                   alignSelf: 'flex-start',
                 }}
               /> */}
-              <View style={{marginLeft: 10, marginRight: 10, flex: 1}}>
+              <View style={styles.screen_view}>
                 <View
-                  style={{
-                    flexDirection: 'row',
-                    justifyContent: 'space-between',
-                    alignItems: 'center',
-                  }}>
+                  style={styles.card_view}>
                   <Text style={{...styles.h1, fontSize: 15}}>{item.reason}</Text>
                   <Text
                     style={{
                       ...styles.h1,
                       fontSize: 18,
-                      color: COLORS.PRIMARY,
+                      color: EStyleSheet.value('$PRIMARY'),
                     }}>{`${item.currency} ${item.total_amt}`}</Text>
                 </View>
-                <Text>
+                <Text style={styles.card_text}>
                   Gateway :{' '}
-                  <Text style={{fontWeight: 'normal'}}>
+                  <Text>
                     {'Razorpay'}
                   </Text>
                 </Text>
                 <View
-                  style={{
-                    flexDirection: 'row',
-                    justifyContent: 'space-between',
-                    alignItems: 'center',
-                  }}>
+                  style={styles.card_view}>
                   <Text
                     style={[
                       styles.h2,
@@ -95,9 +88,22 @@ const Transactions = () => {
 
 export default Transactions
 
-const styles = StyleSheet.create({
+const styles = EStyleSheet.create({
     screen:{
         padding:10
+    },
+    screen_view: {
+      marginLeft: 10, 
+      marginRight: 10, 
+      flex: 1
+    },
+    card_view: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+    },
+    card_text: {
+      color: '$TEXT'
     },
     h1: {
         fontSize: 20,
