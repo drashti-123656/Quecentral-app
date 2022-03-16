@@ -6,6 +6,7 @@ import {
   TextInput,
   Image,
 } from 'react-native';
+import EStyleSheet from 'react-native-extended-stylesheet';
 
 const CustomInput = (props) => {
   const {
@@ -104,11 +105,12 @@ const CouponInputWithTitle = props => {
 
 export {CustomInput, CustomInputWithTitle, CouponInputWithTitle};
 
-const styles = StyleSheet.create({
+const styles = EStyleSheet.create({
   title: {
-    fontSize: 12,
+    fontSize: 15,
     fontWeight: 'bold',
-    marginTop:15
+    marginTop:15,
+    color : '$TEXT'
   },
   input: {
     height: 50,
@@ -116,7 +118,8 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     padding: 10,
     borderRadius: 10,
-    borderColor: '#2BBBA0',
-    color:'#000',
+    borderColor: '$PRIMARY',
+    color:'$TEXT',
+    backgroundColor: '$CARD_BACKGROUND',
   },
 });

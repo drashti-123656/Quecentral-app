@@ -8,6 +8,7 @@ import {
   ScrollView,
   Pressable,
 } from 'react-native';
+import EStyleSheet from 'react-native-extended-stylesheet';
 import {
     categoryList as categoryListAPI
 } from '../../services/api';
@@ -72,20 +73,21 @@ const CategoriesPicker = ({ title, onSelect, value}) => {
 
 export default CategoriesPicker;
 
-const styles = StyleSheet.create({
+const styles = EStyleSheet.create({
   h1: {
     padding: 10,
   },
   title:{
     fontWeight:'bold',
-    fontSize:12,
-    marginBottom:5
+    fontSize:15,
+    marginBottom:5,
+    color : '$TEXT'
   },
   modalCont: {
     padding: 10,
     flex: 0.5,
     marginHorizontal: 20,
-    backgroundColor: '#fff',
+    backgroundColor: '$GRAY_DARK',
     justifyContent: 'center',
     borderRadius: 10,
     shadowColor: '#000',
@@ -99,25 +101,26 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
   h1: {
-    color: '#000',
+    color: '$TEXT',
     fontWeight: 'bold',
     fontSize: 20,
     textAlign: 'center',
   },
   h2: {
-    color: '#333',
+    color: '$TEXT',
     fontWeight: 'bold',
     fontSize: 16,
     padding: 10,
-    borderBottomColor: '#d1d1d1',
+    borderBottomColor: '$ALPHA_TEXT',
     borderBottomWidth: 1,
+    backgroundColor : '$CARD_BACKGROUND'
   },
   input: {
     height: 50,
     borderWidth: 1,
     padding: 10,
     borderRadius: 10,
-    borderColor: '#2BBBA0',
+    borderColor: '$PRIMARY',
     justifyContent:'center',
     marginBottom:10
   },

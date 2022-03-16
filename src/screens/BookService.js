@@ -19,6 +19,7 @@ import {
   serviceAvailability as serviceAvailabilityAPI,
   validateCoupon as validateCouponAPI,
 } from './../services/api';
+import EStyleSheet from 'react-native-extended-stylesheet';
 
 const BookService = props => {
   const {service_amount, serviceId} = props.route.params;
@@ -312,16 +313,20 @@ const BookService = props => {
 
 export default BookService;
 
-const styles = StyleSheet.create({
+const styles = EStyleSheet.create({
   container: {
     flex: 1,
     padding: 10,
-    backgroundColor: '#fff',
+    backgroundColor: '$BACKGROUND',
   },
   rowCont: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
     marginBottom: 10,
+    
   },
+  TermsCondition : {
+    color: '$TEXT'
+  }
 });

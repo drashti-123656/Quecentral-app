@@ -26,6 +26,7 @@ import CalendarPicker from '../components/picker/CalendarPicker';
 import moment from 'moment';
 import {genderData} from '../utils/helper';
 import SuccessAlert from '../components/molecules/alert/SuccessAlert';
+import EStyleSheet from 'react-native-extended-stylesheet';
 
 const EditProfile = ({route, navigation}) => {
   const dispatch = useDispatch();
@@ -308,16 +309,16 @@ const EditProfile = ({route, navigation}) => {
 
 export default EditProfile;
 
-const styles = StyleSheet.create({
+const styles = EStyleSheet.create({
   container: {
     padding: 10,
     paddingHorizontal: 20,
-    backgroundColor: 'white',
+    backgroundColor: '$BACKGROUND',
   },
   citydropdoenSubSection: {
     borderWidth: 1,
     borderRadius: 10,
-    borderColor: '#2BBBA0',
+    borderColor: '$PRIMARY',
     height: 50,
     marginTop: 20,
   },

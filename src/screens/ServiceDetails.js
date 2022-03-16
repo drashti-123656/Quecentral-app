@@ -18,6 +18,7 @@ import ProviderDetails from './../components/cards/ProviderDetails';
 import Stars from './../components/review/Stars';
 import {serviceDetails as serviceDetailsAPI} from './../services/api';
 import {BASE_URL} from './../utils/global';
+import EStyleSheet from 'react-native-extended-stylesheet';
 
 const ServiceDetails = props => {
   const {serviceId} = props.route.params;
@@ -49,7 +50,7 @@ const ServiceDetails = props => {
       end={{x: 1, y: 0}}
       colors={['#72E5D8', '#41C8B1', '#16AE8F']}
       style={styles.container}>
-        {console.log(serviceOverview.ratings)}
+      {console.log(serviceOverview.ratings)}
       <View style={styles.headerBar}>
         <Text style={{...styles.h1, color: '#fff', marginLeft: 10}}>
           Service Details
@@ -150,10 +151,15 @@ const ServiceDetails = props => {
                       ...styles.rowCont,
                       justifyContent: 'space-between',
                     }}>
-                    <Stars rating={ serviceOverview.ratings} />
+                    <Stars rating={serviceOverview.ratings} />
 
                     <TouchableOpacity
-                      onPress={() => props.navigation.navigate('BookService',{ service_amount: serviceOverview.service_amount, serviceId })}
+                      onPress={() =>
+                        props.navigation.navigate('BookService', {
+                          service_amount: serviceOverview.service_amount,
+                          serviceId,
+                        })
+                      }
                       style={{
                         padding: 5,
                         backgroundColor: COLORS.PRIMARY,
@@ -184,12 +190,12 @@ const ServiceDetails = props => {
                   style={{
                     padding: 10,
                     margin: 10,
-                    backgroundColor: '#fff',
+                    backgroundColor: EStyleSheet.value('$CARD_BACKGROUND'),
                     borderRadius: 10,
                     marginBottom: 120,
                   }}>
                   <Text style={styles.h2}>Service Details</Text>
-                  <Text>{serviceOverview.about}</Text>
+                  <Text style={styles.h4}>{serviceOverview.about}</Text>
                 </View>
               </ScrollView>
             )}
@@ -202,7 +208,7 @@ const ServiceDetails = props => {
 
 export default ServiceDetails;
 
-const styles = StyleSheet.create({
+const styles = EStyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: COLORS.PRIMARY,
@@ -213,7 +219,7 @@ const styles = StyleSheet.create({
   },
   bodyContainer: {
     flex: 0.94,
-    backgroundColor: '#f1f1f1',
+    backgroundColor: '$BACKGROUND',
     marginTop: 'auto',
   },
   h1: {
@@ -223,12 +229,12 @@ const styles = StyleSheet.create({
   h2: {
     fontSize: 15,
     fontWeight: 'bold',
-    color: '#333',
+    color: '$TEXT',
   },
   h3: {
     fontSize: 12,
     fontWeight: 'bold',
-    color: '#333',
+    //color: '$TEXT',
   },
   rowCont: {
     flexDirection: 'row',
@@ -245,5 +251,9 @@ const styles = StyleSheet.create({
   },
   image: {
     flex: 1,
+  },
+  h4: {
+    color: '$TEXT',
+    padding: 5,
   },
 });
