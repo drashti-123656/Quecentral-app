@@ -6,6 +6,7 @@ import {
   FlatList,
   Alert,
 } from 'react-native';
+import EStyleSheet from 'react-native-extended-stylesheet';
 import {COLORS} from '../utils/theme';
 import CategoriesCard from './../components/cards/CategoriesCard';
 import {categoryList} from './../services/api';
@@ -59,8 +60,9 @@ const Categories = () => {
 
 export default Categories;
 
-const styles = StyleSheet.create({
+const styles = EStyleSheet.create({
   screen: {
     flex: 1,
+    backgroundColor: '$BACKGROUND',
   },
 });

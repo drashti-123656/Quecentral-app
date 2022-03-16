@@ -7,9 +7,6 @@ import {
   Image,
   TextInput,
   ActivityIndicator,
-  TouchableOpacity,
-  Alert,
-  TouchableHighlight,
 } from 'react-native';
 import {showMessage, hideMessage} from 'react-native-flash-message';
 import {useSelector} from 'react-redux';
@@ -23,6 +20,7 @@ import {
 } from './../services/api';
 import Card from './../components/cards/Card';
 import RazorpayCheckout from 'react-native-razorpay';
+import EStyleSheet from 'react-native-extended-stylesheet';
 
 const Wallet = () => {
   const {userData : {name, email, mobileno}} = useSelector(({auth}) => auth);
@@ -239,7 +237,7 @@ const Wallet = () => {
         </View>
 
         <View>
-          <Text style={{fontWeight: 'bold', marginBottom: 10}}>
+          <Text style={styles.transaction}>
             Transaction History
           </Text>
 
@@ -311,9 +309,10 @@ const Wallet = () => {
 
 export default Wallet;
 
-const styles = StyleSheet.create({
+const styles = EStyleSheet.create({
   container: {
     flex: 1,
+    //backgroundColor: '$BACKGROUND',
   },
   myWalletCont: {
     backgroundColor: 'white',
@@ -328,6 +327,10 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     padding: 10,
     marginBottom: 10,
+  },
+  transaction: {
+    fontWeight: 'bold', 
+    marginBottom: 10
   },
   h1: {
     fontSize: 20,

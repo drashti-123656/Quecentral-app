@@ -1,6 +1,8 @@
 import {StyleSheet, TextInput, TouchableOpacity, Image} from 'react-native';
 import React from 'react';
 import { useNavigation } from '@react-navigation/native';
+import EStyleSheet from 'react-native-extended-stylesheet';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 const SearchBar = ({value, onChangeText}) => {
   const navigation = useNavigation();
@@ -15,20 +17,17 @@ const SearchBar = ({value, onChangeText}) => {
         value={value}
         onChangeText={onChangeText}
         placeholder="Search Service"
-        placeholderTextColor="#a1a1a1"
+        placeholderTextColor={EStyleSheet.value('$ALPHA_TEXT')}
         editable={false}
       />
-        <Image
-          source={require('./../../assets/icons/search.png')}
-          style={styles.imageStyle}
-        />
+        <Icon name="search" size={25} color={EStyleSheet.value('$TEXT')} />
     </TouchableOpacity>
   );
 };
 
 export default SearchBar;
 
-const styles = StyleSheet.create({
+const styles = EStyleSheet.create({
   rowCont: {
     flexDirection: 'row',
     justifyContent: 'center',
@@ -42,7 +41,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     zIndex: 1,
     marginHorizontal: 10,
-    backgroundColor: '#fff',
+    backgroundColor: '$CARD_BACKGROUND',
     borderRadius: 5,
     shadowColor: '#000',
     shadowOffset: {

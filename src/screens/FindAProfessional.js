@@ -23,6 +23,7 @@ import Icon from 'react-native-vector-icons/FontAwesome5';
 import SliderScreen from './../components/Slider/Slider';
 import {useDispatch, useSelector} from 'react-redux';
 import {searchServiceAction} from '../redux/actions/searchSevice';
+import EStyleSheet from 'react-native-extended-stylesheet';
 
 const FindAProfessional = ({route, navigation}) => {
   const dispatch = useDispatch();
@@ -44,7 +45,7 @@ const FindAProfessional = ({route, navigation}) => {
   }, [Categories, sortBy, searchText, minPrice, maxPrice]);
 
   useEffect(() => {
-    searchInput.current.focus()
+    searchInput.current.focus();
   }, []);
 
   const searchHandler = async () => {
@@ -158,7 +159,7 @@ const FindAProfessional = ({route, navigation}) => {
                     </View>
 
                     <Text
-                      style={{...styles.h3, color: '#000', marginBottom: 10}}>
+                      style={{...styles.h3, color:EStyleSheet.value('$TEXT'), marginBottom: 10}}>
                       Price Range
                     </Text>
                     <SliderScreen
@@ -179,7 +180,7 @@ const FindAProfessional = ({route, navigation}) => {
                   <Icon
                     name={ShowAdvanceFilters ? 'angle-up' : 'angle-down'}
                     size={25}
-                    color="#333"
+                    color={EStyleSheet.value('$TEXT')}
                   />
                 </Pressable>
               </View>
@@ -209,7 +210,7 @@ const FindAProfessional = ({route, navigation}) => {
 
 export default FindAProfessional;
 
-const styles = StyleSheet.create({
+const styles = EStyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: COLORS.PRIMARY,
@@ -221,13 +222,14 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     height: Dimensions.get('window').height - 20,
+    backgroundColor: '$BACKGROUND',
   },
   text: {
     fontSize: 16,
     lineHeight: 21,
     fontWeight: 'bold',
     letterSpacing: 0.25,
-    color: 'white',
+    color: '$TEXT',
   },
   headerBar: {
     height: 50,
@@ -235,7 +237,7 @@ const styles = StyleSheet.create({
   },
   bodyContainer: {
     flex: 0.94,
-    backgroundColor: '#fff',
+    backgroundColor: '$TEXT',
     marginTop: 'auto',
   },
   moreFiltersButton: {
@@ -255,12 +257,12 @@ const styles = StyleSheet.create({
   h2: {
     fontSize: 15,
     fontWeight: 'bold',
-    color: '#333',
+    color: '$TEXT',
   },
   h3: {
-    fontSize: 12,
+    fontSize: 15,
     fontWeight: 'bold',
-    color: '#333',
+    color: '$TEXT',
   },
   rowCont: {
     flexDirection: 'row',
@@ -271,7 +273,7 @@ const styles = StyleSheet.create({
   filterOptionsCont: {
     padding: 10,
     marginHorizontal: 10,
-    backgroundColor: '#fff',
+    backgroundColor: '$CARD_BACKGROUND',
     borderRadius: 5,
     shadowColor: '#000',
     shadowOffset: {
@@ -323,7 +325,7 @@ const styles = StyleSheet.create({
   searchTitle: {flex: 1, color: '#000'},
   locationTitle: {marginBottom: 5},
   sortbyTitle: {width: '49%'},
-  searchContainer: {backgroundColor: '#fff', zIndex: 1},
+  searchContainer: {backgroundColor: '$BACKGROUND', zIndex: 1},
 
   loader: {
     justifyContent: 'center',

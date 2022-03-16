@@ -13,6 +13,7 @@ import {COLORS} from '../../utils/theme';
 import {Calendar} from 'react-native-calendars';
 import {date} from 'yup';
 import serviceAvailability from './../../services/api';
+import EStyleSheet from 'react-native-extended-stylesheet';
 
 const CalendarPicker = props => {
   const [showModal, setShowModal] = useState(false);
@@ -47,7 +48,7 @@ const CalendarPicker = props => {
               height: '100%',
               width: '100%',
               opacity: 0.7,
-              backgroundColor: '#333',
+              backgroundColor: '#000',
               position: 'absolute',
             }}></Pressable>
           <View style={styles.modalCont}>
@@ -67,23 +68,25 @@ const CalendarPicker = props => {
 
 export default CalendarPicker;
 
-const styles = StyleSheet.create({
+const styles = EStyleSheet.create({
   h1: {
     padding: 10,
   },
   title: {
     fontWeight: 'bold',
-    fontSize: 12,
+    fontSize: 15,
     marginBottom: 5,
+    marginTop:15,
+    color: '$TEXT'
   },
   modalCont: {
     padding: 10,
     flex: 0.5,
     marginHorizontal: 20,
-    backgroundColor: '#fff',
+    backgroundColor: '$GRAY',
     justifyContent: 'center',
     borderRadius: 10,
-    shadowColor: '#000',
+    shadowColor: '$PRIMARY',
     shadowOffset: {
       width: 0,
       height: 2,
@@ -94,17 +97,17 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
   h1: {
-    color: '#000',
+    color: '$TEXT',
     fontWeight: 'bold',
     fontSize: 20,
     textAlign: 'center',
   },
   h2: {
-    color: '#333',
+    color: '$TEXT',
     fontWeight: 'bold',
     fontSize: 16,
     padding: 10,
-    borderBottomColor: '#d1d1d1',
+    borderBottomColor: '$ALPHA_TEXT',
     borderBottomWidth: 1,
   },
   input: {
@@ -112,8 +115,10 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     padding: 10,
     borderRadius: 10,
-    borderColor: '#2BBBA0',
+    borderColor: '$PRIMARY',
     justifyContent: 'center',
     marginBottom: 10,
+    backgroundColor: '$CARD_BACKGROUND'
   },
+ 
 });
