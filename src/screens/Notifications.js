@@ -12,6 +12,7 @@ import Card from './../components/cards/Card';
 import {notificationList as notificationListAPI} from './../services/api';
 import {COLORS} from './../utils/theme';
 import {BASE_URL} from './../utils/global';
+import EStyleSheet from 'react-native-extended-stylesheet';
 
 const Notifications = () => {
   const [loading, setLoading] = useState(false);
@@ -33,8 +34,8 @@ const Notifications = () => {
   return (
     <View style={styles.screen}>
       {loading ? (
-        <View style={{justifyContent: 'center', alignItems: 'center', flex: 1}}>
-          <ActivityIndicator color={COLORS.PRIMARY} size={'large'} />
+        <View style={styles.screen_view}>
+          <ActivityIndicator color={EStyleSheet.value('$PRIMARY')} size={'large'} />
         </View>
       ) : (
         <FlatList
@@ -46,9 +47,9 @@ const Notifications = () => {
             <Card style={styles.card}>
               <Image
                 source={{uri: `${BASE_URL}${item.profile_img}`}}
-                style={{width: 50, height: 50, borderRadius: 50}}
+                style={styles.card_image}
               />
-              <View style={{marginLeft: 10, flex: 1}}>
+              <View style={styles.card_view}>
                 <Text style={styles.h1}>{item.name}</Text>
                 <Text style={styles.h2}>{item.message}</Text>
                 <Text style={styles.h3}>{item.utc_date_time}</Text>
@@ -64,16 +65,30 @@ const Notifications = () => {
 
 export default Notifications;
 
-const styles = StyleSheet.create({
+const styles = EStyleSheet.create({
   screen: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: '$BACKGROUND',
+  },
+  screen_view: {
+    justifyContent: 'center', 
+    alignItems: 'center', 
+    flex: 1
   },
   card: {
     flexDirection: 'row',
     padding: 10,
     marginHorizontal: 10,
     marginVertical: 5,
+  },
+  card_image: {
+    width: 50, 
+    height: 50, 
+    borderRadius: 50
+  },
+  card_view: {
+    marginLeft: 10,
+    flex: 1
   },
   h1: {
     color: '#000',

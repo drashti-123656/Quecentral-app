@@ -77,8 +77,6 @@ const styles = EStyleSheet.create({
   container: {
     flexDirection: 'row',
     padding: 10,
-    borderWidth: 1,
-    borderColor: COLORS.PRIMARY,
     borderRadius: 5,
     backgroundColor: '$CARD_BACKGROUND',
     marginBottom: 10,

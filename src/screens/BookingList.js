@@ -10,6 +10,7 @@ import {COLORS} from '../utils/theme';
 import BookingCard from './../components/cards/BookingCard';
 import { useDispatch, useSelector } from "react-redux";
 import {fetchBookingsAction} from './../redux/actions/bookings';
+import EStyleSheet from 'react-native-extended-stylesheet';
 
 const BookingList = () => {
   const [loading, setLoading] = useState(false);
@@ -30,8 +31,8 @@ const dispatch = useDispatch();
   return (
     <View style={styles.screen}>
       {loading ? (
-        <View style={{justifyContent: 'center', alignItems: 'center', flex: 1}}>
-          <ActivityIndicator color={COLORS.PRIMARY} size={'large'} />
+        <View style={styles.screen_view}>
+          <ActivityIndicator color={EStyleSheet.value('$PRIMARY')} size={'large'} />
         </View>
       ) : (
         <FlatList
@@ -40,7 +41,7 @@ const dispatch = useDispatch();
             <RefreshControl refreshing={refreshing} onRefresh={refreshScreen} />
           }
           renderItem={({item}) => (
-            <View style={{marginHorizontal: 10, marginBottom: 10}}>
+            <View style={styles.item_view}>
               <BookingCard
                 service_id={item.service_id}
                 service_title={item.service_title}
@@ -62,9 +63,19 @@ const dispatch = useDispatch();
 
 export default BookingList;
 
-const styles = StyleSheet.create({
+const styles = EStyleSheet.create({
   screen: {
     flex: 1,
     paddingTop: 10,
+    backgroundColor: '$BACKGROUND'
   },
+  screen_view: {
+    justifyContent: 'center', 
+    alignItems: 'center', 
+    flex: 1
+  },
+  item_view: {
+    marginHorizontal: 10, 
+    marginBottom: 10
+  }
 });

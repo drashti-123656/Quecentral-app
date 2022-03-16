@@ -1,6 +1,5 @@
 import React, {useState, useEffect} from 'react';
 import {
-  StyleSheet,
   Text,
   View,
   ScrollView,
@@ -71,7 +70,7 @@ const Wallet = () => {
           contact: mobileno,
           name: name,
         },
-        theme: {color: COLORS.PRIMARY},
+        theme: {color: EStyleSheet.value('$PRIMARY')},
       };
       RazorpayCheckout.open(options)
         .then(async(data) => {
@@ -88,7 +87,7 @@ const Wallet = () => {
             showMessage({
               message: response.data.response.response_message,
               type: 'info',
-              backgroundColor: COLORS.warningRed,
+              backgroundColor: EStyleSheet.value('$WARNING_RED'),
             });
           }
           console.log(data);
@@ -98,7 +97,7 @@ const Wallet = () => {
           showMessage({
             message: `Error: ${error.code} | ${error.description}`,
             type: 'info',
-            backgroundColor: COLORS.warningRed,
+            backgroundColor: EStyleSheet.value('$WARNING_RED'),
           });
           alert(`Error: ${error.code} | ${error.description}`);
         });
@@ -107,18 +106,18 @@ const Wallet = () => {
 
   return (
     <View style={styles.container}> 
-      <ScrollView style={{padding: 20}}>
+      <ScrollView style={styles.scrollview}>
         <View style={styles.myWalletCont}>
-          <Text style={{fontWeight: 'bold'}}>My Wallet</Text>
-          <View style={{alignItems: 'flex-end'}}>
+          <Text style={styles.wallet_text}>My Wallet</Text>
+          <View style={styles.wallet_view}>
             <Text style={styles.h1}>
               {loading ? (
-                <ActivityIndicator color={COLORS.PRIMARY} />
+                <ActivityIndicator color={EStyleSheet.value('$PRIMARY')} />
               ) : (
                 walletInfo.wallet_amt
               )}
             </Text>
-            <Text style={{color: '#a1a1a1'}}>Available Balance</Text>
+            <Text style={styles.text}>Available Balance</Text>
           </View>
         </View>
 
@@ -129,37 +128,37 @@ const Wallet = () => {
             alignItems: 'center',
           }}>
           <View>
-            <View style={{flexDirection: 'row', alignItems: 'center'}}>
+            <View style={styles.credit_debit}>
               <Image
                 source={require('./../assets/icons/down-arrow.png')}
-                style={{width: 20, height: 20, marginRight: 10}}
+                style={styles.credit_debit_img}
               />
-              <Text style={{color: '#a1a1a1'}}>Total Credit</Text>
+              <Text style={styles.text}>Total Credit</Text>
             </View>
 
             <Text
-              style={{fontWeight: 'bold', fontSize: 18, textAlign: 'right'}}>
+              style={styles.credit_debit_text}>
               {loading ? (
-                <ActivityIndicator color={COLORS.PRIMARY} />
+                <ActivityIndicator color={EStyleSheet.value('$PRIMARY')} />
               ) : (
                 `+ ${walletInfo.currency} ${walletInfo.total_credit}`
               )}
             </Text>
           </View>
           <View
-            style={{width: 2, backgroundColor: '#a1a1a1', height: 30}}></View>
+            style={styles.line}></View>
           <View>
-            <View style={{flexDirection: 'row', alignItems: 'center'}}>
+            <View style={styles.credit_debit}>
               <Image
                 source={require('./../assets/icons/upArrow.png')}
-                style={{width: 20, height: 20, marginRight: 10}}
+                style={styles.credit_debit_img}
               />
-              <Text style={{color: '#a1a1a1'}}>Total Debit</Text>
+              <Text style={styles.text}>Total Debit</Text>
             </View>
             <Text
-              style={{fontWeight: 'bold', fontSize: 18, textAlign: 'right'}}>
+              style={styles.credit_debit_text}>
               {loading ? (
-                <ActivityIndicator color={COLORS.PRIMARY} />
+                <ActivityIndicator color={EStyleSheet.value('$PRIMARY')} />
               ) : (
                 `+ ${walletInfo.currency} ${Math.round(walletInfo.total_debit)}`
               )}
@@ -169,27 +168,17 @@ const Wallet = () => {
 
         <View style={styles.withdrawCont}>
           <View
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-            }}>
-            <Text style={{fontWeight: 'bold', marginBottom: 10}}>Withdraw</Text>
+            style={styles.withdrawCont_view}>
+            <Text style={styles.withdrawCont_text}>Withdraw</Text>
             <Image
               source={require('./../assets/images/razorpay.png')}
-              style={{width: 20, height: 20}}
+              style={styles.withdrawCont_image}
             />
           </View>
           <TextInput
-            style={{
-              backgroundColor: '#f1f1f1',
-              borderRadius: 10,
-              height: 50,
-              paddingHorizontal: 20,
-              marginBottom: 10,
-              color:'#000'
-            }}
+            style={styles.withdrawCont_textinput}
             placeholder={'$ Enter Amount'}
+            placeholderTextColor={EStyleSheet.value('$GRAY')}
             value={amount}
             onChangeText={setAmount}
             keyboardType="numeric"
@@ -226,7 +215,7 @@ const Wallet = () => {
                 showMessage({
                   message: 'Please enter amount ',
                   type: 'info',
-                  backgroundColor: COLORS.warningRed,
+                  backgroundColor: EStyleSheet.value('$WARNING_RED'),
                 });
                 return;
               } else {
@@ -241,7 +230,7 @@ const Wallet = () => {
             Transaction History
           </Text>
 
-          {loading && <ActivityIndicator color={COLORS.PRIMARY} />}
+          {loading && <ActivityIndicator color={EStyleSheet.value('$PRIMARY')} />}
 
           {wallet_transactions.map((item, i) => (
             <Card key={i} style={styles.itemContainer}>
@@ -255,13 +244,9 @@ const Wallet = () => {
                   alignSelf: 'flex-start',
                 }}
               /> */}
-              <View style={{marginLeft: 10, marginRight: 10, flex: 1}}>
+              <View style={styles.transactionHistory_view}>
                 <View
-                  style={{
-                    flexDirection: 'row',
-                    justifyContent: 'space-between',
-                    alignItems: 'center',
-                  }}>
+                  style={styles.transaction_history}>
                   <Text style={{...styles.h1, fontSize: 15}}>
                     {item.reason}
                   </Text>
@@ -269,19 +254,15 @@ const Wallet = () => {
                     style={{
                       ...styles.h1,
                       fontSize: 18,
-                      color: COLORS.PRIMARY,
+                      color: EStyleSheet.value('$PRIMARY'),
                     }}>{`${item.currency} ${item.total_amt}`}</Text>
                 </View>
-                <Text>
+                <Text style={styles.history_text}>
                   Gateway :{' '}
-                  <Text style={{fontWeight: 'normal'}}>{'Razorpay'}</Text>
+                  <Text>{'Razorpay'}</Text>
                 </Text>
                 <View
-                  style={{
-                    flexDirection: 'row',
-                    justifyContent: 'space-between',
-                    alignItems: 'center',
-                  }}>
+                  style={styles.transaction_history}>
                   <Text
                     style={[
                       styles.h2,
@@ -312,45 +293,113 @@ export default Wallet;
 const styles = EStyleSheet.create({
   container: {
     flex: 1,
-    //backgroundColor: '$BACKGROUND',
+    backgroundColor: '$BACKGROUND',
+  },
+  scrollview: {
+    padding: 20
   },
   myWalletCont: {
-    backgroundColor: 'white',
+    backgroundColor: '$CARD_BACKGROUND',
     borderRadius: 10,
     flexDirection: 'row',
     justifyContent: 'space-between',
     padding: 10,
     marginBottom: 10,
   },
+  wallet_text: {
+    fontWeight: 'bold',
+    color: '$TEXT',
+  },
+  wallet_view: {
+    alignItems: 'flex-end'
+  },
+  text: {
+    color: '#a1a1a1'
+  },
+  withdrawCont_textinput: {
+    backgroundColor: '#f1f1f1',
+    borderRadius: 10,
+    height: 50,
+    paddingHorizontal: 20,
+    marginBottom: 10,
+    color:'#000'
+  },
   withdrawCont: {
-    backgroundColor: 'white',
+    backgroundColor: '$CARD_BACKGROUND',
     borderRadius: 10,
     padding: 10,
     marginBottom: 10,
   },
   transaction: {
     fontWeight: 'bold', 
-    marginBottom: 10
+    marginBottom: 10,
+    color: '$TEXT',
+  },
+  credit_debit: {
+    flexDirection: 'row',
+    alignItems: 'center'
+  },
+  credit_debit_img: {
+    width: 20, 
+    height: 20, 
+    marginRight: 10
+  },
+  credit_debit_text: { 
+    fontWeight: 'bold', 
+    fontSize: 18, 
+    textAlign: 'right',
+    color: '$TEXT',
+  },
+  line: {
+    width: 2, 
+    backgroundColor: '#a1a1a1', 
+    height: 30
+  },
+  withdrawCont_view: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+  },
+  withdrawCont_image: {
+    width: 20, 
+    height: 20,
   },
   h1: {
     fontSize: 20,
     fontWeight: 'bold',
     marginBottom: 1,
+    color: '$TEXT',
   },
   h2: {
     fontSize: 15,
     fontWeight: 'bold',
     marginBottom: 1,
   },
+  withdrawCont_text: {
+    fontWeight: 'bold', 
+    color: '$TEXT',
+    marginBottom: 10
+  },
   itemContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     padding: 10,
-    borderStyle: 'solid',
-    borderWidth: 1,
-    borderColor: '#f1f1f1',
     borderRadius: 10,
     marginBottom: 10,
-    backgroundColor: 'white',
+    backgroundColor: '$CARD_BACKGROUND'
   },
+  transactionHistory_view: {
+    marginLeft: 10, 
+    marginRight: 10, 
+    flex: 1,
+    
+  },
+  history_text: {
+    color: '$TEXT'
+  },
+  transaction_history : {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  }
 });
