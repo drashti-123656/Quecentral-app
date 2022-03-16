@@ -90,7 +90,8 @@ export default Transactions
 
 const styles = EStyleSheet.create({
     screen:{
-        padding:10
+        padding:10,
+        backgroundColor: '$BACKGROUND'
     },
     screen_view: {
       marginLeft: 10, 
@@ -120,8 +121,6 @@ const styles = EStyleSheet.create({
         alignItems: 'center',
         padding: 10,
         borderStyle: 'solid',
-        borderWidth: 1,
-        borderColor: '#f1f1f1',
         borderRadius: 10,
         marginBottom: 10,
         backgroundColor: 'white',
