@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   Image,
 } from 'react-native';
+import EStyleSheet from 'react-native-extended-stylesheet';
 import {COLORS} from './../../utils/theme';
 
 const AlertModel = ({alertDisplay, setAlertDisplay, onPressOkay}) => {
@@ -36,7 +37,7 @@ const AlertModel = ({alertDisplay, setAlertDisplay, onPressOkay}) => {
 
 export default AlertModel;
 
-const styles = StyleSheet.create({
+const styles = EStyleSheet.create({
   modalCont: {
     padding: 10,
     flex:0.4,

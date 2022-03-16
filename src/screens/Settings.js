@@ -11,6 +11,7 @@ import {useIsFocused} from '@react-navigation/native';
 import {COLORS} from './../utils/theme';
 import {profileDetails} from '../services/api';
 import {BASE_URL} from './../utils/global';
+import EStyleSheet from 'react-native-extended-stylesheet';
 
 const Settings = ({navigation}) => {
   const isFocused = useIsFocused();
@@ -65,7 +66,7 @@ const Settings = ({navigation}) => {
                     marginRight: 10,
                   }}
                 />
-                <Text>{userDetails.email}</Text>
+                <Text style={styles.emailText}>{userDetails.email}</Text>
               </View>
               <TouchableOpacity
                 onPress={() =>
@@ -134,11 +135,11 @@ const Settings = ({navigation}) => {
 
 export default Settings;
 
-const styles = StyleSheet.create({
+const styles = EStyleSheet.create({
   container: {
     flex: 1,
     padding: 10,
-    backgroundColor: '#fff',
+    backgroundColor: '$BACKGROUND',
   },
   profilePic: {
     width: 100,
@@ -150,9 +151,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   menuCont: {
-    borderColor: '#d1d1d1',
+    borderColor: '$ALPHA_TEXT',
     borderWidth: 1,
-    backgroundColor: '#fff',
+    backgroundColor: '$CARD_BACKGROUND',
     paddingHorizontal: 10,
     borderRadius: 10,
     marginTop: 30,
@@ -160,17 +161,17 @@ const styles = StyleSheet.create({
   },
   menuItems: {
     paddingVertical: 20,
-    borderBottomColor: '#d1d1d1',
+    borderBottomColor: '$ALPHA_TEXT',
     borderBottomWidth: 1,
   },
   h1: {
     fontSize: 20,
     fontWeight: 'bold',
-    color: '#000',
+    color: '$TEXT',
   },
   h2: {
     fontWeight: 'bold',
-    color: '#333',
+    color: '$TEXT',
   },
   iconWrapper: {
     borderRadius: 50,
@@ -181,4 +182,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginRight: 10,
   },
+  emailText : {
+    color: '$TEXT',
+  }
 });

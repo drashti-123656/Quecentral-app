@@ -5,6 +5,7 @@ import { COLORS } from './../../utils/theme'
 import Stars from './../../components/review/Stars'
 import LinearGradient from 'react-native-linear-gradient';
 import { BASE_URL } from './../../utils/global'
+import EStyleSheet from 'react-native-extended-stylesheet';
 
 const ProviderDetails = ({ style, image, name, email, mobileno }) => {
     const navigation = useNavigation();
@@ -41,9 +42,9 @@ const ProviderDetails = ({ style, image, name, email, mobileno }) => {
 
 export default ProviderDetails
 
-const styles = StyleSheet.create({
+const styles = EStyleSheet.create({
     container: {
-        backgroundColor: 'white',
+        backgroundColor: '$CARD_BACKGROUND',
         padding:10,
         marginHorizontal:10,
         borderRadius:10,
@@ -63,10 +64,11 @@ const styles = StyleSheet.create({
     },
     h1: {
         fontWeight: 'bold',
+        color: '$TEXT'
     },
     h3: {
         fontSize: 12,
         fontWeight: 'bold',
-        color: '#333'
+        color: '$TEXT'
     }
 })

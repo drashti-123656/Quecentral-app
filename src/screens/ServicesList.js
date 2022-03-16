@@ -4,6 +4,7 @@ import ServiceCard from './../components/cards/ServiceCard';
 import {categoryWiseServices as categoryWiseServicesAPI} from './../services/api';
 import CategoriesPicker from './../components/picker/CategoriesPicker';
 import {COLORS} from './../utils/theme';
+import EStyleSheet from 'react-native-extended-stylesheet';
 
 const ServicesList = props => {
   const {categoryID} = props.route.params;
@@ -55,9 +56,10 @@ const ServicesList = props => {
 
 export default ServicesList;
 
-const styles = StyleSheet.create({
+const styles = EStyleSheet.create({
   container: {
     padding: 10,
     flexGrow: 1,
+    backgroundColor: '$BACKGROUND'
   },
 });

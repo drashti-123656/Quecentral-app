@@ -1,5 +1,6 @@
 import React, {useEffect} from 'react';
 import {View, StyleSheet, Dimensions, Image, ActivityIndicator} from 'react-native';
+import EStyleSheet from 'react-native-extended-stylesheet';
 import { COLORS } from './../utils/theme'
 const Splash = () => {
 
@@ -21,7 +22,7 @@ const Splash = () => {
 
 export default Splash;
 
-const styles = StyleSheet.create({
+const styles = EStyleSheet.create({
     container:{
         flex:1
     },
