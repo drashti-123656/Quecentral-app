@@ -1,5 +1,7 @@
 /* auth start */
 export const LOGIN = 'LOGIN';
+export const GOOGLE_LOGIN = 'GOOGLE_LOGIN';
+export const FACEBOOK_LOGIN = 'FACEBOOK_LOGIN';
 export const SIGNUP = 'SIGNUP';
 export const FORGOT_PASSWORD = 'FORGOT_PASSWORD';
 export const VERIFY_OTP = 'VERIFY_OTP';

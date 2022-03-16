@@ -3,6 +3,8 @@ import {
     SIGNUP,
     RESET,
     LOGOUT,
+    GOOGLE_LOGIN,
+    FACEBOOK_LOGIN
   } from '../reduxConstants';
   
 export const login = (user) => ({
@@ -21,5 +23,15 @@ export const logout = () => ({
 
 export const reset = () => ({
   type: RESET,
+});
+
+export const googleLoginAction = (payload) => ({
+  type: GOOGLE_LOGIN,
+  payload,
+});
+
+export const facebookLoginAction = (payload) => ({
+  type: FACEBOOK_LOGIN,
+  payload,
 });
 
