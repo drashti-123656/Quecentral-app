@@ -15,7 +15,7 @@ export const lightTheme = {
   $GRAY_LIGHT: '#D3D3D3',
   $WARNING_GREEN: '#339900',
   $BLACK: '#000',
-  $BACKGROUND: '#fff',
+  $BACKGROUND: '#f1f1f1',
   $TEXT: '#000',
   $ALPHA_TEXT: '#d1d1d1',
   $CARD_BACKGROUND: '#fff',
