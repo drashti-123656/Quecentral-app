@@ -1,10 +1,20 @@
 import {put, call} from 'redux-saga/effects';
-import { NavigationContainer, useNavigationContainerRef } from '@react-navigation/native';
+import {
+  NavigationContainer,
+  useNavigationContainerRef,
+} from '@react-navigation/native';
 
-import {AUTH_SUCCESS, ERROR} from '../../reduxConstants';
-import {facebookLoginAPI, googleLoginAPI, login, signup} from './../../../services/auth';
+import {AUTH_SUCCESS, ERROR, SEND_OTP_SUCCESS} from '../../reduxConstants';
+import {
+  facebookLoginAPI,
+  googleLoginAPI,
+  login,
+  signup,
+} from './../../../services/auth';
 import React from 'react';
 import {navigate} from '../../../navigation/RootNavigation';
+import {showMessage} from 'react-native-flash-message';
+import EStyleSheet from 'react-native-extended-stylesheet';
 
 export const navigationRef = React.createRef();
 
@@ -62,25 +72,64 @@ export function* googleLoginWorker(payload) {
     //   });
     // }
     yield put({
-          type: AUTH_SUCCESS,
-          authData: {isLoggedIn: true, token: data.data.user_details.token},
-          userData: data.data.user_details,
-        });
-  } catch {
-
-  }
+      type: AUTH_SUCCESS,
+      authData: {isLoggedIn: true, token: data.data.user_details.token},
+      userData: data.data.user_details,
+    });
+  } catch {}
 }
 
 export function* facebookLoginWorker({payload}) {
   try {
+
+    console.log('payload===>', payload)
+    const {data} = yield call(facebookLoginAPI, payload);
+
+    console.log('data===>', data)
+    yield put({
+      type: AUTH_SUCCESS,
+      authData: {isLoggedIn: true, token: data.data.token},
+      userData: data.data,
+    });
+  } catch {
+    navigate('EmailLogin', payload);
+  }
+}
+
+export function* sendOtpWorker({payload}) {
+  try {
+    console.log('payload', payload)
+    const {data} = yield call(facebookLoginAPI, payload);
+    console.log('data', data)
+    yield put({
+      type: SEND_OTP_SUCCESS,
+    });
+
+  } catch(error) {
+    console.log('error', error)
+    showMessage({
+      message: error.message,
+      type: 'info',
+      backgroundColor: EStyleSheet.value('$WARNING_RED'),
+    });
+  }
+}
+
+export function* verifyOtpWorker({payload}) {
+  try {
     const {data} = yield call(facebookLoginAPI, payload);
     yield put({
-          type: AUTH_SUCCESS,
-          authData: {isLoggedIn: true, token: data.token},
-          userData: data,
-        });
-  } catch {
-    navigate('EmailLogin');
-    
+      type: AUTH_SUCCESS,
+      authData: {isLoggedIn: true, token: data.data.token},
+      userData: data.data,
+    });
+
+  } catch(error) {
+    console.log('error', error)
+    showMessage({
+      message: error.message,
+      type: 'info',
+      backgroundColor: EStyleSheet.value('$WARNING_RED'),
+    });
   }
 }

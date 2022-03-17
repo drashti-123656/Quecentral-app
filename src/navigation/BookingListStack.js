@@ -4,6 +4,7 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import BookingList from './../screens/BookingList'
 import ServiceDetails from './../screens/ServiceDetails'
 import {COLORS} from './../utils/theme'
+import EStyleSheet from 'react-native-extended-stylesheet';
 
 const bookingListStack = createNativeStackNavigator();
 
@@ -12,7 +13,7 @@ const BookingListStack = () => {
         <bookingListStack.Navigator
         initialRouteName="BookingList"
         screenOptions={{
-          headerStyle: {backgroundColor: COLORS.PRIMARY},
+          headerStyle: {backgroundColor: EStyleSheet.value('$PRIMARY')},
           headerTintColor: '#fff',
         }}>
         <bookingListStack.Screen

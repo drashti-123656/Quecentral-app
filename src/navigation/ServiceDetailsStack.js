@@ -4,6 +4,7 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import BookService from './../screens/BookService';
 import ServiceDetails from './../screens/ServiceDetails';
 import {COLORS} from './../utils/theme';
+import EStyleSheet from 'react-native-extended-stylesheet';
 
 const serviceDetailsStack = createNativeStackNavigator();
 
@@ -16,7 +17,7 @@ const ServiceDetailsStack = () => {
         options={{
           title: 'Service Details',
           headerStyle: {
-            backgroundColor: COLORS.PRIMARY,
+            backgroundColor: EStyleSheet.value('$PRIMARY'),
           },
           headerTintColor: '#fff',
         }}
@@ -27,7 +28,7 @@ const ServiceDetailsStack = () => {
         options={{
           title: ' Book Service',
           headerStyle: {
-            backgroundColor: COLORS.PRIMARY,
+            backgroundColor: EStyleSheet.value('$PRIMARY'),
           },
           headerTintColor: '#fff',
         }}

@@ -4,7 +4,10 @@ import {
     RESET,
     LOGOUT,
     GOOGLE_LOGIN,
-    FACEBOOK_LOGIN
+    FACEBOOK_LOGIN,
+    VERIFY_OTP,
+    SEND_OTP,
+    HANDLE_CLOSE_MODAL
   } from '../reduxConstants';
   
 export const login = (user) => ({
@@ -34,4 +37,20 @@ export const facebookLoginAction = (payload) => ({
   type: FACEBOOK_LOGIN,
   payload,
 });
+
+export const verifyOtpAction = (payload) => ({
+  type: VERIFY_OTP,
+  payload,
+});
+
+export const sendOtpAction = (payload) => ({
+  type: SEND_OTP,
+  payload,
+});
+
+export const handleCloseModalAction = (payload) => ({
+  type: HANDLE_CLOSE_MODAL,
+  payload,
+});
+
 

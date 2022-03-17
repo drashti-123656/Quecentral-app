@@ -5,6 +5,8 @@ import {
   ERROR,
   RESET,
   LOGOUT,
+  SEND_OTP_SUCCESS,
+  HANDLE_CLOSE_MODAL,
 } from '../reduxConstants';
 
 const initialState = {
@@ -15,10 +17,10 @@ const initialState = {
     success: false,
     errorMsg: '',
   },
+  showOtpModal: false,
 };
 
 const reducer = (state = initialState, action) => {
-
   switch (action.type) {
     case LOGIN:
       return {
@@ -28,6 +30,18 @@ const reducer = (state = initialState, action) => {
     case SIGNUP:
       return {
         ...state,
+      };
+
+    case SEND_OTP_SUCCESS:
+      return {
+        ...state,
+        showOtpModal: true,
+      };
+
+    case HANDLE_CLOSE_MODAL:
+      return {
+        ...state,
+        showOtpModal: false,
       };
 
     case AUTH_SUCCESS:
@@ -59,10 +73,5 @@ const reducer = (state = initialState, action) => {
       return state;
   }
 };
-
-
-
-
-
 
 export default reducer;

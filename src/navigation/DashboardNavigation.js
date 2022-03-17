@@ -10,6 +10,7 @@ import BookingListStack from './BookingListStack';
 import http from './../services/httpServices';
 import {useDispatch} from 'react-redux';
 import {logout} from '../redux/actions/auth';
+import EStyleSheet from 'react-native-extended-stylesheet';
 const Tab = createBottomTabNavigator();
 
 const AuthNavigation = () => {
@@ -25,9 +26,9 @@ const AuthNavigation = () => {
   return (
     <Tab.Navigator
       screenOptions={({route}) => ({
-        headerStyle: {backgroundColor: COLORS.PRIMARY},
+        headerStyle: {backgroundColor: EStyleSheet.value('$PRIMARY')},
         headerTintColor: '#fff',
-        tabBarStyle: {backgroundColor: COLORS.PRIMARY},
+        tabBarStyle: {backgroundColor: EStyleSheet.value('$PRIMARY')},
         tabBarIcon: ({focused, color, size}) => {
           if (route.name === 'Home') {
             return (

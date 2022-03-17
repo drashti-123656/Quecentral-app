@@ -7,6 +7,7 @@ import Wallet from './../screens/Wallet';
 import {COLORS} from './../utils/theme';
 import Notifications from './../screens/Notifications';
 import Transactions from './../screens/Transactions';
+import EStyleSheet from 'react-native-extended-stylesheet';
 
 const dashboardStack = createNativeStackNavigator();
 
@@ -19,7 +20,7 @@ const SettingsStack = () => {
         options={{
           title: 'Setting',
           headerStyle: {
-            backgroundColor: COLORS.PRIMARY,
+            backgroundColor: EStyleSheet.value('$PRIMARY'),
           },
           headerTintColor: '#fff',
         }}
@@ -30,7 +31,7 @@ const SettingsStack = () => {
         options={{
           title: 'Edit Profile',
           headerStyle: {
-            backgroundColor: COLORS.PRIMARY,
+            backgroundColor: EStyleSheet.value('$PRIMARY'),
           },
           headerTintColor: '#fff',
         }}
@@ -42,7 +43,7 @@ const SettingsStack = () => {
         options={{
           title: 'Notifications',
           headerStyle: {
-            backgroundColor: COLORS.PRIMARY,
+            backgroundColor: EStyleSheet.value('$PRIMARY'),
           },
           headerTintColor: '#fff',
         }}
@@ -54,7 +55,7 @@ const SettingsStack = () => {
         options={{
           title: 'Wallet',
           headerStyle: {
-            backgroundColor: COLORS.PRIMARY,
+            backgroundColor: EStyleSheet.value('$PRIMARY'),
           },
           headerTintColor: '#fff',
         }}
@@ -66,7 +67,7 @@ const SettingsStack = () => {
         options={{
           title: 'Transactions',
           headerStyle: {
-            backgroundColor: COLORS.PRIMARY,
+            backgroundColor: EStyleSheet.value('$PRIMARY'),
           },
           headerTintColor: '#fff',
         }}

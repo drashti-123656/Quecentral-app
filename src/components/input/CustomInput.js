@@ -14,12 +14,13 @@ const CustomInput = (props) => {
     onChangeText,
     placeholder,
     keyboardType = 'default',
+    TextInputstyle
   } = props;
 
   return (
     <View>
       <TextInput
-        style={styles.input}
+        style={[styles.input, props.TextInputstyle]}
         onChangeText={onChangeText}
         value={value}
         placeholder={placeholder}

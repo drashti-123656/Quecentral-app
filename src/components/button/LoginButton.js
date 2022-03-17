@@ -1,5 +1,6 @@
 import React from 'react'
 import { StyleSheet, Text, View, TouchableOpacity, ActivityIndicator } from 'react-native'
+import EStyleSheet from 'react-native-extended-stylesheet'
 
 const LoginButton = ({ title, onPress, loading }) => {
     return (
@@ -19,9 +20,9 @@ const LoginButton = ({ title, onPress, loading }) => {
 
 export default LoginButton
 
-const styles = StyleSheet.create({
+const styles = EStyleSheet.create({
     container: {
-        backgroundColor: '#2BBBA0',
+        backgroundColor: '$PRIMARY',
         height: 50,
         padding: 10,
         justifyContent: 'center',

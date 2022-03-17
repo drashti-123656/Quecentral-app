@@ -3,6 +3,7 @@ import {StyleSheet, Text, View, TouchableOpacity} from 'react-native';
 import {COLORS} from './../../utils/theme';
 import LinearGradient from 'react-native-linear-gradient';
 import {useNavigation} from '@react-navigation/native';
+import EStyleSheet from 'react-native-extended-stylesheet';
 
 const ViewMore = ({onPress}) => {
   return (
@@ -10,7 +11,7 @@ const ViewMore = ({onPress}) => {
       <LinearGradient
         start={{x: 0, y: 0}}
         end={{x: 1, y: 0}}
-        colors={['#72E5D8', '#41C8B1', '#16AE8F']}
+        colors={[EStyleSheet.value('$PRIMARY'), EStyleSheet.value('$PRIMARY') , EStyleSheet.value('$PRIMARY')]}
         style={{
           backgroundColor: COLORS.PRIMARY,
           width: 90,
@@ -40,7 +41,7 @@ const BookNow = () => {
       <LinearGradient
         start={{x: 0, y: 0}}
         end={{x: 1, y: 0}}
-        colors={['#72E5D8', '#41C8B1', '#16AE8F']}
+        colors={[EStyleSheet.value('$PRIMARY'), EStyleSheet.value('$PRIMARY') , EStyleSheet.value('$PRIMARY')]}
         style={{
           backgroundColor: COLORS.PRIMARY,
           width: 90,

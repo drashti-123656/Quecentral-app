@@ -7,7 +7,7 @@ export const WHITE = '#fff';
 
 export const lightTheme = {
   $WHITE: '#FFF',
-  $PRIMARY: '#2BBBA0',
+  $PRIMARY: '#667E89',
   $SECONDARY: '#DBF8E2',
   $GRAY_DARK: '#a1a1a1',
   $WARNING_RED: '#E10600',
@@ -19,14 +19,14 @@ export const lightTheme = {
   $TEXT: '#000',
   $ALPHA_TEXT: '#d1d1d1',
   $CARD_BACKGROUND: '#fff',
-  $ALPHA_PRIMARY: '#E6FFF9',
+  $ALPHA_PRIMARY: '#d1d8db',
   $HEADER: '#fff',
 
 };
 
 export const darkTheme = {
   $WHITE: '#FFF',
-  $PRIMARY: '#2BBBA0',
+  $PRIMARY: '#667E89',
   $SECONDARY: '#DBF8E2',
   $GRAY_DARK: '#a1a1a1',
   $WARNING_RED: '#E10600',
@@ -38,6 +38,6 @@ export const darkTheme = {
   $TEXT: '#fff',
   $ALPHA_TEXT: '#d1d1d1',
   $CARD_BACKGROUND: '#333',
-  $ALPHA_PRIMARY: '#005440', 
+  $ALPHA_PRIMARY: '#333f44', 
   $HEADER: '#fff',
 };
