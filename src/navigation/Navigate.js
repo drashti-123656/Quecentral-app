@@ -5,6 +5,7 @@ import {createStackNavigator} from '@react-navigation/stack';
 import {NavigationContainer} from '@react-navigation/native';
 import AuthNavigation from './AuthNavigation';
 import DashboardNavigation from './DashboardNavigation';
+import {navigationRef} from './RootNavigation';
 
 const Stack = createStackNavigator();
 
@@ -13,7 +14,7 @@ const Navigate = () => {
     authData: {isLoggedIn},
   } = useSelector(({auth}) => auth);
   return (
-    <NavigationContainer>
+    <NavigationContainer ref={navigationRef}>
       <Stack.Navigator>
         {!isLoggedIn ? (
           <Stack.Screen

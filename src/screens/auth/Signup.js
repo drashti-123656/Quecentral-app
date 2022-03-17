@@ -13,7 +13,12 @@ import AlertModel from './../../components/model/AlertModel';
 import {CustomInput} from './../../components/input/CustomInput';
 import LoginButton from './../../components/button/LoginButton';
 import {signup as signupAPI} from './../../services/auth';
-import {login as signIn, reset} from './../../redux/actions/auth';
+import {
+  facebookLoginAction,
+  googleLoginAction,
+  login as signIn,
+  reset,
+} from './../../redux/actions/auth';
 import {useSelector, useDispatch} from 'react-redux';
 import {Formik} from 'formik';
 import {SignupSchema} from './../../utils/schema';
@@ -22,7 +27,6 @@ var {FBLogin, FBLoginManager} = require('react-native-facebook-login');
 import {generateOTP as generateOTPAPI} from './../../services/auth';
 import OtpModel from './../../components/model/OtpModel';
 import {checkLogintype as checkLogintypeAPI} from './../../services/auth';
-
 
 GoogleSignin.configure({
   webClientId:
@@ -42,36 +46,29 @@ const Signup = ({navigation}) => {
   const [alertDisplay, setAlertDisplay] = useState(false);
   const [OtpView, setOtpView] = useState(false);
 
+  const handleOtpSubmit = async otp => {
+    const response = await checkLogintypeAPI();
+    if (response.data.response.response_code === '200') {
+      if (response.data.data.login_type === 'mobile') {
+        let formData = new URLSearchParams({
+          mobileno: userInputRef.current.mobileno,
+          otp,
+          country_code: '91',
+        });
+        dispatch(signIn(formData));
+      } else {
+        let formData = new URLSearchParams({
+          email: userInputRef.current.email,
+          password: userInputRef.current.password,
+          login_type: 1,
+        });
 
-  const handleOtpSubmit = async (otp) => {
-
-      const response = await checkLogintypeAPI();
-      if (response.data.response.response_code === '200') {
-        if(response.data.data.login_type === 'mobile'){
-          let formData = new URLSearchParams({
-            mobileno: userInputRef.current.mobileno,
-            otp,
-            country_code: '91',
-          });
-          dispatch(signIn(formData));
-        }else{
-          let formData = new URLSearchParams({
-            email: userInputRef.current.email,
-            password: userInputRef.current.password,
-            login_type: 1
-          });
-      
-          dispatch(signIn(formData));
-        }
+        dispatch(signIn(formData));
       }
- 
+    }
+  };
 
-   
-
-  
-  }
-
-  const genrateOtp = async() => {
+  const genrateOtp = async () => {
     const generateOtpData = new URLSearchParams({
       //  usertype: 1,
       // device_id:
@@ -81,8 +78,8 @@ const Signup = ({navigation}) => {
       country_code: 91,
       login_type: 1,
     });
-  const response = await generateOTPAPI(generateOtpData);
-  }
+    const response = await generateOTPAPI(generateOtpData);
+  };
 
   const handleSignUp = async formData => {
     if (!termsCondition) {
@@ -95,24 +92,22 @@ const Signup = ({navigation}) => {
     }
     setLoading(true);
 
- 
-      const generateOtpData = new URLSearchParams({
-        //  usertype: 1,
-        // device_id:
-        //    'cc7cRipyIg8:APA91bGehTWOt96uZi-fLYeTaH3G1KNP_8HozxYiwd8YUwvGMqIz_W216kBcEq7wj64pkEj47NCThmhCFcR9o95iOhNaU68ygA0I-ZVniH3m7rJm9IRcLUcBdV-T8H66kvgR-oj-c2tD',
-        device_type: 'android',
-        mobileno: formData.mobileno,
-        name: formData.name,
-        email: formData.email,
-        password: formData.password,
-        country_code: 91,
-        login_type: 1,
-      });
-    
+    const generateOtpData = new URLSearchParams({
+      //  usertype: 1,
+      // device_id:
+      //    'cc7cRipyIg8:APA91bGehTWOt96uZi-fLYeTaH3G1KNP_8HozxYiwd8YUwvGMqIz_W216kBcEq7wj64pkEj47NCThmhCFcR9o95iOhNaU68ygA0I-ZVniH3m7rJm9IRcLUcBdV-T8H66kvgR-oj-c2tD',
+      device_type: 'android',
+      mobileno: formData.mobileno,
+      name: formData.name,
+      email: formData.email,
+      password: formData.password,
+      country_code: 91,
+      login_type: 1,
+    });
 
     const response = await generateOTPAPI(generateOtpData);
     if (response.data.response.response_code == 200) {
-      userInputRef.current ={
+      userInputRef.current = {
         //  usertype: 1,
         // device_id:
         //    'cc7cRipyIg8:APA91bGehTWOt96uZi-fLYeTaH3G1KNP_8HozxYiwd8YUwvGMqIz_W216kBcEq7wj64pkEj47NCThmhCFcR9o95iOhNaU68ygA0I-ZVniH3m7rJm9IRcLUcBdV-T8H66kvgR-oj-c2tD',
@@ -123,9 +118,8 @@ const Signup = ({navigation}) => {
         password: formData.password,
         country_code: 91,
         login_type: 1,
-      } 
+      };
       setOtpView(true);
-  
     } else {
       showMessage({
         message: response.data.response.response_message,
@@ -143,37 +137,33 @@ const Signup = ({navigation}) => {
       const userInfo = await GoogleSignin.signIn();
       const tokens = await GoogleSignin.getTokens();
 
-      const data = new URLSearchParams({
-        //  usertype: 1,
-        // device_id:
-        //    'cc7cRipyIg8:APA91bGehTWOt96uZi-fLYeTaH3G1KNP_8HozxYiwd8YUwvGMqIz_W216kBcEq7wj64pkEj47NCThmhCFcR9o95iOhNaU68ygA0I-ZVniH3m7rJm9IRcLUcBdV-T8H66kvgR-oj-c2tD',
-        device_type: 'android',
-        login_type: 3,
-        name: userInfo.user.name,
-        email: userInfo.user.email,
-        country_code: 91,
-        login_token: tokens.accessToken,
-      });
+      console.log('userInfo==>', userInfo);
 
-      const response = await signupAPI(data);
+      const data = {
+        token: userInfo.idToken,
+      };
 
-      if (response.data.response.response_code == 200 || 201) {
-        //  setAlertDisplay(true);
-        const URlEncodedData = new URLSearchParams({
-          login_type: 3,
-          email: userInfo.user.email,
-          login_token: tokens.accessToken,
-        });
+      dispatch(googleLoginAction(userInfo));
 
-        dispatch(signIn(URlEncodedData));
-      } else {
-        setOtpView(true);
-        showMessage({
-          message: response.data.response.response_message,
-          type: 'info',
-          backgroundColor: COLORS.warningRed,
-        });
-      }
+      // const response = await signupAPI(data);
+
+      // if (response.data.response.response_code == 200 || 201) {
+      //   //  setAlertDisplay(true);
+      //   const URlEncodedData = new URLSearchParams({
+      //     login_type: 3,
+      //     email: userInfo.user.email,
+      //     login_token: tokens.accessToken,
+      //   });
+
+      //   dispatch(signIn(URlEncodedData));
+      // } else {
+      //   setOtpView(true);
+      //   showMessage({
+      //     message: response.data.response.response_message,
+      //     type: 'info',
+      //     backgroundColor: COLORS.warningRed,
+      //   });
+      // }
     } catch (error) {
       if (error.code === statusCodes.SIGN_IN_CANCELLED) {
         // user cancelled the login flow
@@ -185,6 +175,14 @@ const Signup = ({navigation}) => {
         // some other error happened
       }
     }
+  };
+
+  const handleFacebookLogin = data => {
+    const {credentials: {token}} = data;
+    const payload = {token}
+
+    console.log(payload)
+      dispatch(facebookLoginAction(payload))
   };
 
   return (
@@ -319,10 +317,7 @@ const Signup = ({navigation}) => {
             ref={inputRef}
             loginBehavior={FBLoginManager.LoginBehaviors.Native}
             permissions={['email']}
-            onLogin={function (data) {
-              console.log('Logged in!');
-              console.log(data);
-            }}
+            onLogin={handleFacebookLogin}
             onLogout={function () {
               console.log('Logged out.');
               //     _this.setState({ user : null });
@@ -360,7 +355,12 @@ const Signup = ({navigation}) => {
         </Text>
       </View>
 
-      <OtpModel display={OtpView} setDisplay={setOtpView} handleOtpSubmit={handleOtpSubmit} genrateOtp={genrateOtp}/>
+      <OtpModel
+        display={OtpView}
+        setDisplay={setOtpView}
+        handleOtpSubmit={handleOtpSubmit}
+        genrateOtp={genrateOtp}
+      />
     </KeyboardAwareScrollView>
   );
 };
