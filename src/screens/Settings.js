@@ -177,7 +177,7 @@ const styles = EStyleSheet.create({
   },
   iconWrapper: {
     borderRadius: 50,
-    backgroundColor: COLORS.secondary,
+    backgroundColor: '$ALPHA_PRIMARY',
     width: 25,
     height: 25,
     justifyContent: 'center',
