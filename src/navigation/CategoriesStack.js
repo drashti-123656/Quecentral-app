@@ -4,6 +4,7 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {COLORS} from './../utils/theme';
 import Categories from './../screens/Categories';
 import ServicesList from './../screens/ServicesList';
+import EStyleSheet from 'react-native-extended-stylesheet';
 
 const categoriesStack = createNativeStackNavigator();
 
@@ -12,7 +13,7 @@ const CategoriesStack = () => {
     <categoriesStack.Navigator
       initialRouteName="Categories"
       screenOptions={{
-        headerStyle: {backgroundColor: COLORS.PRIMARY},
+        headerStyle: {backgroundColor: EStyleSheet.value('$PRIMARY')},
         headerTintColor: '#fff',
       }}>
       <categoriesStack.Screen

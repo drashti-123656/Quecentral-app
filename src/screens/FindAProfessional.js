@@ -82,7 +82,7 @@ const FindAProfessional = ({route, navigation}) => {
   const _handleRenderFooter = () =>
     isFetching && (
       <ActivityIndicator
-        color={COLORS.PRIMARY}
+        color={EStyleSheet.value('$PRIMARY')}
         size={'small'}
         style={styles.loader}
       />
@@ -213,7 +213,7 @@ export default FindAProfessional;
 const styles = EStyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: COLORS.PRIMARY,
+    backgroundColor: '$PRIMARY',
   },
 
   mainContainer: {

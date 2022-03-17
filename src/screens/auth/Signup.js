@@ -27,6 +27,7 @@ var {FBLogin, FBLoginManager} = require('react-native-facebook-login');
 import {generateOTP as generateOTPAPI} from './../../services/auth';
 import OtpModel from './../../components/model/OtpModel';
 import {checkLogintype as checkLogintypeAPI} from './../../services/auth';
+import EStyleSheet from 'react-native-extended-stylesheet';
 
 GoogleSignin.configure({
   webClientId:
@@ -180,8 +181,6 @@ const Signup = ({navigation}) => {
   const handleFacebookLogin = data => {
     const {credentials: {token}} = data;
     const payload = {token}
-
-    console.log(payload)
       dispatch(facebookLoginAction(payload))
   };
 
@@ -285,8 +284,8 @@ const Signup = ({navigation}) => {
                 />
                 <Text style={styles.TermsCondition}>
                   I agree to the{' '}
-                  <Text style={{color: COLORS.PRIMARY}}>terms</Text> and
-                  <Text style={{color: COLORS.PRIMARY}}> privacy policy </Text>
+                  <Text style={{color: EStyleSheet.value('$PRIMARY')}}>terms</Text> and
+                  <Text style={{color: EStyleSheet.value('$PRIMARY')}}> privacy policy </Text>
                 </Text>
               </View>
 
@@ -345,11 +344,11 @@ const Signup = ({navigation}) => {
           />
         </View>
 
-        <Text style={{textAlign: 'center', marginBottom: 30, marginTop: 10}}>
+        <Text style={{  color: EStyleSheet.value('$TEXT'), textAlign: 'center', marginBottom: 30, marginTop: 10}}>
           Already have an account?{' '}
           <Text
             onPress={() => navigation.navigate('EmailLogin')}
-            style={{color: '#2BBBA0', fontWeight: 'bold'}}>
+            style={{ color: EStyleSheet.value('$PRIMARY'), fontWeight: 'bold'}}>
             Login
           </Text>
         </Text>
@@ -367,9 +366,9 @@ const Signup = ({navigation}) => {
 
 export default Signup;
 
-const styles = StyleSheet.create({
+const styles = EStyleSheet.create({
   container: {
-    backgroundColor: '#2BBBA0',
+    backgroundColor: '$PRIMARY',
     flex: 1,
   },
   headerCont: {
@@ -379,14 +378,14 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   TitleText: {
-    color: '#fff',
+    color: '$TEXT',
     fontSize: 30,
     fontWeight: 'bold',
     textAlign: 'center',
   },
   bodyContainer: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: '$BACKGROUND',
     borderTopLeftRadius: 30,
     borderTopRightRadius: 30,
   },
@@ -400,4 +399,7 @@ const styles = StyleSheet.create({
   GoogleFacebookContainer: {
     marginHorizontal: '20%',
   },
+  TermsCondition:{
+    color: '$TEXT'
+  }
 });

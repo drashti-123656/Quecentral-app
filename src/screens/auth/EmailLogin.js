@@ -16,6 +16,7 @@ import {COLORS} from './../../utils/theme';
 import {Formik} from 'formik';
 import {SigninSchema} from './../../utils/schema';
 import InputPassword from './../../components/molecules/InputPassword';
+import EStyleSheet from 'react-native-extended-stylesheet';
 
 const EmailLogin = ({navigation}) => {
   const dispatch = useDispatch();
@@ -159,9 +160,9 @@ const EmailLogin = ({navigation}) => {
 
 export default EmailLogin;
 
-const styles = StyleSheet.create({
+const styles = EStyleSheet.create({
   container: {
-    backgroundColor: '#2BBBA0',
+    backgroundColor: '$BACKGROUND',
     flex: 1,
     justifyContent: 'flex-end',
   },
