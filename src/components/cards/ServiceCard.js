@@ -12,6 +12,7 @@ import {BASE_URL} from './../../utils/global';
 import Stars from './../../components/review/Stars';
 import LinearGradient from 'react-native-linear-gradient';
 import EStyleSheet from 'react-native-extended-stylesheet';
+import Icon from 'react-native-vector-icons/SimpleLineIcons';
 
 const ServiceCard = ({
   service_id,
@@ -36,7 +37,11 @@ const ServiceCard = ({
         pointerEvents={'none'}
         start={{x: 0, y: 0}}
         end={{x: 1, y: 0}}
-        colors={[EStyleSheet.value('$ALPHA_PRIMARY'), EStyleSheet.value('$CARD_BACKGROUND') , EStyleSheet.value('$CARD_BACKGROUND')]}
+        colors={[
+          EStyleSheet.value('$ALPHA_PRIMARY'),
+          EStyleSheet.value('$CARD_BACKGROUND'),
+          EStyleSheet.value('$CARD_BACKGROUND'),
+        ]}
         style={styles.container}>
         <Image
           source={{uri: `${BASE_URL}${image}`}}
@@ -45,16 +50,19 @@ const ServiceCard = ({
         />
         <View style={{flex: 1, marginLeft: 10}}>
           <Text style={styles.h1}>{service_title}</Text>
-        
+
           <Stars rating={ratings} />
           <View style={{flexDirection: 'row', alignItems: 'center'}}>
             <View style={{...styles.rowCont}}>
-              <Image
-                source={require('./../../assets/icons/location.png')}
-                style={{width: 15, height: 15}}
+              <Icon
+                name="location-pin"
+                size={15}
+                color='red'
                 PlaceholderContent={<ActivityIndicator />}
               />
-              <Text numberOfLines={1} ellipsizeMode ={'tail'} style={styles.h3}>{location}</Text>
+              <Text numberOfLines={1} ellipsizeMode={'tail'} style={styles.h3}>
+                {location}
+              </Text>
             </View>
           </View>
           <Text
@@ -85,7 +93,7 @@ const styles = EStyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     marginTop: 3,
-    flex:1
+    flex: 1,
   },
   h1: {
     fontWeight: 'bold',
@@ -96,5 +104,6 @@ const styles = EStyleSheet.create({
     fontSize: 12,
     fontWeight: 'bold',
     marginLeft: 5,
+    color: '$TEXT'
   },
 });

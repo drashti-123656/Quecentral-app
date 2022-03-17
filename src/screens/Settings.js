@@ -12,6 +12,8 @@ import {COLORS} from './../utils/theme';
 import {profileDetails} from '../services/api';
 import {BASE_URL} from './../utils/global';
 import EStyleSheet from 'react-native-extended-stylesheet';
+import Icon from 'react-native-vector-icons/AntDesign';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
 const Settings = ({navigation}) => {
   const isFocused = useIsFocused();
@@ -56,16 +58,13 @@ const Settings = ({navigation}) => {
               <Text style={{...styles.h1, marginBottom: 5}}>
                 {userDetails.name}
               </Text>
-              <View style={{...styles.rowCont, marginBottom: 5}}>
-                <Image
-                  source={require('./../assets/icons/mail.png')}
-                  style={{
-                    width: 20,
-                    height: 20,
-                    tintColor: COLORS.PRIMARY,
-                    marginRight: 10,
-                  }}
-                />
+              <View
+                style={{
+                  ...styles.rowCont,
+                  marginBottom: 5,
+                  flexDirection: 'row',
+                }}>
+                <MaterialIcons name="mail-outline" size={22} color="#b22222" />
                 <Text style={styles.emailText}>{userDetails.email}</Text>
               </View>
               <TouchableOpacity
@@ -87,13 +86,14 @@ const Settings = ({navigation}) => {
           </View>
 
           <View style={styles.menuCont}>
-            <TouchableOpacity 
-             onPress={() => navigation.navigate('Notifications')}
-             style={{...styles.rowCont, ...styles.menuItems}}>
+            <TouchableOpacity
+              onPress={() => navigation.navigate('Notifications')}
+              style={{...styles.rowCont, ...styles.menuItems}}>
               <View style={styles.iconWrapper}>
-                <Image
-                  source={require('./../assets/icons/notification.png')}
-                  style={{width: 15, height: 15, tintColor: COLORS.PRIMARY}}
+                <MaterialIcons
+                  name="notifications-active"
+                  size={15}
+                  color={EStyleSheet.value('$PRIMARY')}
                 />
               </View>
               <Text style={styles.h2}>Notifications</Text>
@@ -103,25 +103,27 @@ const Settings = ({navigation}) => {
               onPress={() => navigation.navigate('Wallet')}
               style={{...styles.rowCont, ...styles.menuItems}}>
               <View style={styles.iconWrapper}>
-                <Image
-                  source={require('./../assets/icons/wallet.png')}
-                  style={{width: 15, height: 15, tintColor: COLORS.PRIMARY}}
+                <Icon
+                  name="wallet"
+                  size={15}
+                  color={EStyleSheet.value('$PRIMARY')}
                 />
               </View>
               <Text style={styles.h2}>Wallet</Text>
             </TouchableOpacity>
 
             <TouchableOpacity
-            onPress={() => navigation.navigate('Transactions')}
+              onPress={() => navigation.navigate('Transactions')}
               style={{
                 ...styles.rowCont,
                 ...styles.menuItems,
                 borderBottomWidth: 0,
               }}>
               <View style={styles.iconWrapper}>
-                <Image
-                  source={require('./../assets/icons/credit-card.png')}
-                  style={{width: 15, height: 15, tintColor: COLORS.PRIMARY}}
+                <Icon
+                  name="creditcard"
+                  size={15}
+                  color={EStyleSheet.value('$PRIMARY')}
                 />
               </View>
               <Text style={styles.h2}>Transactions</Text>
@@ -182,7 +184,9 @@ const styles = EStyleSheet.create({
     alignItems: 'center',
     marginRight: 10,
   },
-  emailText : {
+  emailText: {
     color: '$TEXT',
-  }
+    paddingLeft: 6,
+    fontSize: 15,
+  },
 });
