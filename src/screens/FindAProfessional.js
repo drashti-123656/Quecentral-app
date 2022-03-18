@@ -82,7 +82,7 @@ const FindAProfessional = ({route, navigation}) => {
   const _handleRenderFooter = () =>
     isFetching && (
       <ActivityIndicator
-        color={EStyleSheet.value('$PRIMARY')}
+        color={COLORS.PRIMARY}
         size={'small'}
         style={styles.loader}
       />
@@ -114,8 +114,10 @@ const FindAProfessional = ({route, navigation}) => {
                   />
 
                   <TouchableOpacity onPress={searchHandler}>
-                    <Image
-                      source={require('./../assets/icons/search.png')}
+                    <Icon
+                      name="search"
+                      size={25}
+                      color={EStyleSheet.value('$TEXT')}
                       style={styles.serchIcon}
                     />
                   </TouchableOpacity>
@@ -159,7 +161,11 @@ const FindAProfessional = ({route, navigation}) => {
                     </View>
 
                     <Text
-                      style={{...styles.h3, color:EStyleSheet.value('$TEXT'), marginBottom: 10}}>
+                      style={{
+                        ...styles.h3,
+                        color: EStyleSheet.value('$TEXT'),
+                        marginBottom: 10,
+                      }}>
                       Price Range
                     </Text>
                     <SliderScreen
@@ -213,7 +219,7 @@ export default FindAProfessional;
 const styles = EStyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '$PRIMARY',
+    backgroundColor: COLORS.PRIMARY,
   },
 
   mainContainer: {

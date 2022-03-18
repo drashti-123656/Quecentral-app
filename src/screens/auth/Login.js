@@ -28,10 +28,10 @@ import {CustomInput} from '../../components/input/CustomInput';
 import EStyleSheet from 'react-native-extended-stylesheet';
 import {Formik} from 'formik';
 import OtpModel from '../../components/model/OtpModel';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 const Login = ({route, navigation}) => {
   const dispatch = useDispatch();
- 
 
   const {error, errorMsg, showOtpModal} = useSelector(({auth}) => auth);
 
@@ -49,21 +49,18 @@ const Login = ({route, navigation}) => {
 
   const closeOtpModal = () => {
     dispatch(handleCloseModalAction());
-  }
+  };
 
   const handleOtpSubmit = async otp => {
     const payload = {
       token,
       mobile_no: '961111111',
-      otp
-      
-    }
+      otp,
+    };
     dispatch(verifyOtpAction(payload));
   };
 
-  const genrateOtp = () => {
-    
-  }
+  const genrateOtp = () => {};
 
   useEffect(() => {
     if (error) {
@@ -117,10 +114,15 @@ const Login = ({route, navigation}) => {
                     flexDirection: 'row',
                     alignItems: 'center',
                     justifyContent: 'flex-end',
+                    padding : 12,
                   }}>
-                  <Image
-                    source={require('./../../assets/icons/rounded-arrow.png')}
-                    style={styles.roundArrow_Image}
+                 
+
+                  <Icon
+                    name="refresh"
+                    size={25}
+                    color={EStyleSheet.value('$PRIMARY')}
+                   
                   />
 
                   <Text style={styles.footerText}>
@@ -152,11 +154,11 @@ const Login = ({route, navigation}) => {
         </View>
 
         <OtpModel
-        display={showOtpModal}
-        setDisplay={closeOtpModal}
-        handleOtpSubmit={handleOtpSubmit}
-        genrateOtp={genrateOtp}
-      />
+          display={showOtpModal}
+          setDisplay={closeOtpModal}
+          handleOtpSubmit={handleOtpSubmit}
+          genrateOtp={genrateOtp}
+        />
       </ScrollView>
     </View>
   );
@@ -202,7 +204,7 @@ const styles = EStyleSheet.create({
   },
   footerText: {
     textAlign: 'right',
-    padding: 12,
+    paddingLeft : 3,
     color: '$TEXT',
   },
   bottomText: {
@@ -213,5 +215,5 @@ const styles = EStyleSheet.create({
     width: 60,
     height: 70,
   },
-  roundArrow_Image: {width: 15, height: 15},
+  
 });
