@@ -1,4 +1,4 @@
-import {Text, View} from 'react-native';
+import {ScrollView, Text, View} from 'react-native';
 import React from 'react';
 import EStyleSheet from 'react-native-extended-stylesheet';
 
@@ -10,7 +10,7 @@ const RootScreen = ({children}) => {
           Search Service
         </Text>
       </View>
-      <View>{children}</View>
+      <ScrollView style={styles.childrenContainer}>{children}</ScrollView>
     </View>
   );
 };
@@ -20,10 +20,19 @@ export default RootScreen;
 const styles = EStyleSheet.create({
   rootScreen: {
     flex: 1,
-    backgroundColor: '$PRIMARY',
+    backgroundColor: '$BACKGROUND',
   },
   headerBar: {
-    height: 50,
-    justifyContent: 'center',
+    height: 100,
+    padding: 10,
+    backgroundColor: '$PRIMARY',
   },
+  childrenContainer:{
+    flex:1,
+    position:'absolute',
+    top: 50,
+    left:10,
+    bottom:0,
+    right:10
+  }
 });

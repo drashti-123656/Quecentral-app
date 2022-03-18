@@ -200,8 +200,7 @@ export default FindAProfessional;
 
 const styles = EStyleSheet.create({
   container:{
-    backgroundColor:'$BACKGROUND'
-
+    backgroundColor:'transparent'
   },
   text: {
     fontSize: 16,
@@ -223,7 +222,8 @@ const styles = EStyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    margin: 10,
+    marginVertical: 20,
+    marginHorizontal:10
   },
   h2: {
     fontSize: 15,

@@ -47,6 +47,7 @@
     "react-native-razorpay": "^2.2.7",
     "react-native-safe-area-context": "^3.3.0",
     "react-native-screens": "^3.5.0",
+    "react-native-svg": "^12.3.0",
     "react-native-swiper": "^1.6.0",
     "react-native-vector-icons": "^9.1.0",
     "react-redux": "^7.2.4",
