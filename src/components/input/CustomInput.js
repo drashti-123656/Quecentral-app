@@ -38,7 +38,7 @@ const CustomInputWithTitle = props => {
       <TextInput
         style={{
           ...styles.input,
-          borderColor: '#2BBBA0',
+          borderColor: EStyleSheet.value('$PRIMARY'),
           height: props.height ? props.height : 50,
           borderRadius: 10,
           margin: 0,
@@ -65,7 +65,7 @@ const CouponInputWithTitle = props => {
           flexDirection: 'row',
           alignItems: 'center',
           ...styles.input,
-          borderColor: '#2BBBA0',
+          borderColor: EStyleSheet.value('$PRIMARY'),
           height: props.height ? props.height : 50,
           borderRadius: 10,
           margin: 0,

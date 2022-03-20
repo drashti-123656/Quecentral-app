@@ -48,8 +48,8 @@ const styles = EStyleSheet.create({
     marginHorizontal: 5,
   },
   serviceImage: {
-    width: 150,
-    height: 150,
+    width: 140,
+    height: 140,
     borderRadius: 10,
     marginBottom: 10,
   },

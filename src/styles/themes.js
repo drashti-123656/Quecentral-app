@@ -1,4 +1,4 @@
-export const PRIMARY = '#2BBBA0';
+export const PRIMARY = '#667E89';
 export const SECONDARY = '#DBF8E2';
 export const GRAY_DARK = '#a1a1a1';
 export const WARNING_RED = '#E10600';
@@ -6,6 +6,7 @@ export const WARNING_GREEN = '#339900';
 export const WHITE = '#fff';
 
 export const lightTheme = {
+  $theme: 'light', 
   $WHITE: '#FFF',
   $PRIMARY: '#667E89',
   $SECONDARY: '#DBF8E2',
@@ -25,6 +26,7 @@ export const lightTheme = {
 };
 
 export const darkTheme = {
+  $theme: 'dark', 
   $WHITE: '#FFF',
   $PRIMARY: '#667E89',
   $SECONDARY: '#DBF8E2',

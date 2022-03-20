@@ -175,7 +175,7 @@ const FindAProfessional = ({route, navigation}) => {
   const _handleRenderFooter = () =>
     isFetching && (
       <ActivityIndicator
-        color={EStyleSheet.value('$PRIMARY')}
+        color={COLORS.PRIMARY}
         size={'small'}
         style={styles.loader}
       />

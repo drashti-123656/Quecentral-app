@@ -16,6 +16,9 @@ import {home as homeAPI} from '../services/api';
 import {BASE_URL} from './../utils/global/';
 import SearchBar from '../components/search/SearchBar';
 import EStyleSheet from 'react-native-extended-stylesheet';
+import RootScreen from '../components/molecules/rootScreen/RootScreen';
+import {FlatList} from 'react-native-gesture-handler';
+import CustomHeader from '../components/molecules/header/CustomHeader';
 
 const Dashboard = ({navigation}) => {
   const [loading, setLaoding] = useState(false);
@@ -37,160 +40,136 @@ const Dashboard = ({navigation}) => {
     let response = await homeAPI(formData);
     setCategoryList(response.data.data.category_list);
     setPopularServices(response.data.data.popular_services);
-    console.log(response.data.data.popular_services);
     setLaoding(false);
   };
 
-  return (
-    <View style={styles.container}>
-      <View style={styles.headerBar}>
-        <Text style={{...styles.h1}}>Dashboard</Text>
-        <TouchableOpacity onPress={() => navigation.navigate('Notifications')}>
-          <Image
-            source={require('./../assets/icons/bell.png')}
-            style={styles.iconNotification}
-          />
-        </TouchableOpacity>
-      </View>
-      <View style={styles.bodyContainer}>
-        <SearchBar value={searchKey} onChangeText={setSearchKey} />
+  const _imageSwiper = () => (
+    <View style={styles.wrapper}>
+      <Swiper style={styles.swiper} showsButtons={false} autoplay={true}>
+        <Image
+          source={require('./../assets/images/home.png')}
+          style={styles.image}
+          PlaceholderContent={<ActivityIndicator />}
+        />
+        <Image
+          source={require('./../assets/images/home.png')}
+          style={styles.image}
+          PlaceholderContent={<ActivityIndicator />}
+        />
+      </Swiper>
 
-        <ScrollView showsVerticalScrollIndicator={false}>
-          <View style={styles.wrapper}>
-            <Swiper
-              style={styles.swiper}
-              showsButtons={false}
-              autoplay={true}>
-              <Image
-                source={require('./../assets/images/home.png')}
-                style={styles.image}
-                PlaceholderContent={<ActivityIndicator />}
-              />
-              <Image
-                source={require('./../assets/images/home.png')}
-                style={styles.image}
-                PlaceholderContent={<ActivityIndicator />}
-              />
-            </Swiper>
+      <LinearGradient
+        pointerEvents={'none'}
+        start={{x: 0, y: 0}}
+        end={{x: 0.8, y: 0}}
+        colors={['transparent', 'transparent', '#000']}
+        style={styles.gradient}></LinearGradient>
 
-            <LinearGradient
-              pointerEvents={'none'}
-              start={{x: 0, y: 0}}
-              end={{x: 0.8, y: 0}}
-              colors={['transparent', 'transparent', '#000']}
-              style={styles.gradient}></LinearGradient>
-
-            <View
-              style={styles.swiper_text}>
-              <Text style={{...styles.h1}}>Best Service</Text>
-              <Text style={{...styles.h1}}>Provider</Text>
-              <BookNow />
-            </View>
-          </View>
-
-          <View style={styles.flatlist}>
-            <View
-              style={styles.categories}>
-              <Text style={styles.h2}>Categories</Text>
-              <ViewMore
-                onPress={() => navigation.navigate('CategoriesStack')}
-              />
-            </View>
-
-            {loading ? (
-              <ActivityIndicator color={EStyleSheet.value('$PRIMARY')} />
-            ) : (
-              <ScrollView
-                horizontal={true}
-                showsHorizontalScrollIndicator={false}
-                style={styles.scrollview}>
-                {categoryList.map((item, i) => (
-                  <TouchableOpacity
-                    onPress={() =>
-                      navigation.navigate('ServicesList', {categoryID: item.id})
-                    }
-                    key={i}
-                    style={styles.service_list}>
-                    <View style={styles.iconCont}>
-                      <Image
-                        source={{uri: `${BASE_URL}${item.category_image}`}}
-                        style={styles.category_image}
-                        PlaceholderContent={<ActivityIndicator />}
-                      />
-                    </View>
-                    <Text
-                      style={{
-                        ...styles.h3
-                      }}>
-                      {item.category_name}
-                    </Text>
-                  </TouchableOpacity>
-                ))}
-              </ScrollView>
-            )}
-          </View>
-
-          <View
-            style={styles.services}>
-            <Text style={styles.h2}>Popular Services</Text>
-          </View>
-
-          {loading ? (
-            <ActivityIndicator color={EStyleSheet.value('$PRIMARY')} />
-          ) : (
-            popularServices.map((item, i) => (
-              <ServiceCard
-                key={i}
-                service_id={item.service_id}
-                service_title={item.service_title}
-                image={item.service_image}
-                mobileno={item.mobileno}
-                currency={item.currency_code}
-                service_amount={item.service_amount}
-                ratings={item.ratings}
-              />
-            ))
-          )}
-        </ScrollView>
+      <View style={styles.swiper_text}>
+        <Text style={{...styles.h1}}>Best Service</Text>
+        <Text style={{...styles.h1}}>Provider</Text>
+        <BookNow />
       </View>
     </View>
+  );
+
+  const _renderPopularServices = ({item}) => (
+    <ServiceCard
+      service_id={item.service_id}
+      service_title={item.service_title}
+      image={item.service_image}
+      mobileno={item.mobileno}
+      currency={item.currency_code}
+      service_amount={item.service_amount}
+      ratings={item.ratings}
+    />
+  );
+
+  const _handleRenderHeader = ({item}) => (
+    <>
+      {_imageSwiper()}
+      <View style={styles.flatlist}>
+        <View style={styles.categories}>
+          <Text style={styles.h2}>Categories</Text>
+          <ViewMore onPress={() => navigation.navigate('CategoriesStack')} />
+        </View>
+
+        {loading ? (
+          <ActivityIndicator color={EStyleSheet.value('$PRIMARY')} />
+        ) : (
+          <ScrollView
+            horizontal={true}
+            showsHorizontalScrollIndicator={false}
+            style={styles.scrollview}>
+            {categoryList.map((item, i) => (
+              <TouchableOpacity
+                onPress={() =>
+                  navigation.navigate('ServicesList', {categoryID: item.id})
+                }
+                key={i}
+                style={styles.service_list}>
+                <View style={styles.iconCont}>
+                  <Image
+                    source={{uri: `${BASE_URL}${item.category_image}`}}
+                    style={styles.category_image}
+                    PlaceholderContent={<ActivityIndicator />}
+                  />
+                </View>
+                <Text
+                  style={{
+                    ...styles.h3,
+                  }}>
+                  {item.category_name}
+                </Text>
+              </TouchableOpacity>
+            ))}
+          </ScrollView>
+        )}
+      </View>
+      <View style={styles.services}>
+        <Text style={styles.h2}>Popular Services</Text>
+      </View>
+    </>
+  );
+
+  const _renderFooter = () => (
+    <ActivityIndicator color={EStyleSheet.value('$PRIMARY')} />
+  );
+
+  return (
+    <RootScreen headerComponent={() => <CustomHeader title={'QueueCentral'} />}>
+      <SearchBar value={searchKey} onChangeText={setSearchKey} />
+      <FlatList
+        data={popularServices}
+        ListHeaderComponent={_handleRenderHeader}
+        renderItem={_renderPopularServices}
+        keyExtractor={item => item.id}
+      />
+    </RootScreen>
   );
 };
 
 export default Dashboard;
 
 const styles = EStyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '$PRIMARY',
-  },
-  headerBar: {
-    height: 50,
-    padding: 10,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
   bodyContainer: {
-    flex: 0.94,
-    backgroundColor: '$BACKGROUND',
-    marginTop: 'auto',
-    paddingHorizontal: 10,
+    backgroundColor: 'transparent',
   },
   categories: {
-      flexDirection: 'row',
-      justifyContent: 'space-between',
-      alignItems: 'center',
-      marginVertical: 10,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginVertical: 10,
   },
   swiper: {
     borderRadius: 10,
   },
   flatlist: {
-    marginBottom: 10
+    marginBottom: 10,
   },
-  service_list:{
-    alignItems: 'center', 
-    marginRight: 32
+  service_list: {
+    alignItems: 'center',
+    marginRight: 32,
   },
   swiper_text: {
     position: 'absolute',
@@ -205,10 +184,10 @@ const styles = EStyleSheet.create({
     height: '100%',
     backgroundColor: 'transparent',
   },
-  category_image:{
+  category_image: {
     width: 60,
-    height: 60, 
-    borderRadius: 100
+    height: 60,
+    borderRadius: 100,
   },
   scrollview: {
     marginVertical: 5,
@@ -236,25 +215,6 @@ const styles = EStyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  search: {
-    position: 'absolute',
-    width: '100%',
-    height: 50,
-    top: -25,
-    paddingHorizontal: 10,
-    zIndex: 1,
-    marginHorizontal: 10,
-    backgroundColor: '#fff',
-    borderRadius: 5,
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 3,
-    },
-    shadowOpacity: 0.29,
-    shadowRadius: 4.65,
-    elevation: 8,
-  },
   services: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -273,12 +233,12 @@ const styles = EStyleSheet.create({
     borderRadius: 100,
   },
   iconNotification: {
-      width: 25, 
-      height: 25, 
-      tintColor: '#fff',
+    width: 25,
+    height: 25,
+    tintColor: '#fff',
   },
   wrapper: {
-    marginTop: 40,
+    marginTop: 60,
     height: 150,
     borderRadius: 10,
     zIndex: 1,
