@@ -4,12 +4,14 @@ import {
   useNavigationContainerRef,
 } from '@react-navigation/native';
 
-import {AUTH_SUCCESS, ERROR, SEND_OTP_SUCCESS} from '../../reduxConstants';
+import {AUTH_SUCCESS, ERROR, SEND_OTP_SUCCESS, STORE_FACEBOOK_ID} from '../../reduxConstants';
 import {
   facebookLoginAPI,
   googleLoginAPI,
   login,
+  sendOtpAPI,
   signup,
+  verifyOtpAPI,
 } from './../../../services/auth';
 import React from 'react';
 import {navigate} from '../../../navigation/RootNavigation';
@@ -81,28 +83,29 @@ export function* googleLoginWorker(payload) {
 
 export function* facebookLoginWorker({payload}) {
   try {
-
-    console.log('payload===>', payload)
     const {data} = yield call(facebookLoginAPI, payload);
-
-    console.log('data===>', data)
+  
+    console.log('data ===>', data)
     yield put({
       type: AUTH_SUCCESS,
       authData: {isLoggedIn: true, token: data.data.token},
       userData: data.data,
     });
   } catch {
+    yield put({
+      type: STORE_FACEBOOK_ID,
+      payload
+    });
     navigate('EmailLogin', payload);
   }
 }
 
 export function* sendOtpWorker({payload}) {
   try {
-    console.log('payload', payload)
-    const {data} = yield call(facebookLoginAPI, payload);
-    console.log('data', data)
+    yield call(sendOtpAPI, payload);
     yield put({
       type: SEND_OTP_SUCCESS,
+      payload,
     });
 
   } catch(error) {
@@ -117,7 +120,8 @@ export function* sendOtpWorker({payload}) {
 
 export function* verifyOtpWorker({payload}) {
   try {
-    const {data} = yield call(facebookLoginAPI, payload);
+    console.log('payload1' , payload)
+    const {data} = yield call(verifyOtpAPI, payload);
     yield put({
       type: AUTH_SUCCESS,
       authData: {isLoggedIn: true, token: data.data.token},
@@ -127,7 +131,7 @@ export function* verifyOtpWorker({payload}) {
   } catch(error) {
     console.log('error', error)
     showMessage({
-      message: error.message,
+      message: error.response.message,
       type: 'info',
       backgroundColor: EStyleSheet.value('$WARNING_RED'),
     });

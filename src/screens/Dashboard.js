@@ -137,7 +137,7 @@ const Dashboard = ({navigation}) => {
   );
 
   return (
-    <RootScreen headerComponent={() => <CustomHeader title={'QueueCentral'} />}>
+    <RootScreen headerComponent={() => <CustomHeader title={'QueueCentral'} showNav={false}/>}>
       <SearchBar value={searchKey} onChangeText={setSearchKey} />
       <FlatList
         data={popularServices}

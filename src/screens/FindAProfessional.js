@@ -25,6 +25,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {searchServiceAction} from '../redux/actions/searchSevice';
 import EStyleSheet from 'react-native-extended-stylesheet';
 import RootScreen from '../components/molecules/rootScreen/RootScreen';
+import CustomHeader from '../components/molecules/header/CustomHeader';
 
 const FindAProfessional = ({route, navigation}) => {
   const dispatch = useDispatch();
@@ -182,7 +183,7 @@ const FindAProfessional = ({route, navigation}) => {
     );
 
   return (
-    <RootScreen>
+    <RootScreen headerComponent={() => <CustomHeader title={'Serach'}  />}>
           <FlatList
             data={services}
             ListHeaderComponent={_handleRenderHeader}

@@ -20,6 +20,7 @@ import {serviceDetails as serviceDetailsAPI} from './../services/api';
 import {BASE_URL} from './../utils/global';
 import EStyleSheet from 'react-native-extended-stylesheet';
 import RootScreen from '../components/molecules/rootScreen/RootScreen';
+import CustomHeader from '../components/molecules/header/CustomHeader';
 
 const ServiceDetails = props => {
   const {serviceId} = props.route.params;
@@ -46,7 +47,7 @@ const ServiceDetails = props => {
   };
 
   return (
-    <RootScreen>
+    <RootScreen  headerComponent={() => <CustomHeader title={'Service Details'}  />}>
       <View style={styles.bodyContainer}>
         {Object.keys(serviceOverview).length === 0 ? (
           <View

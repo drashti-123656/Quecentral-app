@@ -40,7 +40,7 @@ const styles = EStyleSheet.create({
     backgroundColor: '$PRIMARY',
   },
   headerBar: {
-    height: 120,
+    height: 115,
     padding: 10,
   },
   childrenContainer: {

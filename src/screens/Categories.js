@@ -7,6 +7,7 @@ import {
   Alert,
 } from 'react-native';
 import EStyleSheet from 'react-native-extended-stylesheet';
+import CustomHeader from '../components/molecules/header/CustomHeader';
 import RootScreen from '../components/molecules/rootScreen/RootScreen';
 import {COLORS} from '../utils/theme';
 import CategoriesCard from './../components/cards/CategoriesCard';
@@ -31,7 +32,7 @@ const Categories = () => {
   };
 
   return (
-    <RootScreen >
+    <RootScreen headerComponent={() => <CustomHeader title={'Categories'}  />} >
       {loading ? (
         <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
           <ActivityIndicator color={COLORS.PRIMARY} size={'large'} />

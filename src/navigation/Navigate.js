@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{useEffect, useState} from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 import {useSelector} from 'react-redux';
 import {createStackNavigator} from '@react-navigation/stack';
@@ -13,7 +13,18 @@ const Navigate = () => {
   const {
     authData: {isLoggedIn},
   } = useSelector(({auth}) => auth);
+
+  const {
+   theme,
+  } = useSelector(({app}) => app);
+
+  const [shouldRender, setShouldRender] = useState(false)
+  useEffect(() => {
+    !shouldRender ? setShouldRender(true) : null;
+  }, [theme]);
+
   return (
+    
     <NavigationContainer ref={navigationRef}>
       <Stack.Navigator>
         {!isLoggedIn ? (

@@ -11,6 +11,7 @@ import {
 } from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
 import {
+  facebookLoginAction,
   handleCloseModalAction,
   login as signIn,
   reset,
@@ -33,7 +34,9 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 const Login = ({route, navigation}) => {
   const dispatch = useDispatch();
 
-  const {error, errorMsg, showOtpModal} = useSelector(({auth}) => auth);
+  const {error, errorMsg, showOtpModal, authData} = useSelector(
+    ({auth}) => auth,
+  );
 
   const [otpSent, setOtpSent] = useState(false);
   const [mobileno, setMobileno] = useState('');
@@ -42,8 +45,7 @@ const Login = ({route, navigation}) => {
   const [loading, setLoading] = useState(false);
 
   const handleSendOtp = async values => {
-    const {token} = route.params;
-    const payload = {mobile_no: values.mobileno, token};
+    const payload = {mobile_no: values.mobileno};
     dispatch(sendOtpAction(payload));
   };
 
@@ -51,13 +53,25 @@ const Login = ({route, navigation}) => {
     dispatch(handleCloseModalAction());
   };
 
-  const handleOtpSubmit = async otp => {
-    const payload = {
-      token,
-      mobile_no: '961111111',
-      otp,
-    };
-    dispatch(verifyOtpAction(payload));
+  const handleVerifyOtp = async otp => {
+
+
+    if (authData.facebookId) {
+      const {token} = route.params;
+      const payload = {
+        token: authData.facebookId,
+        mobile_no: authData.mobileNo,
+        otp,
+      };
+      dispatch(facebookLoginAction(payload));
+    } else if (authData.googleId) {
+    } else {
+      const payload = {
+        mobile_no: authData.mobileNo,
+        otp,
+      };
+      dispatch(verifyOtpAction(payload));
+    }
   };
 
   const genrateOtp = () => {};
@@ -88,7 +102,6 @@ const Login = ({route, navigation}) => {
             style={{
               ...styles.TitleText,
               color: '#333',
-              marginTop: 50,
               marginBottom: 20,
             }}>
             Login
@@ -108,27 +121,24 @@ const Login = ({route, navigation}) => {
                   keyboardType={'numeric'}
                 />
 
-                <TouchableOpacity
+                {/* <TouchableOpacity
                   onPress={() => setOtpSent(false)}
                   style={{
                     flexDirection: 'row',
                     alignItems: 'center',
                     justifyContent: 'flex-end',
-                    padding : 12,
+                    padding: 12,
                   }}>
-                 
-
                   <Icon
                     name="refresh"
                     size={25}
                     color={EStyleSheet.value('$PRIMARY')}
-                   
                   />
 
                   <Text style={styles.footerText}>
                     Didn't recieve the otp? Send OTP
                   </Text>
-                </TouchableOpacity>
+                </TouchableOpacity> */}
 
                 <View style={styles.loginContainer}>
                   <LoginButton
@@ -142,12 +152,11 @@ const Login = ({route, navigation}) => {
           </Formik>
 
           <Text
-            style={{textAlign: 'center', color: EStyleSheet.value('$TEXT')}}>
-            Don't have an account ?
+            style={{textAlign: 'center', color: EStyleSheet.value('$TEXT'), marginTop:20}}>
+            Don't have an account ? {' '}
             <Text
               onPress={() => navigation.navigate('Signup')}
               style={styles.bottomText}>
-              {' '}
               Signup
             </Text>
           </Text>
@@ -156,7 +165,7 @@ const Login = ({route, navigation}) => {
         <OtpModel
           display={showOtpModal}
           setDisplay={closeOtpModal}
-          handleOtpSubmit={handleOtpSubmit}
+          handleOtpSubmit={handleVerifyOtp}
           genrateOtp={genrateOtp}
         />
       </ScrollView>
@@ -194,6 +203,7 @@ const styles = EStyleSheet.create({
     backgroundColor: '$BACKGROUND',
     borderTopLeftRadius: 30,
     borderTopRightRadius: 30,
+    justifyContent: 'center'
   },
   input: {
     margin: 12,
@@ -204,16 +214,15 @@ const styles = EStyleSheet.create({
   },
   footerText: {
     textAlign: 'right',
-    paddingLeft : 3,
+    paddingLeft: 3,
     color: '$TEXT',
   },
   bottomText: {
-    color: '#2BBBA0',
+    color: '$PRIMARY',
     fontWeight: 'bold',
   },
   imageIcon: {
     width: 60,
     height: 70,
   },
-  
 });
