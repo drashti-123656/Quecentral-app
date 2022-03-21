@@ -19,7 +19,7 @@ const CategoriesStack = () => {
       <categoriesStack.Screen
         name="Categories"
         options={{
-          headerShown: true,
+          headerShown: false,
           title: 'Categories',
           headerBackVisible: true,
         }}

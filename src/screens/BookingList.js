@@ -11,6 +11,9 @@ import BookingCard from './../components/cards/BookingCard';
 import { useDispatch, useSelector } from "react-redux";
 import {fetchBookingsAction} from './../redux/actions/bookings';
 import EStyleSheet from 'react-native-extended-stylesheet';
+import RootScreen from '../components/molecules/rootScreen/RootScreen';
+import CustomHeader from '../components/molecules/header/CustomHeader';
+import NoResultFound from '../components/molecules/NoResultFound';
 
 const BookingList = () => {
   const [loading, setLoading] = useState(false);
@@ -27,9 +30,10 @@ const dispatch = useDispatch();
     requestBookingListData();
     setRefreshing(false);
   }; 
+  const _handleEmptyComponentRender = () => <NoResultFound />;
 
   return (
-    <View style={styles.screen}>
+    <RootScreen headerComponent={() => <CustomHeader title={'Bookings'} />}>
       {loading ? (
         <View style={styles.screen_view}>
           <ActivityIndicator color={EStyleSheet.value('$PRIMARY')} size={'large'} />
@@ -57,7 +61,7 @@ const dispatch = useDispatch();
           keyExtractor={item => item.id}
         />
       )}
-    </View>
+    </RootScreen>
   );
 };
 

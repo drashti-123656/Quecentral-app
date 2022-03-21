@@ -24,6 +24,8 @@ import SliderScreen from './../components/Slider/Slider';
 import {useDispatch, useSelector} from 'react-redux';
 import {searchServiceAction} from '../redux/actions/searchSevice';
 import EStyleSheet from 'react-native-extended-stylesheet';
+import RootScreen from '../components/molecules/rootScreen/RootScreen';
+import CustomHeader from '../components/molecules/header/CustomHeader';
 
 const FindAProfessional = ({route, navigation}) => {
   const dispatch = useDispatch();
@@ -66,6 +68,98 @@ const FindAProfessional = ({route, navigation}) => {
     dispatch(searchServiceAction(data));
   };
 
+  const _handleRenderHeader = () => (
+    <>
+      <View style={styles.filterOptionsCont}>
+        <View style={styles.searchDevice}>
+          <TextInput
+            ref={searchInput}
+            style={styles.searchTitle}
+            value={searchText}
+            onChangeText={setSearchText}
+            placeholder="Search Service"
+            placeholderTextColor="#a1a1a1"
+          />
+
+          <TouchableOpacity onPress={searchHandler}>
+            <Image
+              source={require('./../assets/icons/search.png')}
+              style={styles.serchIcon}
+            />
+          </TouchableOpacity>
+        </View>
+        <View style={styles.locationTitle}>
+          <CustomInputWithTitle
+            title={'Location'}
+            placeholder={'Enter location'}
+          />
+        </View>
+
+        {ShowAdvanceFilters ? (
+          <View>
+            <View
+              style={{
+                ...styles.rowCont,
+                justifyContent: 'space-between',
+                marginBottom: 5,
+                marginTop: 15,
+              }}>
+              <View style={styles.sortbyTitle}>
+                <Picker
+                  title={'Sort By'}
+                  value={sortBy}
+                  data={[
+                    {id: 1, value: 'Price low to high'},
+                    {id: 2, value: 'Price high to low'},
+                    {id: 3, value: 'Newest'},
+                  ]}
+                  onSelect={setSortBy}
+                />
+              </View>
+
+              <View style={styles.sortbyTitle}>
+                <CategoriesPicker
+                  title={'Categories'}
+                  value={Categories}
+                  onSelect={setCategories}
+                />
+              </View>
+            </View>
+
+            <Text
+              style={{
+                ...styles.h3,
+                color: EStyleSheet.value('$TEXT'),
+                marginBottom: 10,
+              }}>
+              Price Range
+            </Text>
+            <SliderScreen setMinPrice={setMinPrice} setMaxPrice={setMaxPrice} />
+            <Text
+              style={{
+                ...styles.h2,
+                marginTop: 10,
+              }}>{`\u20B9 ${minPrice} -  \u20B9 ${maxPrice}`}</Text>
+          </View>
+        ) : null}
+
+        <Pressable
+          style={styles.moreFiltersButton}
+          onPress={() => setShowAdvanceFilters(!ShowAdvanceFilters)}>
+          <Icon
+            name={ShowAdvanceFilters ? 'angle-up' : 'angle-down'}
+            size={25}
+            color={EStyleSheet.value('$TEXT')}
+          />
+        </Pressable>
+      </View>
+
+      <View style={styles.searchResutcontainer}>
+        <Text style={styles.h2}>Search results</Text>
+      </View>
+    </>
+  );
+
   const _handleRenderSearchResults = ({item}) => (
     <View style={styles.serviceCard}>
       <ServiceCard
@@ -89,146 +183,25 @@ const FindAProfessional = ({route, navigation}) => {
     );
 
   return (
-    <>
-      <View style={styles.container}>
-        <View style={styles.headerBar}>
-          <Text style={{...styles.h1, color: '#fff', marginLeft: 10}}>
-            Search Service
-          </Text>
-        </View>
-
-        <View style={styles.bodyContainer}>
-          <View style={styles.mainContainer}>
-            <ScrollView
-              showsVerticalScrollIndicator={true}
-              contentContainerStyle={{zIndex: 1}}>
-              <View style={styles.filterOptionsCont}>
-                <View style={styles.searchDevice}>
-                  <TextInput
-                    ref={searchInput}
-                    style={styles.searchTitle}
-                    value={searchText}
-                    onChangeText={setSearchText}
-                    placeholder="Search Service"
-                    placeholderTextColor="#a1a1a1"
-                  />
-
-                  <TouchableOpacity onPress={searchHandler}>
-                    <Icon
-                      name="search"
-                      size={25}
-                      color={EStyleSheet.value('$TEXT')}
-                      style={styles.serchIcon}
-                    />
-                  </TouchableOpacity>
-                </View>
-                <View style={styles.locationTitle}>
-                  <CustomInputWithTitle
-                    title={'Location'}
-                    placeholder={'Enter location'}
-                  />
-                </View>
-
-                {ShowAdvanceFilters ? (
-                  <View>
-                    <View
-                      style={{
-                        ...styles.rowCont,
-                        justifyContent: 'space-between',
-                        marginBottom: 5,
-                        marginTop: 15,
-                      }}>
-                      <View style={styles.sortbyTitle}>
-                        <Picker
-                          title={'Sort By'}
-                          value={sortBy}
-                          data={[
-                            {id: 1, value: 'Price low to high'},
-                            {id: 2, value: 'Price high to low'},
-                            {id: 3, value: 'Newest'},
-                          ]}
-                          onSelect={setSortBy}
-                        />
-                      </View>
-
-                      <View style={styles.sortbyTitle}>
-                        <CategoriesPicker
-                          title={'Categories'}
-                          value={Categories}
-                          onSelect={setCategories}
-                        />
-                      </View>
-                    </View>
-
-                    <Text
-                      style={{
-                        ...styles.h3,
-                        color: EStyleSheet.value('$TEXT'),
-                        marginBottom: 10,
-                      }}>
-                      Price Range
-                    </Text>
-                    <SliderScreen
-                      setMinPrice={setMinPrice}
-                      setMaxPrice={setMaxPrice}
-                    />
-                    <Text
-                      style={{
-                        ...styles.h2,
-                        marginTop: 10,
-                      }}>{`\u20B9 ${minPrice} -  \u20B9 ${maxPrice}`}</Text>
-                  </View>
-                ) : null}
-
-                <Pressable
-                  style={styles.moreFiltersButton}
-                  onPress={() => setShowAdvanceFilters(!ShowAdvanceFilters)}>
-                  <Icon
-                    name={ShowAdvanceFilters ? 'angle-up' : 'angle-down'}
-                    size={25}
-                    color={EStyleSheet.value('$TEXT')}
-                  />
-                </Pressable>
-              </View>
-
-              <View style={styles.searchContainer}>
-                <View style={styles.searchResutcontainer}>
-                  <Text style={styles.h2}>Search results</Text>
-                </View>
-
-                <View>
-                  <FlatList
-                    data={services}
-                    renderItem={_handleRenderSearchResults}
-                    ListEmptyComponent={<NoResultFound />}
-                    ListFooterComponent={_handleRenderFooter}
-                    keyExtractor={item => item.id}
-                  />
-                </View>
-              </View>
-            </ScrollView>
-          </View>
-        </View>
-      </View>
-    </>
+    <RootScreen headerComponent={() => <CustomHeader title={'Serach'}  />}>
+          <FlatList
+            data={services}
+            ListHeaderComponent={_handleRenderHeader}
+            renderItem={_handleRenderSearchResults}
+            ListEmptyComponent={<NoResultFound />}
+            ListFooterComponent={_handleRenderFooter}
+            keyExtractor={item => item.id}
+            contentContainerStyle={styles.container}
+          />
+    </RootScreen>
   );
 };
 
 export default FindAProfessional;
 
 const styles = EStyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: COLORS.PRIMARY,
-  },
-
-  mainContainer: {
-    position: 'absolute',
-    top: -30,
-    left: 0,
-    right: 0,
-    height: Dimensions.get('window').height - 20,
-    backgroundColor: '$BACKGROUND',
+  container:{
+    backgroundColor:'transparent'
   },
   text: {
     fontSize: 16,
@@ -237,15 +210,7 @@ const styles = EStyleSheet.create({
     letterSpacing: 0.25,
     color: '$TEXT',
   },
-  headerBar: {
-    height: 50,
-    justifyContent: 'center',
-  },
-  bodyContainer: {
-    flex: 0.94,
-    backgroundColor: '$TEXT',
-    marginTop: 'auto',
-  },
+
   moreFiltersButton: {
     alignItems: 'center',
     justifyContent: 'center',
@@ -258,7 +223,8 @@ const styles = EStyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    margin: 10,
+    marginVertical: 20,
+    marginHorizontal:10
   },
   h2: {
     fontSize: 15,

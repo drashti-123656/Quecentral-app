@@ -1,13 +1,14 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import Navigate from './src/navigation/Navigate';
-import { Appearance } from 'react-native';
+import {Appearance} from 'react-native';
 import FlashMessage from 'react-native-flash-message';
-import {Provider} from 'react-redux';
+import {Provider, useSelector} from 'react-redux';
 import Splash from './src/screens/Splash';
 import {PersistGate} from 'redux-persist/integration/react';
 import {store, persistedStore} from './src/redux/store';
 import EStyleSheet from 'react-native-extended-stylesheet';
 import {darkTheme, lightTheme} from './src/styles/themes';
+import {TouchableOpacity, Text} from 'react-native';
 
 const colorScheme = Appearance.getColorScheme();
 

@@ -7,10 +7,17 @@ import {
   LOGOUT,
   SEND_OTP_SUCCESS,
   HANDLE_CLOSE_MODAL,
+  STORE_FACEBOOK_ID,
 } from '../reduxConstants';
 
 const initialState = {
-  authData: {isLoggedIn: false, token: null},
+  authData: {
+    isLoggedIn: false,
+    token: null,
+    mobileNo: null,
+    facebookId: null,
+    googleId: null,
+  },
   userData: {OTPVerification: false},
   miscData: {
     error: false,
@@ -36,6 +43,7 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         showOtpModal: true,
+        authData: {...state.authData, mobileNo: action.payload.mobile_no},
       };
 
     case HANDLE_CLOSE_MODAL:
@@ -59,7 +67,13 @@ const reducer = (state = initialState, action) => {
 
     case LOGOUT:
       return {
-        authData: {isLoggedIn: false, token: null},
+        authData: {
+          isLoggedIn: false,
+          token: null,
+          mobileNo: null,
+          facebookId: null,
+          googleId: null,
+        },
         userData: {},
         miscData: {error: false, success: false, errorMsg: ''},
       };
@@ -68,6 +82,12 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         miscData: {error: false, success: false, errorMsg: ''},
+      };
+
+    case STORE_FACEBOOK_ID:
+      return {
+        ...state,
+        authData: {...state.authData, facebookId: action.payload.token},
       };
     default:
       return state;

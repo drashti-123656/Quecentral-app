@@ -13,6 +13,9 @@ import {notificationList as notificationListAPI} from './../services/api';
 import {COLORS} from './../utils/theme';
 import {BASE_URL} from './../utils/global';
 import EStyleSheet from 'react-native-extended-stylesheet';
+import RootScreen from '../components/molecules/rootScreen/RootScreen';
+import CustomHeader from '../components/molecules/header/CustomHeader';
+import NoResultFound from '../components/molecules/NoResultFound';
 
 const Notifications = () => {
   const [loading, setLoading] = useState(false);
@@ -31,18 +34,27 @@ const Notifications = () => {
     setLoading(false);
   };
 
+  const _handleEmptyComponentRender = () => <NoResultFound />;
+
   return (
-    <View style={styles.screen}>
+    <RootScreen headerComponent={() => <CustomHeader title={'Notification'} />}>
       {loading ? (
         <View style={styles.screen_view}>
-          <ActivityIndicator color={EStyleSheet.value('$PRIMARY')} size={'large'} />
+          <ActivityIndicator
+            color={EStyleSheet.value('$PRIMARY')}
+            size={'large'}
+          />
         </View>
       ) : (
         <FlatList
           data={notificationData}
           refreshControl={
-            <RefreshControl refreshing={loading} onRefresh={fetchNotification} />
+            <RefreshControl
+              refreshing={loading}
+              onRefresh={fetchNotification}
+            />
           }
+          ListEmptyComponent={_handleEmptyComponentRender}
           renderItem={({item}) => (
             <Card style={styles.card}>
               <Image
@@ -56,10 +68,11 @@ const Notifications = () => {
               </View>
             </Card>
           )}
+          contentContainerStyle={{flex: 1}}
           keyExtractor={() => Math.random()}
         />
       )}
-    </View>
+    </RootScreen>
   );
 };
 
@@ -71,9 +84,9 @@ const styles = EStyleSheet.create({
     backgroundColor: '$BACKGROUND',
   },
   screen_view: {
-    justifyContent: 'center', 
-    alignItems: 'center', 
-    flex: 1
+    justifyContent: 'center',
+    alignItems: 'center',
+    flex: 1,
   },
   card: {
     flexDirection: 'row',
@@ -82,13 +95,13 @@ const styles = EStyleSheet.create({
     marginVertical: 5,
   },
   card_image: {
-    width: 50, 
-    height: 50, 
-    borderRadius: 50
+    width: 50,
+    height: 50,
+    borderRadius: 50,
   },
   card_view: {
     marginLeft: 10,
-    flex: 1
+    flex: 1,
   },
   h1: {
     color: '#000',
@@ -101,5 +114,10 @@ const styles = EStyleSheet.create({
     color: '#a1a1a1',
     fontSize: 12,
     fontWeight: 'bold',
+  },
+  emptyContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });

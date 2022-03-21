@@ -6,6 +6,7 @@ export const WARNING_GREEN = '#339900';
 export const WHITE = '#fff';
 
 export const lightTheme = {
+  $theme: 'light', 
   $WHITE: '#FFF',
   $PRIMARY: '#667E89',
   $SECONDARY: '#DBF8E2',
@@ -25,6 +26,7 @@ export const lightTheme = {
 };
 
 export const darkTheme = {
+  $theme: 'dark', 
   $WHITE: '#FFF',
   $PRIMARY: '#667E89',
   $SECONDARY: '#DBF8E2',

@@ -1,3 +1,7 @@
+/* app start */
+export const TOGGLE_THEME = 'TOGGLE_THEME';
+/* app start */
+
 /* auth start */
 export const LOGIN = 'LOGIN';
 export const GOOGLE_LOGIN = 'GOOGLE_LOGIN';
@@ -6,6 +10,7 @@ export const SIGNUP = 'SIGNUP';
 export const FORGOT_PASSWORD = 'FORGOT_PASSWORD';
 export const SEND_OTP = 'SEND_OTP';
 export const HANDLE_CLOSE_MODAL = 'HANDLE_CLOSE_MODAL';
+export const STORE_FACEBOOK_ID = 'STORE_FACEBOOK_ID';
 export const SEND_OTP_SUCCESS = 'SEND_OTP_SUCCESS';
 export const VERIFY_OTP = 'VERIFY_OTP';
 export const RESET_PASSWORD = 'RESET_PASSWORD';

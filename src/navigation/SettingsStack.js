@@ -23,6 +23,7 @@ const SettingsStack = () => {
             backgroundColor: EStyleSheet.value('$PRIMARY'),
           },
           headerTintColor: '#fff',
+          headerShown: false,
         }}
       />
       <dashboardStack.Screen
@@ -46,6 +47,7 @@ const SettingsStack = () => {
             backgroundColor: EStyleSheet.value('$PRIMARY'),
           },
           headerTintColor: '#fff',
+          headerShown: false,
         }}
       />
 

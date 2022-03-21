@@ -18,7 +18,7 @@ const BookingListStack = () => {
         }}>
         <bookingListStack.Screen
           name="BookingList"
-          options={{headerShown: true}}
+          options={{headerShown: false}}
           component={BookingList}
         />
          <bookingListStack.Screen

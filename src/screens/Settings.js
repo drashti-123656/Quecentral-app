@@ -6,6 +6,7 @@ import {
   Image,
   TouchableOpacity,
   ActivityIndicator,
+  Switch,
 } from 'react-native';
 import {useIsFocused} from '@react-navigation/native';
 import {COLORS} from './../utils/theme';
@@ -14,8 +15,14 @@ import {BASE_URL} from './../utils/global';
 import EStyleSheet from 'react-native-extended-stylesheet';
 import Icon from 'react-native-vector-icons/AntDesign';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import {darkTheme, lightTheme} from './../styles/themes';
+import RootScreen from '../components/molecules/rootScreen/RootScreen';
+import CustomHeader from '../components/molecules/header/CustomHeader';
+import {useDispatch} from 'react-redux';
+import {TOGGLE_THEME} from '../redux/reduxConstants';
 
 const Settings = ({navigation}) => {
+  const dispatch = useDispatch();
   const isFocused = useIsFocused();
   const [userDetails, setUserDetails] = useState({});
   const [loading, setLoading] = useState(false);
@@ -33,8 +40,15 @@ const Settings = ({navigation}) => {
     setLoading(false);
   };
 
+  const toggleTheme = () => {
+    const theme = EStyleSheet.value('$theme') === 'light' ? darkTheme : lightTheme;
+    EStyleSheet.build(theme);
+
+    dispatch({type: TOGGLE_THEME});
+  };
+
   return (
-    <View style={styles.container}>
+    <RootScreen headerComponent={() => <CustomHeader title={'Settings'} />}>
       {loading ? (
         <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
           <ActivityIndicator size={'large'} color={COLORS.PRIMARY} />
@@ -55,7 +69,12 @@ const Settings = ({navigation}) => {
             )}
 
             <View>
-              <Text style={{...styles.h1, marginBottom: 5}}>
+              <Text
+                style={{
+                  ...styles.h1,
+                  marginBottom: 5,
+                  color: EStyleSheet.value('$WHITE'),
+                }}>
                 {userDetails.name}
               </Text>
               <View
@@ -64,7 +83,11 @@ const Settings = ({navigation}) => {
                   marginBottom: 5,
                   flexDirection: 'row',
                 }}>
-                <MaterialIcons name="mail-outline" size={22} color="#b22222" />
+                <MaterialIcons
+                  name="mail-outline"
+                  size={22}
+                  color={EStyleSheet.value('$WHITE')}
+                />
                 <Text style={styles.emailText}>{userDetails.email}</Text>
               </View>
               <TouchableOpacity
@@ -117,7 +140,7 @@ const Settings = ({navigation}) => {
               style={{
                 ...styles.rowCont,
                 ...styles.menuItems,
-                borderBottomWidth: 0,
+                borderBottomWidth: 1,
               }}>
               <View style={styles.iconWrapper}>
                 <Icon
@@ -128,10 +151,35 @@ const Settings = ({navigation}) => {
               </View>
               <Text style={styles.h2}>Transactions</Text>
             </TouchableOpacity>
+
+            <TouchableOpacity
+              onPress={toggleTheme}
+              style={{
+                ...styles.rowCont,
+                ...styles.menuItems,
+                borderBottomWidth: 0,
+              }}>
+              <View style={styles.iconWrapper}>
+                <MaterialIcons
+                  name="color-lens"
+                  size={15}
+                  color={EStyleSheet.value('$PRIMARY')}
+                />
+              </View>
+              <Text style={styles.h2}>Toggle Theme</Text>
+              <Switch
+                trackColor={{false: '#767577', true: '#81b0ff'}}
+                //  thumbColor={isEnabled ? "#f5dd4b" : "#f4f3f4"}
+                ios_backgroundColor="#3e3e3e"
+                onValueChange={() => {}}
+                value={true}
+                styles={{alignSelf: 'flex-end'}}
+              />
+            </TouchableOpacity>
           </View>
         </>
       )}
-    </View>
+    </RootScreen>
   );
 };
 
