@@ -189,15 +189,15 @@ const EditProfile = ({route, navigation}) => {
                   tagRemoveIconColor="#CCC"
                   tagBorderColor="#CCC"
                   tagTextColor="#CCC"
-                  selectedItemTextColor="white"
-                  selectedItemIconColor="white"
-                  itemTextColor="#000"
+                  selectedItemTextColor="black"
+                  selectedItemIconColor="black"
+                  itemTextColor={EStyleSheet.value('$TEXT')}
                   searchInputStyle={styles.brandSearchInputStyle}
                   submitButtonColor="#CCC"
                   submitButtonText="Submit"
                   styleListContainer={styles.listContainer}
-                  styleDropdownMenu={styles.dropdownMenu}
-                  styleDropdownMenuSubsection={styles.dropdownMenusubsection}
+                  //styleDropdownMenu={styles.dropdownMenu}
+                  styleDropdownMenuSubsection={styles.dropdownSubSection}
                   styleInputGroup={styles.inputGroup}
                   styleItemsContainer={styles.itemContainer}
                   styleSelectorContainer={styles.selectorContainer}
@@ -206,7 +206,7 @@ const EditProfile = ({route, navigation}) => {
               </View>
 
               <View>
-                <Text style={styles.titleCity}> Select city</Text>
+                <Text style={styles.title}> Select city</Text>
                 <MultiSelect
                   hideTags
                   items={cityList}
@@ -217,22 +217,23 @@ const EditProfile = ({route, navigation}) => {
                   onSelectedItemsChange={value => setFieldValue('city', value)}
                   selectedItems={values.city}
                   selectText="  Pick City"
-                  styleDropdownMenuSubsection={styles.citydropdoenSubSection}
+                  styleDropdownMenuSubsection={styles.dropdownSubSection}
                   searchInputPlaceholderText="Search Items..."
                   onChangeInput={text => console.log(text)}
                   altFontFamily="ProximaNova-Light"
                   tagRemoveIconColor="#CCC"
                   tagBorderColor="#CCC"
-                  styleListContainer={{height: 100}}
+                  styleListContainer={{height: 200}}
                   tagTextColor="#CCC"
                   selectedItemTextColor="white"
                   selectedItemIconColor="white"
-                  itemTextColor="#000"
+                  itemTextColor={EStyleSheet.value('$TEXT')}
                   searchInputStyle={styles.brandSearchInputStyle}
                   submitButtonColor="#CCC"
                   submitButtonText="Submit"
                   styleInputGroup={styles.inputGroup}
                   styleItemsContainer={styles.itemContainer}
+                  styleSelectorContainer={styles.selectorContainer}
                   styleRowList={styles.rowList}
                 />
               </View>
@@ -247,7 +248,7 @@ const EditProfile = ({route, navigation}) => {
               />
 
               <View>
-                <Text style={styles.titleCity}> Select gender</Text>
+                <Text style={styles.title}> Select gender</Text>
                 <MultiSelect
                   hideTags
                   items={genderData}
@@ -260,7 +261,7 @@ const EditProfile = ({route, navigation}) => {
                   }
                   selectedItems={values.gender}
                   selectText="  Pick Gender"
-                  styleDropdownMenuSubsection={styles.genderdropDownMenuSection}
+                  styleDropdownMenuSubsection={styles.dropDownSubSection}
                   styleInputGroup={styles.inputGroup}
                   styleItemsContainer={styles.itemContainer}
                   searchInputPlaceholderText="Search Items..."
@@ -271,8 +272,9 @@ const EditProfile = ({route, navigation}) => {
                   tagTextColor="#CCC"
                   selectedItemTextColor="white"
                   selectedItemIconColor="white"
-                  itemTextColor="#000"
+                  itemTextColor={EStyleSheet.value('$TEXT')}
                   searchInputStyle={styles.brandSearchInputStyle}
+                  styleSelectorContainer={styles.selectorContainer}
                   submitButtonColor="#CCC"
                   submitButtonText="Submit"
                   styleRowList={styles.rowList}
@@ -314,35 +316,6 @@ const styles = EStyleSheet.create({
     paddingHorizontal: 20,
     backgroundColor: '$BACKGROUND',
   },
-  citydropdoenSubSection: {
-    borderWidth: 1,
-    borderRadius: 10,
-    borderColor: '$PRIMARY',
-    height: 50,
-    marginTop: 20,
-  },
-  rowList: {
-    borderWidth: 1,
-    borderColor: 'white',
-    padding: 10,
-  },
-  genderdropDownMenuSection: {
-    borderWidth: 1,
-    borderRadius: 10,
-    borderColor: '#2BBBA0',
-    height: 50,
-    marginTop: 20,
-  },
-  itemContainer: {
-    backgroundColor: '#2BBBA0',
-  },
-  dropdown: {
-    backgroundColor: 'red',
-  },
-  selectorContainer: {
-    marginHorizontal: 10,
-    marginTop: 10,
-  },
   rowCont: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -352,72 +325,54 @@ const styles = EStyleSheet.create({
     height: 100,
     borderRadius: 50,
   },
-  dropdownMenusubsection: {
-    borderWidth: 1,
-    borderRadius: 10,
-    borderColor: '#2BBBA0',
-    overflow: 'hidden',
-  },
-  h1: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    color: '#000',
-  },
-  dropdownMenu: {
-    borderRadius: 10,
-    borderWidth: 1,
-    marginTop: 10,
-    borderStyle: 'solid',
-    borderWidth: 0,
-    borderColor: '#20232a',
-    height: 50,
-  },
-
   title: {
+    fontSize: 15,
     fontWeight: 'bold',
-    marginTop: 5,
-    fontSize: 12,
-  },
-  titleCity: {
-    marginTop: 5,
-    fontWeight: 'bold',
-    fontSize: 12,
-  },
-  titleGender: {
-    marginTop: 5,
-    fontWeight: 'bold',
-    fontSize: 12,
-  },
-  h2: {
-    fontWeight: 'bold',
-    color: '#333',
-  },
-  listContainer: {
-    height: 256,
-  },
-  inputGroup: {
-    borderWidth: 1,
-    borderColor: '#2BBBA0',
-    marginTop: 10,
-  },
-  input: {
-    height: 50,
-    margin: 12,
-    borderWidth: 1,
-    padding: 10,
-    borderRadius: 10,
-    borderColor: '#2BBBA0',
+    marginTop:15,
+    color : '$TEXT'
   },
   brandSearchInputStyle: {
     height: 45,
     fontSize: 20,
     textDecorationLine: 'underline',
   },
-  filtersContainer: {
-    flexGrow: 1,
-    paddingBottom: 50,
+  listContainer: {
+    height: 256,
+    borderRadius: 30,
   },
-  statusContainer: {
-    zIndex: 99,
+  // dropdownMenu: {
+  //   borderRadius: 10,
+  //   borderWidth: 1,
+  //   borderStyle: 'solid',
+  //   borderWidth: 0,
+  //   borderColor: '#20232a',
+  //   height: 50,
+  // },
+  dropdownSubSection: {
+    borderWidth: 1,
+    borderRadius: 10,
+    borderColor: '$PRIMARY',
+    height: 50,
+    marginTop: 20,
+  },
+  inputGroup: {
+    borderWidth: 1,
+    borderColor: '$PRIMARY',
+    marginTop: 10,
+    borderRadius: 10,
+  },
+  itemContainer: {
+    backgroundColor: '$PRIMARY',
+    borderRadius: 10,
+  },
+  selectorContainer: {
+    marginHorizontal: 10,
+    marginTop: 10,
+  },
+  rowList: {
+    borderBottomWidth: 1,
+    borderColor: '$TEXT',
+    padding: 10,
+    borderRadius: 20,
   },
 });

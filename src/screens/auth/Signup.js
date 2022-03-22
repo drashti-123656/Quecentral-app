@@ -181,6 +181,8 @@ const Signup = ({navigation}) => {
   const handleFacebookLogin = data => {
     const {credentials: {token}} = data;
     const payload = {token}
+
+    console.log('payload',payload)
       dispatch(facebookLoginAction(payload))
   };
 

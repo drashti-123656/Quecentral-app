@@ -183,7 +183,7 @@ const FindAProfessional = ({route, navigation}) => {
     );
 
   return (
-    <RootScreen headerComponent={() => <CustomHeader title={'Serach'}  />}>
+    <RootScreen headerComponent={() => <CustomHeader title={'Search'}  />}>
           <FlatList
             data={services}
             ListHeaderComponent={_handleRenderHeader}
