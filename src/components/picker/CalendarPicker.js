@@ -57,6 +57,9 @@ const CalendarPicker = props => {
                 props.onSelect(day);
                 setShowModal(false);
               }}
+              markedDates={{
+                '2022-03-21': {selected: true, marked: true, selectedColor: 'red', disabled:true},
+              }}
               minDate={props.minDate}
             />
           </View>

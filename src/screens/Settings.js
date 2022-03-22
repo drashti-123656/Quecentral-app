@@ -18,11 +18,12 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import {darkTheme, lightTheme} from './../styles/themes';
 import RootScreen from '../components/molecules/rootScreen/RootScreen';
 import CustomHeader from '../components/molecules/header/CustomHeader';
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {TOGGLE_THEME} from '../redux/reduxConstants';
 
 const Settings = ({navigation}) => {
   const dispatch = useDispatch();
+  const {theme} = useSelector(({app}) => app);
   const isFocused = useIsFocused();
   const [userDetails, setUserDetails] = useState({});
   const [loading, setLoading] = useState(false);
@@ -43,7 +44,6 @@ const Settings = ({navigation}) => {
   const toggleTheme = () => {
     const theme = EStyleSheet.value('$theme') === 'light' ? darkTheme : lightTheme;
     EStyleSheet.build(theme);
-
     dispatch({type: TOGGLE_THEME});
   };
 
@@ -88,27 +88,25 @@ const Settings = ({navigation}) => {
                   size={22}
                   color={EStyleSheet.value('$WHITE')}
                 />
-                <Text style={styles.emailText}>{userDetails.email}</Text>
+                <Text style={styles.mobileText}>{userDetails.mobileno}</Text>
               </View>
-              <TouchableOpacity
-                onPress={() =>
-                  navigation.navigate('EditProfile', {userDetails})
-                }
-                style={{
-                  padding: 10,
-                  backgroundColor: COLORS.PRIMARY,
-                  borderRadius: 20,
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                }}>
-                <Text style={{fontWeight: 'bold', color: '#fff'}}>
-                  Edit Profile
-                </Text>
-              </TouchableOpacity>
             </View>
           </View>
 
           <View style={styles.menuCont}>
+          <TouchableOpacity
+              onPress={() =>   navigation.navigate('EditProfile', {userDetails})}
+              style={{...styles.rowCont, ...styles.menuItems}}>
+              <View style={styles.iconWrapper}>
+                <MaterialIcons
+                  name="notifications-active"
+                  size={15}
+                  color={EStyleSheet.value('$PRIMARY')}
+                />
+              </View>
+              <Text style={styles.h2}>Edit Profile</Text>
+            </TouchableOpacity>
+
             <TouchableOpacity
               onPress={() => navigation.navigate('Notifications')}
               style={{...styles.rowCont, ...styles.menuItems}}>
@@ -158,7 +156,9 @@ const Settings = ({navigation}) => {
                 ...styles.rowCont,
                 ...styles.menuItems,
                 borderBottomWidth: 0,
+                justifyContent:'space-between'
               }}>
+                <View style={styles.rowCont}>
               <View style={styles.iconWrapper}>
                 <MaterialIcons
                   name="color-lens"
@@ -166,13 +166,14 @@ const Settings = ({navigation}) => {
                   color={EStyleSheet.value('$PRIMARY')}
                 />
               </View>
-              <Text style={styles.h2}>Toggle Theme</Text>
+              <Text style={styles.h2}>Dark Mode</Text>
+              </View>
               <Switch
-                trackColor={{false: '#767577', true: '#81b0ff'}}
-                //  thumbColor={isEnabled ? "#f5dd4b" : "#f4f3f4"}
+                trackColor={{false: '#767577', true: EStyleSheet.value('DARK')}}
+               thumbColor={theme === 'dark' ? EStyleSheet.value('DARK') : "#f4f3f4"}
                 ios_backgroundColor="#3e3e3e"
-                onValueChange={() => {}}
-                value={true}
+                onValueChange={toggleTheme}
+                value={theme === 'dark' ? false : true}
                 styles={{alignSelf: 'flex-end'}}
               />
             </TouchableOpacity>
@@ -232,8 +233,8 @@ const styles = EStyleSheet.create({
     alignItems: 'center',
     marginRight: 10,
   },
-  emailText: {
-    color: '$TEXT',
+  mobileText: {
+    color: '$WHITE',
     paddingLeft: 6,
     fontSize: 15,
   },

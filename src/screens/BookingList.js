@@ -58,6 +58,8 @@ const dispatch = useDispatch();
               />
             </View>
           )}
+          contentContainerStyle={{flex: 1}}
+          ListEmptyComponent={_handleEmptyComponentRender}
           keyExtractor={item => item.id}
         />
       )}

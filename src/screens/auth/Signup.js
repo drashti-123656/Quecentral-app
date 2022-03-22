@@ -205,7 +205,7 @@ const Signup = ({navigation}) => {
         <Text
           style={{
             ...styles.TitleText,
-            color: '#333',
+            color: EStyleSheet.value('$TEXT'),
             marginTop: 30,
             marginBottom: 10,
           }}>
@@ -378,7 +378,7 @@ const styles = EStyleSheet.create({
     alignItems: 'center',
   },
   TitleText: {
-    color: '$TEXT',
+    color: '$WHITE',
     fontSize: 30,
     fontWeight: 'bold',
     textAlign: 'center',

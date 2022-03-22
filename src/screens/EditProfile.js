@@ -79,7 +79,6 @@ const EditProfile = ({route, navigation}) => {
     <KeyboardAwareScrollView
       contentContainerStyle={{flexGrow: 1}}
       style={styles.container}>
-      {console.log('userDetails==>', userDetails)}
 
       <Formik
         initialValues={{

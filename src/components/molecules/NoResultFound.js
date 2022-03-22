@@ -1,5 +1,5 @@
 import React from 'react';
-import {StyleSheet, Text, View, Image} from 'react-native';
+import {Text, View, Image} from 'react-native';
 import EStyleSheet from 'react-native-extended-stylesheet';
 
 const NoResultFound = () => {
@@ -17,7 +17,7 @@ const NoResultFound = () => {
 
 export default NoResultFound;
 
-const styles = StyleSheet.create({
+const styles = EStyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
@@ -26,9 +26,11 @@ const styles = StyleSheet.create({
   h1: {
     textAlign: 'center',
     fontWeight: 'bold',
+    color: '$TEXT'
   },
   Image: {
     width: 50,
     height: 50,
+    marginBottom:10
   },
 });

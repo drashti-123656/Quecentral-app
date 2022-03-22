@@ -120,7 +120,6 @@ export function* sendOtpWorker({payload}) {
 
 export function* verifyOtpWorker({payload}) {
   try {
-    console.log('payload1' , payload)
     const {data} = yield call(verifyOtpAPI, payload);
     yield put({
       type: AUTH_SUCCESS,
@@ -131,7 +130,7 @@ export function* verifyOtpWorker({payload}) {
   } catch(error) {
     console.log('error', error)
     showMessage({
-      message: error.response.message,
+      message: error.response.data.response.response_message,
       type: 'info',
       backgroundColor: EStyleSheet.value('$WARNING_RED'),
     });

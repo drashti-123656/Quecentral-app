@@ -13,22 +13,22 @@ const Stack = createStackNavigator();
 const AuthNavigation = () => {
   const [Logintype, setLogintype] = React.useState('EmailLogin');
  
-  const checkLogintype = async () => {
-    const response = await checkLogintypeAPI();
-    if (response.data.response.response_code === '200') {
-      setLogintype(response.data.data.login_type);
-    }
-  };
+  // const checkLogintype = async () => {
+  //   const response = await checkLogintypeAPI();
+  //   if (response.data.response.response_code === '200') {
+  //     setLogintype(response.data.data.login_type);
+  //   }
+  // };
  
-  useEffect(() => {
-    checkLogintype();
-  }, []);
+  // useEffect(() => {
+  //   checkLogintype();
+  // }, []);
   
   return (
     <Stack.Navigator>
       <Stack.Screen
         name="EmailLogin"
-        component={Logintype === 'mobile' ? Login : EmailLogin }
+        component={Login}
         options={{headerShown: false}}
       />
       <Stack.Screen

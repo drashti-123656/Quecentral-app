@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
 import {StyleSheet, Text, View, Image, TextInput, TouchableOpacity} from 'react-native';
+import EStyleSheet from 'react-native-extended-stylesheet';
 
 const InputPassword = (props) => {
   const [secureText, setSecureText] = useState(true);
@@ -35,7 +36,7 @@ const InputPassword = (props) => {
 
 export default InputPassword;
 
-const styles = StyleSheet.create({
+const styles = EStyleSheet.create({
   container: {
     flex: 1,
   },
@@ -43,7 +44,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     borderRadius: 10,
-    borderColor: '#2BBBA0',
+    borderColor: '$PRIMARY',
     borderWidth: 1,
     margin: 12,
     marginVertical: 0,

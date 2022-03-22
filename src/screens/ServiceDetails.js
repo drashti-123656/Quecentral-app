@@ -21,6 +21,7 @@ import {BASE_URL} from './../utils/global';
 import EStyleSheet from 'react-native-extended-stylesheet';
 import RootScreen from '../components/molecules/rootScreen/RootScreen';
 import CustomHeader from '../components/molecules/header/CustomHeader';
+import {FlatList} from 'react-native-gesture-handler';
 
 const ServiceDetails = props => {
   const {serviceId} = props.route.params;
@@ -28,143 +29,220 @@ const ServiceDetails = props => {
   const [loading, setLoading] = useState(false);
   const [serviceOverview, setServiceOverview] = useState({});
   const [seller_overview, setSellerOverview] = useState({});
+  const [availableDays, setAvailabilityDays] = useState([]);
+  const [reviews, setReviews] = useState([]);
+  const [displaySection, setDisplaySection] = useState('overview');
 
   useEffect(() => {
     fetchServiceDetails();
   }, []);
 
   const fetchServiceDetails = async () => {
-    setLoading(true);
-    let MD5ServiceId = MD5(serviceId);
-    console.log(serviceId);
-    const response = await serviceDetailsAPI(MD5ServiceId);
-    if (response.data.response.response_code == 200) {
-      setServiceOverview(response.data.data.service_overview);
-      setSellerOverview(response.data.data.seller_overview);
-      console.log(response);
+    try {
+      setLoading(true);
+      let MD5ServiceId = MD5(serviceId);
+      const {data} = await serviceDetailsAPI(MD5ServiceId);
+      console.log('data', data);
+      setServiceOverview(data.data.service_overview);
+      setSellerOverview(data.data.seller_overview);
+      setAvailabilityDays(data.data.availability_days);
+      setReviews(data.data.reviews);
+
+      setLoading(false);
+    } catch (error) {
+      setLoading(false);
     }
-    setLoading(false);
   };
 
+  const _handleRenderFooter = () => (
+    <>
+      {loading ? (
+        <View style={{justifyContent: 'center', alignItems: 'center', flex: 1}}>
+          <ActivityIndicator color={COLORS.PRIMARY} size={'large'} />
+        </View>
+      ) : null}
+    </>
+  );
+
+  const HeaderNav = sectionName => (
+    <View
+      style={{
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+      }}>
+      <View>
+        <TouchableOpacity onPress={() => _handleViewSection('overview')}>
+          <Text>OverView</Text>
+        </TouchableOpacity>
+      </View>
+      <View>
+        <TouchableOpacity onPress={() => _handleViewSection('availablity')}>
+          <Text>Availablity</Text>
+        </TouchableOpacity>
+      </View>
+
+      <View>
+        <TouchableOpacity onPress={() => _handleViewSection('serviceOffered')}>
+          <Text>Reviews</Text>
+        </TouchableOpacity>
+      </View>
+    </View>
+  );
+
+  const _handleViewSection = sectionName => {
+    setDisplaySection(sectionName);
+  };
+
+  const _handleRenderAvailableDays = ({item}) => (
+    <Text style={{color: EStyleSheet.value('$BLACK')}}>sjadjs</Text>
+  );
+
   return (
-    <RootScreen  headerComponent={() => <CustomHeader title={'Service Details'}  />}>
+    <RootScreen
+      headerComponent={() => <CustomHeader title={'Service Details'} />}>
+      <HeaderNav />
       <View style={styles.bodyContainer}>
         {Object.keys(serviceOverview).length === 0 ? (
-          <View
-            style={{
-              flex: 1,
-              justifyContent: 'center',
-              alignItems: 'center',
-              marginBottom: 100,
-            }}>
-            <Image
-              source={require('./../assets/icons/exclamation.png')}
-              style={{width: 60, height: 60, margin: 30}}
-            />
-            <Text
+          loading ? (
+            _handleRenderFooter()
+          ) : (
+            <View
               style={{
-                fontSize: 20,
-                fontWeight: 'bold',
+                flex: 1,
+                justifyContent: 'center',
+                alignItems: 'center',
+                marginBottom: 100,
               }}>
-              Service Close
-            </Text>
-          </View>
+              <Image
+                source={require('./../assets/icons/exclamation.png')}
+                style={{width: 60, height: 60, margin: 30}}
+              />
+              <Text
+                style={{
+                  fontSize: 20,
+                  fontWeight: 'bold',
+                }}>
+                Service Close
+              </Text>
+            </View>
+          )
         ) : (
-          <ScrollView showsVerticalScrollIndicator={false}>
-            <View style={styles.ImageWrapper}>
-              <Swiper showsButtons={false} autoplay={true}>
-                {serviceOverview.service_image.map((item, i) => (
-                  <Image
-                    key={i}
-                    source={{uri: `${BASE_URL}${item}`}}
-                    style={styles.image}
-                    PlaceholderContent={<ActivityIndicator />}
-                  />
-                ))}
-              </Swiper>
-            </View>
+          <>
+            {console.log('availableDays', availableDays)}
+            {displaySection === 'overview' ? (
+              <ScrollView showsVerticalScrollIndicator={false}>
+                <View style={styles.ImageWrapper}>
+                  <Swiper showsButtons={false} autoplay={true}>
+                    {serviceOverview.service_image.map((item, i) => (
+                      <Image
+                        key={i}
+                        source={{uri: `${BASE_URL}${item}`}}
+                        style={styles.image}
+                        PlaceholderContent={<ActivityIndicator />}
+                      />
+                    ))}
+                  </Swiper>
+                </View>
 
-            <View
-              style={{
-                padding: 10,
-                marginTop: 230,
-              }}>
-              <View
-                style={{
-                  ...styles.rowCont,
-                  justifyContent: 'space-between',
-                  marginBottom: 10,
-                }}>
-                <Text
+                <View
                   style={{
-                    ...styles.h2,
-                    color: '#000',
-                    marginRight: 10,
+                    padding: 10,
+                    marginTop: 230,
                   }}>
-                  {serviceOverview.service_title}
-                </Text>
-
-                <Text
-                  style={{
-                    ...styles.h2,
-                    color: COLORS.PRIMARY,
-                  }}>
-                  {`${serviceOverview.currency}${serviceOverview.service_amount}`}
-                </Text>
-              </View>
-
-              <View
-                style={{
-                  ...styles.rowCont,
-                  justifyContent: 'space-between',
-                }}>
-                <Stars rating={serviceOverview.ratings} />
-
-                <TouchableOpacity
-                  onPress={() =>
-                    props.navigation.navigate('BookService', {
-                      service_amount: serviceOverview.service_amount,
-                      serviceId,
-                    })
-                  }
-                  style={{
-                    padding: 5,
-                    backgroundColor: COLORS.PRIMARY,
-                    width: 120,
-                    borderRadius: 5,
-                  }}>
-                  <Text
+                  <View
                     style={{
-                      ...styles.h2,
-                      textAlign: 'center',
-                      color: '#fff',
+                      ...styles.rowCont,
+                      justifyContent: 'space-between',
+                      marginBottom: 10,
                     }}>
-                    Book Service
+                    <Text
+                      style={{
+                        ...styles.h2,
+                        color: EStyleSheet.value('$TEXT'),
+                        marginRight: 10,
+                      }}>
+                      {serviceOverview.service_title}
+                    </Text>
+
+                    <Text
+                      style={{
+                        ...styles.h2,
+                        color: COLORS.PRIMARY,
+                      }}>
+                      {`${serviceOverview.currency}${serviceOverview.service_amount}`}
+                    </Text>
+                  </View>
+
+                  <View
+                    style={{
+                      ...styles.rowCont,
+                      justifyContent: 'space-between',
+                    }}>
+                    <Stars rating={serviceOverview.ratings} />
+
+                    <TouchableOpacity
+                      onPress={() =>
+                        props.navigation.navigate('BookService', {
+                          service_amount: serviceOverview.service_amount,
+                          serviceId,
+                        })
+                      }
+                      style={{
+                        padding: 5,
+                        backgroundColor: COLORS.PRIMARY,
+                        width: 120,
+                        borderRadius: 5,
+                      }}>
+                      <Text
+                        style={{
+                          ...styles.h2,
+                          textAlign: 'center',
+                          color: '#fff',
+                        }}>
+                        Book Service
+                      </Text>
+                    </TouchableOpacity>
+                  </View>
+                </View>
+
+                <ProviderDetails
+                  style={{marginBottom: 10}}
+                  name={seller_overview.name}
+                  image={seller_overview.profile_img}
+                  email={seller_overview.email}
+                />
+
+                <View
+                  style={{
+                    padding: 10,
+                    margin: 10,
+                    backgroundColor: EStyleSheet.value('$CARD_BACKGROUND'),
+                    borderRadius: 10,
+                    marginBottom: 120,
+                  }}>
+                  <Text style={styles.h2}>Service Details</Text>
+                  <Text style={styles.h4}>{serviceOverview.about}</Text>
+                </View>
+              </ScrollView>
+            ) : displaySection === 'availablity' ? (
+              <FlatList
+                data={JSON.parse(availableDays)}
+                renderItem={_handleRenderAvailableDays}
+                keyExtractor={item => item.day}
+              />
+            ) : (
+              <FlatList
+                data={reviews}
+                renderItem={({item}) => (
+                  <Text style={{color: EStyleSheet.value('$BLACK')}}>
+                    sjadjs
                   </Text>
-                </TouchableOpacity>
-              </View>
-            </View>
-
-            <ProviderDetails
-              style={{marginBottom: 10}}
-              name={seller_overview.name}
-              image={seller_overview.profile_img}
-              mobileno={seller_overview.mobileno}
-              email={seller_overview.email}
-            />
-
-            <View
-              style={{
-                padding: 10,
-                margin: 10,
-                backgroundColor: EStyleSheet.value('$CARD_BACKGROUND'),
-                borderRadius: 10,
-                marginBottom: 120,
-              }}>
-              <Text style={styles.h2}>Service Details</Text>
-              <Text style={styles.h4}>{serviceOverview.about}</Text>
-            </View>
-          </ScrollView>
+                )}
+                keyExtractor={item => item.day}
+              />
+            )}
+          </>
         )}
       </View>
     </RootScreen>

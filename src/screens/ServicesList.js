@@ -5,6 +5,10 @@ import {categoryWiseServices as categoryWiseServicesAPI} from './../services/api
 import CategoriesPicker from './../components/picker/CategoriesPicker';
 import {COLORS} from './../utils/theme';
 import EStyleSheet from 'react-native-extended-stylesheet';
+import {FlatList} from 'react-native-gesture-handler';
+import RootScreen from '../components/molecules/rootScreen/RootScreen';
+import CustomHeader from '../components/molecules/header/CustomHeader';
+import NoResultFound from '../components/molecules/NoResultFound';
 
 const ServicesList = props => {
   const {categoryID} = props.route.params;
@@ -22,35 +26,48 @@ const ServicesList = props => {
       category: categoryID,
     });
     const response = await categoryWiseServicesAPI(formData);
-    console.log(response)
-    if(response.data.response.response_code == 200 ){
-    setServiceListData(response.data.data.service_list);
-  }
+    console.log(response);
+    if (response.data.response.response_code == 200) {
+      setServiceListData(response.data.data.service_list);
+    }
     setLoading(false);
   };
 
-  return (
-    <ScrollView contentContainerStyle={styles.container}>
+  const _handleRenderItem = ({item}) => (
+    <ServiceCard
+      service_id={item.service_id}
+      service_title={item.service_title}
+      ratings={item.ratings}
+      location={item.location}
+      currency={item.currency}
+      image={item.service_image}
+      service_amount={item.service_amount}
+    />
+  );
 
+  const _handleEmptyComponentRender = () =>
+    loading ? _handleRenderFooter() : <NoResultFound />;
+
+  const _handleRenderFooter = () => (
+    <>
       {loading ? (
         <View style={{justifyContent: 'center', alignItems: 'center', flex: 1}}>
           <ActivityIndicator color={COLORS.PRIMARY} size={'large'} />
         </View>
-      ) : (
-        serviceListData.map((item, id) => (
-          <ServiceCard
-            key={id}
-            service_id={item.service_id}
-            service_title={item.service_title}
-            ratings={item.ratings}
-            location={item.location}
-            currency={item.currency}
-            image={item.service_image}
-            service_amount={item.service_amount}
-          />
-        ))
-      )}
-    </ScrollView>
+      ) : null}
+    </>
+  );
+  return (
+    <RootScreen headerComponent={() => <CustomHeader title={'Services'} />}>
+      <FlatList
+        data={serviceListData}
+        renderItem={_handleRenderItem}
+        ListEmptyComponent={_handleEmptyComponentRender}
+        ListFooterComponent={_handleRenderFooter}
+        contentContainerStyle={{flex: 1}}
+        keyExtractor={item => item.id}
+      />
+    </RootScreen>
   );
 };
 
@@ -60,6 +77,6 @@ const styles = EStyleSheet.create({
   container: {
     padding: 10,
     flexGrow: 1,
-    backgroundColor: '$BACKGROUND'
+    backgroundColor: '$BACKGROUND',
   },
 });
