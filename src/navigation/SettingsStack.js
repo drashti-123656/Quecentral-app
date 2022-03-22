@@ -55,6 +55,7 @@ const SettingsStack = () => {
         name="Wallet"
         component={Wallet}
         options={{
+          headerShown: false,
           title: 'Wallet',
           headerStyle: {
             backgroundColor: EStyleSheet.value('$PRIMARY'),

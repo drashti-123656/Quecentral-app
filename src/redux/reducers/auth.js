@@ -57,6 +57,7 @@ const reducer = (state = initialState, action) => {
         ...state,
         authData: action.authData || state.authData,
         userData: action.userData || state.userData,
+        showOtpModal:false
       };
 
     case ERROR:

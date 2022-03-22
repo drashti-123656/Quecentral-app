@@ -101,7 +101,7 @@ const DashboardStack = () => {
         name="ServicesList"
         component={ServicesList}
         options={({navigation, route}) => ({
-          headerShown: true,
+          headerShown: false,
           title: 'Services List',
           headerBackVisible: true,
         })}

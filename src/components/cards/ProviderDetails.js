@@ -15,7 +15,7 @@ import {BASE_URL} from './../../utils/global';
 import EStyleSheet from 'react-native-extended-stylesheet';
 import Icon from 'react-native-vector-icons/Feather';
 
-const ProviderDetails = ({style, image, name, email, mobileno}) => {
+const ProviderDetails = ({style, image, name, email}) => {
   const navigation = useNavigation();
 
   return (
@@ -38,15 +38,6 @@ const ProviderDetails = ({style, image, name, email, mobileno}) => {
               PlaceholderContent={<ActivityIndicator />}
             />
             <Text style={styles.h3}>{email}</Text>
-          </View>
-
-          <View style={styles.rowCont}>
-            <Icon
-              name="phone-call"
-              size={15}
-              color={EStyleSheet.value('$PRIMARY')}
-            />
-            <Text style={styles.h3}>{mobileno}</Text>
           </View>
         </View>
       </View>

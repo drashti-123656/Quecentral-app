@@ -101,7 +101,7 @@ const Login = ({route, navigation}) => {
           <Text
             style={{
               ...styles.TitleText,
-              color: '#333',
+              color: EStyleSheet.value('$TEXT'),
               marginBottom: 20,
             }}>
             Login

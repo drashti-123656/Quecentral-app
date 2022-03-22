@@ -21,6 +21,9 @@ import Card from './../components/cards/Card';
 import RazorpayCheckout from 'react-native-razorpay';
 import EStyleSheet from 'react-native-extended-stylesheet';
 
+import RootScreen from '../components/molecules/rootScreen/RootScreen';
+import CustomHeader from '../components/molecules/header/CustomHeader';
+
 const Wallet = () => {
   const {userData : {name, email, mobileno}} = useSelector(({auth}) => auth);
 
@@ -105,7 +108,7 @@ const Wallet = () => {
   };
 
   return (
-    <View style={styles.container}> 
+    <RootScreen headerComponent={() => <CustomHeader title={'Wallet'}  />}>
       <ScrollView style={styles.scrollview}>
         <View style={styles.myWalletCont}>
           <Text style={styles.wallet_text}>My Wallet</Text>
@@ -284,7 +287,7 @@ const Wallet = () => {
           ))}
         </View>
       </ScrollView>
-    </View>
+    </RootScreen>
   );
 };
 
@@ -296,7 +299,7 @@ const styles = EStyleSheet.create({
     backgroundColor: '$BACKGROUND',
   },
   scrollview: {
-    padding: 20
+    padding: 10
   },
   myWalletCont: {
     backgroundColor: '$CARD_BACKGROUND',
