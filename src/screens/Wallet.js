@@ -76,13 +76,13 @@ const Wallet = () => {
         theme: {color: EStyleSheet.value('$PRIMARY')},
       };
       RazorpayCheckout.open(options)
-        .then(async(data) => {
-          let formData = new URLSearchParams({
-            transaction_id: data.razorpay_payment_id,
+        .then(async(razorPayData) => {
+          const formData = {
+            transaction_id: razorPayData.razorpay_payment_id,
             transaction_amount: amount
-          })
-          let response = await walletTransactionAPI(formData)
-          console.log(response)
+          }
+          const {data} = await walletTransactionAPI(formData)
+          console.log('response ===>', data)
           if(response.data.response.response_code == 200){
             fetchWalletDetails();
             fetchWalletHistory();
@@ -93,7 +93,6 @@ const Wallet = () => {
               backgroundColor: EStyleSheet.value('$WARNING_RED'),
             });
           }
-          console.log(data);
         })
         .catch(error => {
           // handle failure

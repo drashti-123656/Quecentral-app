@@ -144,7 +144,7 @@ const Signup = ({navigation}) => {
         token: userInfo.idToken,
       };
 
-      dispatch(googleLoginAction(userInfo));
+      dispatch(googleLoginAction(data));
 
       // const response = await signupAPI(data);
 

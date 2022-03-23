@@ -4,9 +4,9 @@ import {fork} from 'redux-saga/effects';
 import {persistStore, persistReducer} from 'redux-persist';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import rootReducer from './rootReducer';
-import {watchFacebookLogin, watchLoginUser, watchSendOtp, watchSignup, watchVerifyOtp} from './saga/watchers/auth';
+import {watchFacebookLogin, watchGoogleLogin, watchLoginUser, watchSendOtp, watchSignup, watchVerifyOtp} from './saga/watchers/auth';
 import {watchEditProfile} from './saga/watchers/editProfile';
-import {watchBookingList} from './saga/watchers/bookings';
+import {watchBookingList, watchBookService} from './saga/watchers/bookings';
 import {watchSearchServices} from './saga/watchers/searchServices';
 
 const persistConfig = {
@@ -23,11 +23,13 @@ const persistedStore = persistStore(store);
 function* rootSaga() {
   yield fork(watchLoginUser);
   yield fork(watchSignup);
+  yield fork(watchGoogleLogin);
   yield fork(watchFacebookLogin);
   yield fork(watchSendOtp);
   yield fork(watchVerifyOtp);
   yield fork(watchEditProfile);
   yield fork(watchBookingList);
+  yield fork(watchBookService);
   yield fork(watchSearchServices);
 }
 sagaMiddleware.run(rootSaga);

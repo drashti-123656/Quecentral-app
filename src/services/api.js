@@ -56,7 +56,7 @@ export const walletHistory = () => {
     return http.post('wallet-history')
 }
 
-export const bookService = (data) => {
+export const bookServiceAPI = (data) => {
     return http.post('book_service', data)
 }
 

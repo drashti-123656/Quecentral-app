@@ -102,7 +102,10 @@ const AuthNavigation = () => {
                 onPress: () => navigation.navigate('Home'),
                 style: 'cancel',
               },
-              {text: 'Yes', onPress: () => dispatch(logout())},
+              {text: 'Yes', onPress: () => {
+                http.setToken('8338d6ff4f0878b222f312494c1621a9');
+                dispatch(logout())
+              }},
             ]);
           },
         })}

@@ -11,6 +11,7 @@ export const FORGOT_PASSWORD = 'FORGOT_PASSWORD';
 export const SEND_OTP = 'SEND_OTP';
 export const HANDLE_CLOSE_MODAL = 'HANDLE_CLOSE_MODAL';
 export const STORE_FACEBOOK_ID = 'STORE_FACEBOOK_ID';
+export const STORE_GOOGLE_ID = 'STORE_GOOGLE_ID';
 export const SEND_OTP_SUCCESS = 'SEND_OTP_SUCCESS';
 export const VERIFY_OTP = 'VERIFY_OTP';
 export const RESET_PASSWORD = 'RESET_PASSWORD';
@@ -40,6 +41,10 @@ export const RESET_PROFILE_UPDATE_STATE = 'RESET_PROFILE_UPDATE_STATE'
 /* bookings start */
 export const FETCH_BOOKINGS = 'FETCH_BOOKINGS'
 export const FETCH_BOOKINGS_SUCCESS = 'FETCH_BOOKINGS_SUCCESS'
+export const BOOK_SERVICE = 'BOOK_SERVICE'
+export const BOOK_SERVICE_SUCCESS = 'BOOK_SERVICE_SUCCESS'
+export const RESET_BOOKING = 'RESET_BOOKING'
+
 /* bookings start */
 
 /* search start */
