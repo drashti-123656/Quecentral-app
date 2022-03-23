@@ -8,6 +8,7 @@ import {
   SEND_OTP_SUCCESS,
   HANDLE_CLOSE_MODAL,
   STORE_FACEBOOK_ID,
+  STORE_GOOGLE_ID,
 } from '../reduxConstants';
 
 const initialState = {
@@ -57,7 +58,7 @@ const reducer = (state = initialState, action) => {
         ...state,
         authData: action.authData || state.authData,
         userData: action.userData || state.userData,
-        showOtpModal:false
+        showOtpModal: false,
       };
 
     case ERROR:
@@ -90,6 +91,13 @@ const reducer = (state = initialState, action) => {
         ...state,
         authData: {...state.authData, facebookId: action.payload.token},
       };
+
+    case STORE_GOOGLE_ID:
+      return {
+        ...state,
+        authData: {...state.authData, googleId: action.payload.token},
+      };
+
     default:
       return state;
   }

@@ -12,6 +12,7 @@ import {
 import {useSelector, useDispatch} from 'react-redux';
 import {
   facebookLoginAction,
+  googleLoginAction,
   handleCloseModalAction,
   login as signIn,
   reset,
@@ -54,10 +55,7 @@ const Login = ({route, navigation}) => {
   };
 
   const handleVerifyOtp = async otp => {
-
-
     if (authData.facebookId) {
-      const {token} = route.params;
       const payload = {
         token: authData.facebookId,
         mobile_no: authData.mobileNo,
@@ -65,6 +63,12 @@ const Login = ({route, navigation}) => {
       };
       dispatch(facebookLoginAction(payload));
     } else if (authData.googleId) {
+      const payload = {
+        token: authData.googleId,
+        mobile_no: authData.mobileNo,
+        otp,
+      };
+      dispatch(googleLoginAction(payload));
     } else {
       const payload = {
         mobile_no: authData.mobileNo,
@@ -152,8 +156,12 @@ const Login = ({route, navigation}) => {
           </Formik>
 
           <Text
-            style={{textAlign: 'center', color: EStyleSheet.value('$TEXT'), marginTop:20}}>
-            Don't have an account ? {' '}
+            style={{
+              textAlign: 'center',
+              color: EStyleSheet.value('$TEXT'),
+              marginTop: 20,
+            }}>
+            Don't have an account ?{' '}
             <Text
               onPress={() => navigation.navigate('Signup')}
               style={styles.bottomText}>
@@ -203,7 +211,7 @@ const styles = EStyleSheet.create({
     backgroundColor: '$BACKGROUND',
     borderTopLeftRadius: 30,
     borderTopRightRadius: 30,
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   input: {
     margin: 12,

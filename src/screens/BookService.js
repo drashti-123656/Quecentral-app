@@ -20,8 +20,12 @@ import {
   validateCoupon as validateCouponAPI,
 } from './../services/api';
 import EStyleSheet from 'react-native-extended-stylesheet';
+import { useDispatch } from "react-redux";
+import {bookServiceAction} from '../redux/actions/bookings';
 
 const BookService = props => {
+  const dispatch = useDispatch();
+
   const {service_amount, serviceId} = props.route.params;
 
   const [notes, setNotes] = useState('');
@@ -63,18 +67,17 @@ const BookService = props => {
       return;
     }
 
-     if (openOthers === true ){
-    if(othersName == ''||  othersNo=='' ) {
-      showMessage({
-        message: 'Others name or mobile number can not be empty',
-        type: 'info',
-        backgroundColor: COLORS.warningRed,
-      });
-    }
+    if (openOthers === true) {
+      if (othersName == '' || othersNo == '') {
+        showMessage({
+          message: 'Others name or mobile number can not be empty',
+          type: 'info',
+          backgroundColor: COLORS.warningRed,
+        });
+      }
       setBookinLoading(false);
       return;
     }
-    
 
     let formData = new URLSearchParams({
       from_time: selectedTime.start_time ? selectedTime.start_time : null,
@@ -87,26 +90,44 @@ const BookService = props => {
       notes: notes,
       amount: service_amount,
       coupon_id: couponDetails.id,
-      type:openOthers ? 'others' : 'self',
+      type: openOthers ? 'others' : 'self',
       other_user_name: othersName,
       other_user_contact: othersNo,
     });
 
-    const response = await bookServiceAPI(formData);
-
-    if (response.data.response.response_code == 200) {
-      setAlertData({
-        alertDisplay: true,
-        message: response.data.response.response_message,
-        bookingStatus: true,
-      });
-    } else {
-      setAlertData({
-        alertDisplay: true,
-        message: response.data.response.response_message,
-        bookingStatus: false,
-      });
+    const payload = {
+      from_time: selectedTime.start_time ? selectedTime.start_time : null,
+      to_time: selectedTime.end_time ? selectedTime.end_time : null,
+      service_date: selectedDay.dateString,
+      service_id: serviceId,
+      latitude: '19.0759837',
+      longitude: '72.8776559',
+      location: serviceLocation,
+      notes: notes,
+      amount: service_amount,
+      coupon_id: couponDetails.id,
+      type: openOthers ? 'others' : 'self',
+      other_user_name: othersName,
+      other_user_contact: othersNo,
     }
+
+    dispatch(bookServiceAction(payload));
+
+  //  const response = await bookServiceAPI(formData);
+
+    // if (response.data.response.response_code == 200) {
+    //   setAlertData({
+    //     alertDisplay: true,
+    //     message: response.data.response.response_message,
+    //     bookingStatus: true,
+    //   });
+    // } else {
+    //   setAlertData({
+    //     alertDisplay: true,
+    //     message: response.data.response.response_message,
+    //     bookingStatus: false,
+    //   });
+    // }
 
     setBookinLoading(false);
   };
@@ -324,9 +345,8 @@ const styles = EStyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     marginBottom: 10,
-    
   },
-  TermsCondition : {
-    color: '$TEXT'
-  }
+  TermsCondition: {
+    color: '$TEXT',
+  },
 });
