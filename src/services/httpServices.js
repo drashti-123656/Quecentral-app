@@ -1,7 +1,7 @@
 import axios from 'axios'
-import { BASE_URL, API_URL } from './../utils/global'
+import Config from 'react-native-config';
 
-axios.defaults.baseURL = API_URL;
+axios.defaults.baseURL = Config.API_URL;
 axios.defaults.headers.common['token'] = '8338d6ff4f0878b222f312494c1621a9';
 axios.defaults.headers.post['Content-Type'] = 'application/json';
 
