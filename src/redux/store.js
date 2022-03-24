@@ -8,6 +8,7 @@ import {watchFacebookLogin, watchGoogleLogin, watchLoginUser, watchSendOtp, watc
 import {watchEditProfile} from './saga/watchers/editProfile';
 import {watchBookingList, watchBookService} from './saga/watchers/bookings';
 import {watchSearchServices} from './saga/watchers/searchServices';
+import {watchServiceDetails} from './saga/watchers/ServiceDetails';
 
 const persistConfig = {
   key: 'root',
@@ -31,6 +32,9 @@ function* rootSaga() {
   yield fork(watchBookingList);
   yield fork(watchBookService);
   yield fork(watchSearchServices);
+  yield fork(watchSearchServices);
+  yield fork(watchServiceDetails);
+  
 }
 sagaMiddleware.run(rootSaga);
 

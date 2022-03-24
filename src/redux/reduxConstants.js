@@ -51,3 +51,8 @@ export const RESET_BOOKING = 'RESET_BOOKING'
 export const FETCH_SERVICES = 'FETCH_SERVICES'
 export const FETCH_SERVICES_SUCCESS = 'FETCH_SERVICES_SUCCESS'
 /* search start */
+
+/* sevice details start */
+export const FETCH_SERVICE_DETAILS= 'FETCH_SERVICE_DETAILS'
+export const FETCH_SERVICE_DETAILS_SUCCESS = 'FETCH_SERVICE_DETAILS_SUCCESS'
+/* sevice details start */
