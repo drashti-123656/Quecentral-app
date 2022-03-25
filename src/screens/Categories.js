@@ -32,7 +32,7 @@ const Categories = () => {
   };
 
   return (
-    <RootScreen headerComponent={() => <CustomHeader title={'Categories'}  />} >
+    <RootScreen headerComponent={() => <CustomHeader title={'Categories'} />}>
       {loading ? (
         <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
           <ActivityIndicator color={COLORS.PRIMARY} size={'large'} />
@@ -53,9 +53,9 @@ const Categories = () => {
               category_count={item.category_count}
             />
           )}
-          ItemSeparatorComponent={
-            () => <View style={{ width: 16, backgroundColor: 'pink' }}/>
-        }
+          ItemSeparatorComponent={() => (
+            <View style={{width: 16, backgroundColor: 'pink'}} />
+          )}
           keyExtractor={item => item.id}
         />
       )}
