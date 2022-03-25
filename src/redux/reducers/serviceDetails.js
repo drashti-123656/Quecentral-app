@@ -1,5 +1,6 @@
 import {
   FETCH_SERVICE_DETAILS,
+  FETCH_SERVICE_DETAILS_FAILED,
   FETCH_SERVICE_DETAILS_SUCCESS,
 } from '../reduxConstants';
 
@@ -30,6 +31,13 @@ const serviceDetailsReducer = (state = initialState, action) => {
         reviews: action.payload.data.reviews,
         bookingsList: action.payload.data,
       };
+
+      case FETCH_SERVICE_DETAILS_FAILED:
+        return {
+          ...state,
+          isFetching: false,
+          error: action.payload,
+        };
 
     default:
       return state;
