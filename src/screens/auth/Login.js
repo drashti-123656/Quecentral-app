@@ -123,6 +123,7 @@ const Login = ({route, navigation}) => {
                   value={values.mobileno}
                   style={styles.input}
                   keyboardType={'numeric'}
+                  placeholderTextColor="#a1a1a1"
                 />
 
                 {/* <TouchableOpacity
@@ -217,6 +218,7 @@ const styles = EStyleSheet.create({
     margin: 12,
     borderWidth: 1,
     padding: 10,
+    color:'$TEXT',
     borderRadius: 10,
     borderColor: '$PRIMARY',
   },

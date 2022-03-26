@@ -231,6 +231,7 @@ const Signup = ({navigation}) => {
                 placeholder={'Enter name'}
                 value={values.name}
                 onChangeText={handleChange('name')}
+                placeholderTextColor="#a1a1a1"
               />
               {errors.name && touched.name ? (
                 <Text style={styles.error}>{errors.name}</Text>
@@ -240,6 +241,7 @@ const Signup = ({navigation}) => {
                 placeholder={'Enter email'}
                 value={values.email}
                 onChangeText={handleChange('email')}
+                placeholderTextColor="#a1a1a1"
               />
               {errors.email && touched.email ? (
                 <Text style={styles.error}>{errors.email}</Text>
@@ -251,6 +253,7 @@ const Signup = ({navigation}) => {
                 onChangeText={handleChange('mobileno')}
                 keyboardType="numeric"
                 maxLength={10}
+                placeholderTextColor="#a1a1a1"
               />
               {errors.mobileno && touched.mobileno ? (
                 <Text style={styles.error}>{errors.mobileno}</Text>
