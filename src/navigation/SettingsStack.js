@@ -4,6 +4,7 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import Settings from './../screens/Settings';
 import EditProfile from './../screens/EditProfile';
 import Wallet from './../screens/Wallet';
+import Coupon from './../screens/Coupon';
 import {COLORS} from './../utils/theme';
 import Notifications from './../screens/Notifications';
 import Transactions from './../screens/Transactions';
@@ -57,6 +58,19 @@ const SettingsStack = () => {
         options={{
           headerShown: false,
           title: 'Wallet',
+          headerStyle: {
+            backgroundColor: EStyleSheet.value('$PRIMARY'),
+          },
+          headerTintColor: '#fff',
+        }}
+      />
+      
+       <dashboardStack.Screen
+        name="Coupon"
+        component={Coupon}
+        options={{
+          headerShown: false,
+          title: 'coupon',
           headerStyle: {
             backgroundColor: EStyleSheet.value('$PRIMARY'),
           },
