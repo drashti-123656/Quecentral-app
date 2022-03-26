@@ -20,11 +20,12 @@ import {
   validateCoupon as validateCouponAPI,
 } from './../services/api';
 import EStyleSheet from 'react-native-extended-stylesheet';
-import { useDispatch } from "react-redux";
+import {useDispatch, useSelector} from 'react-redux';
 import {bookServiceAction} from '../redux/actions/bookings';
 
 const BookService = props => {
   const dispatch = useDispatch();
+  const {availableDays} = useSelector(({serviceDetails}) => serviceDetails);
 
   const {service_amount, serviceId} = props.route.params;
 
@@ -109,11 +110,11 @@ const BookService = props => {
       type: openOthers ? 'others' : 'self',
       other_user_name: othersName,
       other_user_contact: othersNo,
-    }
+    };
 
     dispatch(bookServiceAction(payload));
 
-  //  const response = await bookServiceAPI(formData);
+    //  const response = await bookServiceAPI(formData);
 
     // if (response.data.response.response_code == 200) {
     //   setAlertData({
@@ -202,6 +203,8 @@ const BookService = props => {
       </View> */}
 
       <View style={styles.rowCont}>
+
+        {console.log('availableDays', availableDays)}
         <View style={{flex: 1, marginRight: 5}}>
           <CalendarPicker
             title={'Select date'}
@@ -210,6 +213,7 @@ const BookService = props => {
             minDate={new Date().toISOString().slice(0, 10)}
             loading={loading}
             placeholder={'Choose Date'}
+            markedDays={availableDays}
           />
           {DateError !== '' && (
             <Text style={{color: COLORS.warningRed}}>{DateError}</Text>

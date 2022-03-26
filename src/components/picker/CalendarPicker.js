@@ -13,10 +13,11 @@ import {COLORS} from '../../utils/theme';
 import {Calendar} from 'react-native-calendars';
 import EStyleSheet from 'react-native-extended-stylesheet';
 import {dateOfWeekDays} from '../../utils/helper';
+import moment from 'moment'
 
 const CalendarPicker = props => {
   const [showModal, setShowModal] = useState(false);
-
+  const [selectedMonth, setSelectedMonth] = useState(moment().format("DD/MM/YYYY"));
 
   return (
     <View>
@@ -57,8 +58,11 @@ const CalendarPicker = props => {
                 props.onSelect(day);
                 setShowModal(false);
               }}
-              markedDates={dateOfWeekDays()}
+              markedDates={dateOfWeekDays(props.markedDays, selectedMonth)}
               minDate={props.minDate}
+              onMonthChange={month => {
+                setSelectedMonth(moment(month.dateString, 'YYYY-MM-DD').format('DD/MM/YYYY'))
+              }}
             />
           </View>
         </View>
@@ -77,8 +81,8 @@ const styles = EStyleSheet.create({
     fontWeight: 'bold',
     fontSize: 15,
     marginBottom: 5,
-    marginTop:15,
-    color: '$TEXT'
+    marginTop: 15,
+    color: '$TEXT',
   },
   modalCont: {
     padding: 10,
@@ -119,7 +123,6 @@ const styles = EStyleSheet.create({
     borderColor: '$PRIMARY',
     justifyContent: 'center',
     marginBottom: 10,
-    backgroundColor: '$CARD_BACKGROUND'
+    backgroundColor: '$CARD_BACKGROUND',
   },
- 
 });

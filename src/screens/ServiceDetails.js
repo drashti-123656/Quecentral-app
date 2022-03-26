@@ -47,21 +47,6 @@ const ServiceDetails = props => {
     dispatch(serviceDetailsAction(payload));
   }, []);
 
-  // const fetchServiceDetails = async () => {
-  //   try {
-  //     setLoading(true);
-  //     let MD5ServiceId = MD5(serviceId);
-  //     const {data} = await serviceDetailsAPI(MD5ServiceId);
-  //     setServiceOverview(data.data.service_overview);
-  //     setSellerOverview(data.data.sellerOverview);
-  //     setAvailabilityDays(data.data.availability_days);
-  //     setReviews(data.data.reviews);
-
-  //     setLoading(false);
-  //   } catch (error) {
-  //     setLoading(false);
-  //   }
-  // };
 
   const HeaderNav = sectionName => (
     <View
