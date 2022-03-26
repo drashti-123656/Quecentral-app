@@ -57,7 +57,7 @@ const styles = EStyleSheet.create({
   input: {
     padding: 10,
     borderRadius: 10,
-    color: '#000',
+    color: '$TEXT',
     flex:1
   },
   image: {
