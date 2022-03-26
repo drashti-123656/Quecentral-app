@@ -1,11 +1,10 @@
 import FETCH_COUPON_DETAILS, { FETCH_COUPON_SUCCESS } from '../reduxConstants';
 
 const initialState = {
-
+  isFetching: false,
   couponData: [],
 
 };
-
 const coupon = (state = initialState, action) => {
   switch (action.type) {
     case FETCH_COUPON_DETAILS:
@@ -13,13 +12,13 @@ const coupon = (state = initialState, action) => {
       return {
         ...state,
         data: action.type.data,
-
+        isFetching: true,
       };
     case FETCH_COUPON_SUCCESS:
-      console.log('action.payload===>', action.payload);
       return {
         ...state,
         couponData: action.payload,
+        isFetching: false,
       }
 
     default:

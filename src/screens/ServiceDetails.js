@@ -25,6 +25,7 @@ import {FlatList} from 'react-native-gesture-handler';
 import {useDispatch, useSelector} from 'react-redux';
 import {serviceDetailsAction} from '../redux/actions/serviceDetails';
 import NoResultFound from '../components/molecules/NoResultFound';
+import Config from 'react-native-config';
 
 const ServiceDetails = props => {
   const {serviceId} = props.route.params;
@@ -128,20 +129,20 @@ const ServiceDetails = props => {
 
   const _handleEmptyComponentRender = () => <NoResultFound />;
 
-  const _handleRenderReviews = ({review}) => {
+  const _handleRenderReviews = ({item}) => {
     return (
       <View style={styles.availabilityContainer}>
-        <View>
+         <View>
           <Image
-            source={{uri: `${BASE_URL}${review.profile_img}`}}
+            source={{uri: `${Config.BASE_URL}/${item.profile_img}`}}
             style={styles.profileImage}
           />
         </View>
         <View style={styles.reviewContainer}>
-          <Text style={styles.reviewText}>Name: {review.name}</Text>
-          <Text style={styles.reviewText}>Created: {review.created}</Text>
-          <Text style={styles.reviewText}>Rating :{review.rating}</Text>
-          <Text style={styles.reviewText}>Review: {review.review}</Text>
+          <Text style={styles.reviewText}>Name: {item.name}</Text>
+          <Text style={styles.reviewText}>Created: {item.created}</Text>
+          <Text style={styles.reviewText}>Rating :{item.rating}</Text>
+          <Text style={styles.reviewText}>Review: {item.review}</Text>
         </View>
       </View>
     );
@@ -178,7 +179,6 @@ const ServiceDetails = props => {
           )
         ) : (
           <>
-            {console.log('availableDays', availableDays)}
             {displaySection === 'overview' ? (
               <ScrollView showsVerticalScrollIndicator={false}>
                 <View style={styles.ImageWrapper}>

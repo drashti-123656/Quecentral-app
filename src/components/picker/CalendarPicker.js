@@ -11,12 +11,12 @@ import {
 } from 'react-native';
 import {COLORS} from '../../utils/theme';
 import {Calendar} from 'react-native-calendars';
-import {date} from 'yup';
-import serviceAvailability from './../../services/api';
 import EStyleSheet from 'react-native-extended-stylesheet';
+import {dateOfWeekDays} from '../../utils/helper';
 
 const CalendarPicker = props => {
   const [showModal, setShowModal] = useState(false);
+
 
   return (
     <View>
@@ -57,9 +57,7 @@ const CalendarPicker = props => {
                 props.onSelect(day);
                 setShowModal(false);
               }}
-              markedDates={{
-                '2022-03-21': {selected: true, marked: true, selectedColor: 'red', disabled:true},
-              }}
+              markedDates={dateOfWeekDays()}
               minDate={props.minDate}
             />
           </View>
