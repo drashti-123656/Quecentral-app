@@ -23,13 +23,11 @@ export function* fetchBookingsWorker(action) {
 export function* bookingServiceWorker({payload}) {
   try {
     const {data} = yield call(bookServiceAPI, payload);
-    console.log('data===>', data);
     yield put({
       type: BOOK_SERVICE_SUCCESS,
       payload: data,
     });
   } catch (error) {
-    console.log('error', error);
     if (error.response.status === 402) {
       showMessage({
         message: error.response.data.response.response_message,

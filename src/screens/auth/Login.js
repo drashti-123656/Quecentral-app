@@ -108,7 +108,7 @@ const Login = ({route, navigation}) => {
               color: EStyleSheet.value('$TEXT'),
               marginBottom: 20,
             }}>
-            Login
+              {authData.facebookId || authData.googleId ? 'One More Step...' : 'Login'}
           </Text>
 
           <Formik
@@ -199,7 +199,7 @@ const styles = EStyleSheet.create({
   },
   TitleText: {
     color: '#fff',
-    fontSize: 30,
+    fontSize: 25,
     fontWeight: 'bold',
     textAlign: 'center',
   },

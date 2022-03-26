@@ -6,7 +6,6 @@ import {
 } from './../components/input/CustomInput';
 import LoginButton from './../components/button/LoginButton';
 import {SmallGenralButton} from './../components/button/GeneralButton';
-import {bookService as bookServiceAPI} from './../services/api';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import TimePicker from './../components/picker/TimePicker';
 import CalendarPicker from './../components/picker/CalendarPicker';
@@ -20,11 +19,13 @@ import {
   validateCoupon as validateCouponAPI,
 } from './../services/api';
 import EStyleSheet from 'react-native-extended-stylesheet';
-import { useDispatch } from "react-redux";
+import {useDispatch, useSelector} from 'react-redux';
 import {bookServiceAction} from '../redux/actions/bookings';
+import moment from 'moment';
 
 const BookService = props => {
   const dispatch = useDispatch();
+  const {availableDays} = useSelector(({serviceDetails}) => serviceDetails);
 
   const {service_amount, serviceId} = props.route.params;
 
@@ -53,6 +54,9 @@ const BookService = props => {
   const [openOthers, setOpenOthers] = useState(false);
   const [othersName, setOthersName] = useState('');
   const [othersNo, setOthersNo] = useState('');
+  const [selectedMonth, setSelectedMonth] = useState(
+    moment().format('DD/MM/YYYY'),
+  );
 
   useEffect(() => {
     setAmount(service_amount);
@@ -109,25 +113,9 @@ const BookService = props => {
       type: openOthers ? 'others' : 'self',
       other_user_name: othersName,
       other_user_contact: othersNo,
-    }
+    };
 
     dispatch(bookServiceAction(payload));
-
-  //  const response = await bookServiceAPI(formData);
-
-    // if (response.data.response.response_code == 200) {
-    //   setAlertData({
-    //     alertDisplay: true,
-    //     message: response.data.response.response_message,
-    //     bookingStatus: true,
-    //   });
-    // } else {
-    //   setAlertData({
-    //     alertDisplay: true,
-    //     message: response.data.response.response_message,
-    //     bookingStatus: false,
-    //   });
-    // }
 
     setBookinLoading(false);
   };
@@ -210,6 +198,9 @@ const BookService = props => {
             minDate={new Date().toISOString().slice(0, 10)}
             loading={loading}
             placeholder={'Choose Date'}
+            markedDays={availableDays}
+            setSelectedMonth={setSelectedMonth}
+            selectedMonth={selectedMonth}
           />
           {DateError !== '' && (
             <Text style={{color: COLORS.warningRed}}>{DateError}</Text>

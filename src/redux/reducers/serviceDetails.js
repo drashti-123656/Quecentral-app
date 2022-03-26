@@ -7,7 +7,7 @@ import {
 const initialState = {
   serviceOverview: [],
   sellerOverview: {},
-  availableDays: {},
+  availableDays: [],
   reviews: [],
   isFetching: false,
   error: '',

@@ -28,16 +28,10 @@ export const genderData = [
   },
 ];
 
-export const dateOfWeekDays = () => {
-  let x = [
-    {
-      day: '1',
-    },
-    {
-      day: '2',
-    },
-  ];
-  let mappedData = x.map(item => {
+export const dateOfWeekDays = (availableDays, selectedMonth) => {
+  console.log('availableDays', availableDays)
+  console.log('selectedMonth', selectedMonth)
+  let mappedData = availableDays.map(item => {
     let day;
     switch (item.day) {
       case '0':
@@ -67,14 +61,14 @@ export const dateOfWeekDays = () => {
   let data = {};
 
   mappedData.forEach(item => {
-    let monday = moment().startOf('month').day(item);
+    let monday = moment(selectedMonth, 'DDMMYYYY').startOf('month').day(item);
     if (monday.date() > 7) monday.add(7, 'd');
     let month = monday.month();
     while (month === monday.month()) {
       data[moment(monday.toString()).format('YYYY-MM-DD')] = {
         selected: true,
-        marked: true,
-        selectedColor: 'red',
+        marked: false,
+        selectedColor: 'green',
         disabled: false,
       };
       monday.add(7, 'd');

@@ -78,6 +78,7 @@ const reducer = (state = initialState, action) => {
         },
         userData: {},
         miscData: {error: false, success: false, errorMsg: ''},
+        showOtpModal: false,
       };
 
     case RESET:
