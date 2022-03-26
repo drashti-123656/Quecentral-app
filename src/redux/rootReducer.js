@@ -5,6 +5,7 @@ import bookingsReducer from './reducers/bookingsReducer';
 import app from './reducers/app';
 import searchServices from './reducers/searchServices';
 import serviceDetails from './reducers/serviceDetails';
+import coupon from './reducers/coupon';
 
 const rootReducer = combineReducers({
   app,
@@ -12,7 +13,8 @@ const rootReducer = combineReducers({
   editProfileReducer,
   bookingsReducer,
   searchServices,
-  serviceDetails
+  serviceDetails,
+  coupon,
 });
 
 export default rootReducer;

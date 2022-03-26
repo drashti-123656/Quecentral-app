@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   StyleSheet,
   Text,
@@ -11,24 +11,24 @@ import {
   Dimensions,
 } from 'react-native';
 import MD5 from 'crypto-js/md5';
-import {COLORS} from './../utils/theme';
+import { COLORS } from './../utils/theme';
 import LinearGradient from 'react-native-linear-gradient';
 import Swiper from 'react-native-swiper';
 import ProviderDetails from './../components/cards/ProviderDetails';
 import Stars from './../components/review/Stars';
-import {serviceDetails as serviceDetailsAPI} from './../services/api';
-import {BASE_URL} from './../utils/global';
+import { serviceDetails as serviceDetailsAPI } from './../services/api';
+import { BASE_URL } from './../utils/global';
 import EStyleSheet from 'react-native-extended-stylesheet';
 import RootScreen from '../components/molecules/rootScreen/RootScreen';
 import CustomHeader from '../components/molecules/header/CustomHeader';
-import {FlatList} from 'react-native-gesture-handler';
-import {useDispatch, useSelector} from 'react-redux';
-import {serviceDetailsAction} from '../redux/actions/serviceDetails';
+import { FlatList } from 'react-native-gesture-handler';
+import { useDispatch, useSelector } from 'react-redux';
+import { serviceDetailsAction } from '../redux/actions/serviceDetails';
 import NoResultFound from '../components/molecules/NoResultFound';
 import Config from 'react-native-config';
 
 const ServiceDetails = props => {
-  const {serviceId} = props.route.params;
+  const { serviceId } = props.route.params;
   const dispatch = useDispatch();
 
   const {
@@ -38,12 +38,12 @@ const ServiceDetails = props => {
     reviews,
     isFetching,
     error,
-  } = useSelector(({serviceDetails}) => serviceDetails);
+  } = useSelector(({ serviceDetails }) => serviceDetails);
   const [displaySection, setDisplaySection] = useState('overview');
 
   useEffect(async () => {
     let MD5ServiceId = MD5(serviceId).toString();
-    const payload = {id: MD5ServiceId};
+    const payload = { id: MD5ServiceId };
     dispatch(serviceDetailsAction(payload));
   }, []);
 
@@ -83,7 +83,7 @@ const ServiceDetails = props => {
   const _handleRenderFooter = () => (
     <>
       {isFetching ? (
-        <View style={{justifyContent: 'center', alignItems: 'center', flex: 1}}>
+        <View style={{ justifyContent: 'center', alignItems: 'center', flex: 1 }}>
           <ActivityIndicator color={COLORS.PRIMARY} size={'large'} />
         </View>
       ) : null}
@@ -94,17 +94,17 @@ const ServiceDetails = props => {
     setDisplaySection(sectionName);
   };
 
-  const _handleRenderAvailableDays = ({item}) => {
+  const _handleRenderAvailableDays = ({ item }) => {
     return (
       <View style={styles.availabilityContainer}>
         <View style={styles.leaveContainer}>
-          <Text>
+          <Text style={styles.titleText}>
             <Text style={styles.titleText}>Day:</Text> {item.day}
           </Text>
-          <Text>
-            <Text style={styles.titleText}>From_Date::</Text> {item.from_time}
+          <Text style={styles.titleText}>
+            <Text style={styles.titleText}>From_Date:</Text> {item.from_time}
           </Text>
-          <Text>
+          <Text style={styles.titleText}>
             <Text style={styles.titleText}>To_Date:</Text> {item.to_time}
           </Text>
         </View>
@@ -114,12 +114,12 @@ const ServiceDetails = props => {
 
   const _handleEmptyComponentRender = () => <NoResultFound />;
 
-  const _handleRenderReviews = ({item}) => {
+  const _handleRenderReviews = ({ item }) => {
     return (
       <View style={styles.availabilityContainer}>
-         <View>
+        <View>
           <Image
-            source={{uri: `${Config.BASE_URL}/${item.profile_img}`}}
+            source={{ uri: `${Config.BASE_URL}/${item.profile_img}` }}
             style={styles.profileImage}
           />
         </View>
@@ -151,7 +151,7 @@ const ServiceDetails = props => {
               }}>
               <Image
                 source={require('./../assets/icons/exclamation.png')}
-                style={{width: 60, height: 60, margin: 30}}
+                style={{ width: 60, height: 60, margin: 30 }}
               />
               <Text
                 style={{
@@ -171,7 +171,7 @@ const ServiceDetails = props => {
                     {serviceOverview.service_image.map((item, i) => (
                       <Image
                         key={i}
-                        source={{uri: `${BASE_URL}${item}`}}
+                        source={{ uri: `${BASE_URL}${item}` }}
                         style={styles.image}
                         PlaceholderContent={<ActivityIndicator />}
                       />
@@ -241,7 +241,7 @@ const ServiceDetails = props => {
                 </View>
 
                 <ProviderDetails
-                  style={{marginBottom: 10}}
+                  style={{ marginBottom: 10 }}
                   name={sellerOverview.name}
                   image={sellerOverview.profile_img}
                   email={sellerOverview.email}
@@ -301,6 +301,7 @@ const styles = EStyleSheet.create({
   titleText: {
     fontSize: 15,
     fontWeight: 'bold',
+    color: '$TEXT',
   },
   reviewText: {
     marginHorizontal: 50,
@@ -376,7 +377,7 @@ const styles = EStyleSheet.create({
     marginTop: 30,
   },
   availabilityContainer: {
-    backgroundColor: 'white',
+    backgroundColor: '$CARD_BACKGROUND',
     padding: 10,
     marginHorizontal: 10,
     marginTop: 20,

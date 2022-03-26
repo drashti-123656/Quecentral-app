@@ -1,4 +1,3 @@
-import {showMessage} from 'react-native-flash-message';
 import {put, call} from 'redux-saga/effects';
 import {serviceDetailsAPI} from './../../../services/api';
 import {
