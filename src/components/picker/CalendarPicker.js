@@ -13,11 +13,10 @@ import {COLORS} from '../../utils/theme';
 import {Calendar} from 'react-native-calendars';
 import EStyleSheet from 'react-native-extended-stylesheet';
 import {dateOfWeekDays} from '../../utils/helper';
-import moment from 'moment'
+import moment from 'moment';
 
 const CalendarPicker = props => {
   const [showModal, setShowModal] = useState(false);
-  const [selectedMonth, setSelectedMonth] = useState(moment().format("DD/MM/YYYY"));
 
   return (
     <View>
@@ -31,13 +30,13 @@ const CalendarPicker = props => {
         <TouchableOpacity
           style={styles.input}
           onPress={() => setShowModal(true)}>
-          <Text>{props.value.dateString}</Text>
+          <Text style={{color: EStyleSheet.value('$TEXT')}}>{props.value.dateString}</Text>
         </TouchableOpacity>
       ) : (
         <TouchableOpacity
           style={styles.input}
           onPress={() => setShowModal(true)}>
-          <Text style={{color: '#a1a1a1'}}>{props.placeholder}</Text>
+          <Text style={{color: EStyleSheet.value('$TEXT')}}>{props.placeholder}</Text>
         </TouchableOpacity>
       )}
 
@@ -58,10 +57,17 @@ const CalendarPicker = props => {
                 props.onSelect(day);
                 setShowModal(false);
               }}
-              markedDates={dateOfWeekDays(props.markedDays, selectedMonth)}
+              markedDates={
+                props.markedDays
+                  ? dateOfWeekDays(props.markedDays, props.selectedMonth)
+                  : {}
+              }
               minDate={props.minDate}
               onMonthChange={month => {
-                setSelectedMonth(moment(month.dateString, 'YYYY-MM-DD').format('DD/MM/YYYY'))
+                props.setSelectedMonth &&
+                  props.setSelectedMonth(
+                    moment(month.dateString, 'YYYY-MM-DD').format('DD/MM/YYYY'),
+                  );
               }}
             />
           </View>
@@ -123,6 +129,7 @@ const styles = EStyleSheet.create({
     borderColor: '$PRIMARY',
     justifyContent: 'center',
     marginBottom: 10,
-    backgroundColor: '$CARD_BACKGROUND',
+    backgroundColor: 'transparent',
+    color:'$TEXT'
   },
 });

@@ -6,7 +6,6 @@ import {
 } from './../components/input/CustomInput';
 import LoginButton from './../components/button/LoginButton';
 import {SmallGenralButton} from './../components/button/GeneralButton';
-import {bookService as bookServiceAPI} from './../services/api';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import TimePicker from './../components/picker/TimePicker';
 import CalendarPicker from './../components/picker/CalendarPicker';
@@ -22,6 +21,7 @@ import {
 import EStyleSheet from 'react-native-extended-stylesheet';
 import {useDispatch, useSelector} from 'react-redux';
 import {bookServiceAction} from '../redux/actions/bookings';
+import moment from 'moment';
 
 const BookService = props => {
   const dispatch = useDispatch();
@@ -54,6 +54,9 @@ const BookService = props => {
   const [openOthers, setOpenOthers] = useState(false);
   const [othersName, setOthersName] = useState('');
   const [othersNo, setOthersNo] = useState('');
+  const [selectedMonth, setSelectedMonth] = useState(
+    moment().format('DD/MM/YYYY'),
+  );
 
   useEffect(() => {
     setAmount(service_amount);
@@ -113,22 +116,6 @@ const BookService = props => {
     };
 
     dispatch(bookServiceAction(payload));
-
-    //  const response = await bookServiceAPI(formData);
-
-    // if (response.data.response.response_code == 200) {
-    //   setAlertData({
-    //     alertDisplay: true,
-    //     message: response.data.response.response_message,
-    //     bookingStatus: true,
-    //   });
-    // } else {
-    //   setAlertData({
-    //     alertDisplay: true,
-    //     message: response.data.response.response_message,
-    //     bookingStatus: false,
-    //   });
-    // }
 
     setBookinLoading(false);
   };
@@ -203,8 +190,6 @@ const BookService = props => {
       </View> */}
 
       <View style={styles.rowCont}>
-
-        {console.log('availableDays', availableDays)}
         <View style={{flex: 1, marginRight: 5}}>
           <CalendarPicker
             title={'Select date'}
@@ -214,6 +199,8 @@ const BookService = props => {
             loading={loading}
             placeholder={'Choose Date'}
             markedDays={availableDays}
+            setSelectedMonth={setSelectedMonth}
+            selectedMonth={selectedMonth}
           />
           {DateError !== '' && (
             <Text style={{color: COLORS.warningRed}}>{DateError}</Text>

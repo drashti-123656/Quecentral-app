@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useRef} from 'react';
+import React, {useState, useEffect, useRef, useCallback} from 'react';
 import {
   StyleSheet,
   Text,
@@ -48,7 +48,7 @@ const FindAProfessional = ({route, navigation}) => {
 
   useEffect(() => {
     searchInput.current.focus();
-  }, []);
+  }, [searchInput]);
 
   const searchHandler = async () => {
     let data = {
@@ -63,101 +63,107 @@ const FindAProfessional = ({route, navigation}) => {
       data.category = Categories.id;
     }
 
-   // let formdata = new URLSearchParams(data);
+    // let formdata = new URLSearchParams(data);
 
     dispatch(searchServiceAction(data));
   };
 
-  const _handleRenderHeader = () => (
-    <>
-      <View style={styles.filterOptionsCont}>
-        <View style={styles.searchDevice}>
-          <TextInput
-            ref={searchInput}
-            style={styles.searchTitle}
-            value={searchText}
-            onChangeText={setSearchText}
-            placeholder="Search Service"
-            placeholderTextColor="#a1a1a1"
-          />
-
-          <TouchableOpacity onPress={searchHandler}>
-            <Image
-              source={require('./../assets/icons/search.png')}
-              style={styles.serchIcon}
+  const _handleRenderHeader = useCallback(
+    () => (
+      <>
+        <View style={styles.filterOptionsCont}>
+          <View style={styles.searchDevice}>
+            <TextInput
+              ref={searchInput}
+              style={styles.searchTitle}
+              value={searchText}
+              onChangeText={setSearchText}
+              placeholder="Search Service"
+              placeholderTextColor="#a1a1a1"
             />
-          </TouchableOpacity>
-        </View>
-        <View style={styles.locationTitle}>
-          <CustomInputWithTitle
-            title={'Location'}
-            placeholder={'Enter location'}
-          />
-        </View>
 
-        {ShowAdvanceFilters ? (
-          <View>
-            <View
-              style={{
-                ...styles.rowCont,
-                justifyContent: 'space-between',
-                marginBottom: 5,
-                marginTop: 15,
-              }}>
-              <View style={styles.sortbyTitle}>
-                <Picker
-                  title={'Sort By'}
-                  value={sortBy}
-                  data={[
-                    {id: 1, value: 'Price low to high'},
-                    {id: 2, value: 'Price high to low'},
-                    {id: 3, value: 'Newest'},
-                  ]}
-                  onSelect={setSortBy}
-                />
-              </View>
-
-              <View style={styles.sortbyTitle}>
-                <CategoriesPicker
-                  title={'Categories'}
-                  value={Categories}
-                  onSelect={setCategories}
-                />
-              </View>
-            </View>
-
-            <Text
-              style={{
-                ...styles.h3,
-                color: EStyleSheet.value('$TEXT'),
-                marginBottom: 10,
-              }}>
-              Price Range
-            </Text>
-            <SliderScreen setMinPrice={setMinPrice} setMaxPrice={setMaxPrice} />
-            <Text
-              style={{
-                ...styles.h2,
-                marginTop: 10,
-              }}>{`\u20B9 ${minPrice} -  \u20B9 ${maxPrice}`}</Text>
+            <TouchableOpacity onPress={searchHandler}>
+              <Image
+                source={require('./../assets/icons/search.png')}
+                style={styles.serchIcon}
+              />
+            </TouchableOpacity>
           </View>
-        ) : null}
+          <View style={styles.locationTitle}>
+            <CustomInputWithTitle
+              title={'Location'}
+              placeholder={'Enter location'}
+            />
+          </View>
 
-        <Pressable
-          style={styles.moreFiltersButton}
-          onPress={() => setShowAdvanceFilters(!ShowAdvanceFilters)}>
-          <Icon
-            name={ShowAdvanceFilters ? 'angle-up' : 'angle-down'}
-            size={25}
-            color={EStyleSheet.value('$TEXT')}
-          />
-        </Pressable>
-      </View>
+          {ShowAdvanceFilters ? (
+            <View>
+              <View
+                style={{
+                  ...styles.rowCont,
+                  justifyContent: 'space-between',
+                  marginBottom: 5,
+                  marginTop: 15,
+                }}>
+                <View style={styles.sortbyTitle}>
+                  <Picker
+                    title={'Sort By'}
+                    value={sortBy}
+                    data={[
+                      {id: 1, value: 'Price low to high'},
+                      {id: 2, value: 'Price high to low'},
+                      {id: 3, value: 'Newest'},
+                    ]}
+                    onSelect={setSortBy}
+                  />
+                </View>
 
-      <View style={styles.searchResutcontainer}>
-        <Text style={styles.h2}>Search results</Text>
-      </View>
-    </>
+                <View style={styles.sortbyTitle}>
+                  <CategoriesPicker
+                    title={'Categories'}
+                    value={Categories}
+                    onSelect={setCategories}
+                  />
+                </View>
+              </View>
+
+              <Text
+                style={{
+                  ...styles.h3,
+                  color: EStyleSheet.value('$TEXT'),
+                  marginBottom: 10,
+                }}>
+                Price Range
+              </Text>
+              <SliderScreen
+                setMinPrice={setMinPrice}
+                setMaxPrice={setMaxPrice}
+              />
+              <Text
+                style={{
+                  ...styles.h2,
+                  marginTop: 10,
+                }}>{`\u20B9 ${minPrice} -  \u20B9 ${maxPrice}`}</Text>
+            </View>
+          ) : null}
+
+          <Pressable
+            style={styles.moreFiltersButton}
+            onPress={() => setShowAdvanceFilters(!ShowAdvanceFilters)}>
+            <Icon
+              name={ShowAdvanceFilters ? 'angle-up' : 'angle-down'}
+              size={25}
+              color={EStyleSheet.value('$TEXT')}
+            />
+          </Pressable>
+        </View>
+
+        <View style={styles.searchResutcontainer}>
+          <Text style={styles.h2}>Search results</Text>
+        </View>
+      </>
+    ),
+    [searchText, sortBy, Categories, minPrice, maxPrice, ShowAdvanceFilters],
   );
 
   const _handleRenderSearchResults = ({item}) => (
@@ -183,16 +189,16 @@ const FindAProfessional = ({route, navigation}) => {
     );
 
   return (
-    <RootScreen headerComponent={() => <CustomHeader title={'Search'}  />}>
-          <FlatList
-            data={services}
-            ListHeaderComponent={_handleRenderHeader}
-            renderItem={_handleRenderSearchResults}
-            ListEmptyComponent={<NoResultFound />}
-            ListFooterComponent={_handleRenderFooter}
-            keyExtractor={item => item.id}
-            contentContainerStyle={styles.container}
-          />
+    <RootScreen headerComponent={() => <CustomHeader title={'Search'} />}>
+      <FlatList
+        data={services}
+        ListHeaderComponent={_handleRenderHeader}
+        renderItem={_handleRenderSearchResults}
+        ListEmptyComponent={<NoResultFound />}
+        ListFooterComponent={_handleRenderFooter}
+        keyExtractor={item => item.id}
+        contentContainerStyle={styles.container}
+      />
     </RootScreen>
   );
 };
@@ -200,8 +206,8 @@ const FindAProfessional = ({route, navigation}) => {
 export default FindAProfessional;
 
 const styles = EStyleSheet.create({
-  container:{
-    backgroundColor:'transparent'
+  container: {
+    backgroundColor: 'transparent',
   },
   text: {
     fontSize: 16,
@@ -224,7 +230,7 @@ const styles = EStyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     marginVertical: 20,
-    marginHorizontal:10
+    marginHorizontal: 10,
   },
   h2: {
     fontSize: 15,

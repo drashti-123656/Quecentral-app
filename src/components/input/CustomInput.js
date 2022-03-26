@@ -121,6 +121,6 @@ const styles = EStyleSheet.create({
     borderRadius: 10,
     borderColor: '$PRIMARY',
     color:'$TEXT',
-    backgroundColor: '$BACKGROUND',
+    backgroundColor: 'transparent',
   },
 });
