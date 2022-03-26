@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   StyleSheet,
   Text,
@@ -8,22 +8,22 @@ import {
   ActivityIndicator,
   Switch,
 } from 'react-native';
-import {useIsFocused} from '@react-navigation/native';
-import {COLORS} from './../utils/theme';
-import {profileDetails} from '../services/api';
-import {BASE_URL} from './../utils/global';
+import { useIsFocused } from '@react-navigation/native';
+import { COLORS } from './../utils/theme';
+import { profileDetails } from '../services/api';
+import { BASE_URL } from './../utils/global';
 import EStyleSheet from 'react-native-extended-stylesheet';
 import Icon from 'react-native-vector-icons/AntDesign';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import {darkTheme, lightTheme} from './../styles/themes';
+import { darkTheme, lightTheme } from './../styles/themes';
 import RootScreen from '../components/molecules/rootScreen/RootScreen';
 import CustomHeader from '../components/molecules/header/CustomHeader';
-import {useDispatch, useSelector} from 'react-redux';
-import {TOGGLE_THEME} from '../redux/reduxConstants';
+import { useDispatch, useSelector } from 'react-redux';
+import { TOGGLE_THEME } from '../redux/reduxConstants';
 
-const Settings = ({navigation}) => {
+const Settings = ({ navigation }) => {
   const dispatch = useDispatch();
-  const {theme} = useSelector(({app}) => app);
+  const { theme } = useSelector(({ app }) => app);
   const isFocused = useIsFocused();
   const [userDetails, setUserDetails] = useState({});
   const [loading, setLoading] = useState(false);
@@ -44,27 +44,27 @@ const Settings = ({navigation}) => {
   const toggleTheme = () => {
     const theme = EStyleSheet.value('$theme') === 'light' ? darkTheme : lightTheme;
     EStyleSheet.build(theme);
-    dispatch({type: TOGGLE_THEME});
+    dispatch({ type: TOGGLE_THEME });
   };
 
   return (
     <RootScreen headerComponent={() => <CustomHeader title={'Settings'} />}>
       {loading ? (
-        <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
           <ActivityIndicator size={'large'} color={COLORS.PRIMARY} />
         </View>
       ) : (
         <>
-          <View style={{...styles.rowCont, marginTop: 20}}>
+          <View style={{ ...styles.rowCont, marginTop: 20 }}>
             {userDetails.profile_img == '' ? (
               <Image
                 source={require('./../assets/icons/user.png')}
-                style={{...styles.profilePic, marginRight: 10}}
+                style={{ ...styles.profilePic, marginRight: 10 }}
               />
             ) : (
               <Image
-                source={{uri: `${BASE_URL}${userDetails.profile_img}`}}
-                style={{...styles.profilePic, marginRight: 10}}
+                source={{ uri: `${BASE_URL}${userDetails.profile_img}` }}
+                style={{ ...styles.profilePic, marginRight: 10 }}
               />
             )}
 
@@ -94,9 +94,9 @@ const Settings = ({navigation}) => {
           </View>
 
           <View style={styles.menuCont}>
-          <TouchableOpacity
-              onPress={() =>   navigation.navigate('EditProfile', {userDetails})}
-              style={{...styles.rowCont, ...styles.menuItems}}>
+            <TouchableOpacity
+              onPress={() => navigation.navigate('EditProfile', { userDetails })}
+              style={{ ...styles.rowCont, ...styles.menuItems }}>
               <View style={styles.iconWrapper}>
                 <MaterialIcons
                   name="notifications-active"
@@ -109,7 +109,7 @@ const Settings = ({navigation}) => {
 
             <TouchableOpacity
               onPress={() => navigation.navigate('Notifications')}
-              style={{...styles.rowCont, ...styles.menuItems}}>
+              style={{ ...styles.rowCont, ...styles.menuItems }}>
               <View style={styles.iconWrapper}>
                 <MaterialIcons
                   name="notifications-active"
@@ -122,7 +122,7 @@ const Settings = ({navigation}) => {
 
             <TouchableOpacity
               onPress={() => navigation.navigate('Wallet')}
-              style={{...styles.rowCont, ...styles.menuItems}}>
+              style={{ ...styles.rowCont, ...styles.menuItems }}>
               <View style={styles.iconWrapper}>
                 <Icon
                   name="wallet"
@@ -151,30 +151,47 @@ const Settings = ({navigation}) => {
             </TouchableOpacity>
 
             <TouchableOpacity
+              onPress={() => navigation.navigate('Coupon')}
+              style={{
+                ...styles.rowCont,
+                ...styles.menuItems,
+                borderBottomWidth: 1,
+              }}>
+              <View style={styles.iconWrapper}>
+                <Icon
+                  name="creditcard"
+                  size={15}
+                  color={EStyleSheet.value('$PRIMARY')}
+                />
+              </View>
+              <Text style={styles.h2}>Coupon</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
               onPress={toggleTheme}
               style={{
                 ...styles.rowCont,
                 ...styles.menuItems,
                 borderBottomWidth: 0,
-                justifyContent:'space-between'
+                justifyContent: 'space-between'
               }}>
-                <View style={styles.rowCont}>
-              <View style={styles.iconWrapper}>
-                <MaterialIcons
-                  name="color-lens"
-                  size={15}
-                  color={EStyleSheet.value('$PRIMARY')}
-                />
-              </View>
-              <Text style={styles.h2}>Dark Mode</Text>
+              <View style={styles.rowCont}>
+                <View style={styles.iconWrapper}>
+                  <MaterialIcons
+                    name="color-lens"
+                    size={15}
+                    color={EStyleSheet.value('$PRIMARY')}
+                  />
+                </View>
+                <Text style={styles.h2}>Dark Mode</Text>
               </View>
               <Switch
-                trackColor={{false: '#767577', true: EStyleSheet.value('DARK')}}
-               thumbColor={theme === 'dark' ? EStyleSheet.value('DARK') : "#f4f3f4"}
+                trackColor={{ false: '#767577', true: EStyleSheet.value('DARK') }}
+                thumbColor={theme === 'dark' ? EStyleSheet.value('DARK') : "#f4f3f4"}
                 ios_backgroundColor="#3e3e3e"
                 onValueChange={toggleTheme}
                 value={theme === 'dark' ? false : true}
-                styles={{alignSelf: 'flex-end'}}
+                styles={{ alignSelf: 'flex-end' }}
               />
             </TouchableOpacity>
           </View>

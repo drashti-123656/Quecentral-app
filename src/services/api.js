@@ -40,6 +40,10 @@ export const serviceDetailsAPI = (id) => {
     return http.get(`service-details?id=${id}`)
 }
 
+export const couponDetailsAPI=()=>{
+    return http.get(`coupon-list`)
+}
+
 export const stateList = (id) => {
     return http.get(`state_details?id=${id}`)
 }
