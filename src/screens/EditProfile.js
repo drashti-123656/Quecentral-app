@@ -27,10 +27,8 @@ import moment from 'moment';
 import {genderData} from '../utils/helper';
 import SuccessAlert from '../components/molecules/alert/SuccessAlert';
 import EStyleSheet from 'react-native-extended-stylesheet';
-
 const EditProfile = ({route, navigation}) => {
   const dispatch = useDispatch();
-
   const {statesList, cityList, isUpdating, profileUpdateSuccess} = useSelector(
     ({editProfileReducer}) => editProfileReducer,
   );
@@ -98,7 +96,7 @@ const EditProfile = ({route, navigation}) => {
         }}
         onSubmit={values => handleSubmit(values)}>
         {({handleChange, handleBlur, handleSubmit, setFieldValue, values}) => (
-          <View>
+          <View >
             <View style={{...styles.rowCont, marginVertical: 20}}>
               <View>
                 {userDetails.profile_img == '' ? (
@@ -202,7 +200,7 @@ const EditProfile = ({route, navigation}) => {
                   styleItemsContainer={styles.itemContainer}
                   styleSelectorContainer={styles.selectorContainer}
                   styleRowList={styles.rowList}
-                  textColor={EStyleSheet.value('$BLACK')}
+
                 />
               </View>
 
@@ -236,7 +234,7 @@ const EditProfile = ({route, navigation}) => {
                   styleItemsContainer={styles.itemContainer}
                   styleSelectorContainer={styles.selectorContainer}
                   styleRowList={styles.rowList}
-                  textColor={EStyleSheet.value('$BLACK')}
+
 
                 />
               </View>
@@ -273,7 +271,6 @@ const EditProfile = ({route, navigation}) => {
                   tagRemoveIconColor={EStyleSheet.value('$BLACK')}
                   tagBorderColor={EStyleSheet.value('$BLACK')}
                   tagTextColor={EStyleSheet.value('$BLACK')}
-                  textColor={EStyleSheet.value('$BLACK')}
                   selectedItemTextColor={EStyleSheet.value('$WHITE')}
                   selectedItemIconColor={EStyleSheet.value('$WHITE')}
                   itemTextColor={EStyleSheet.value('$TEXT')}
