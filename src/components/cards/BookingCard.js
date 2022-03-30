@@ -12,6 +12,7 @@ import {BASE_URL} from './../../utils/global';
 import LinearGradient from 'react-native-linear-gradient';
 import {useNavigation} from '@react-navigation/native';
 import moment from 'moment'
+import EStyleSheet from 'react-native-extended-stylesheet';
 
 const BookingCard = ({
   service_id,
@@ -30,7 +31,11 @@ const BookingCard = ({
     <LinearGradient
       start={{x: 0, y: 0}}
       end={{x: 1, y: 0}}
-      colors={['#E6FFF9', '#fff', '#fff']}
+      colors={[
+        EStyleSheet.value('$ALPHA_PRIMARY'),
+        EStyleSheet.value('$CARD_BACKGROUND'),
+        EStyleSheet.value('$CARD_BACKGROUND'),
+      ]}
       style={{...styles.rowCont, ...styles.bookingCardContainer}}>
       <Image
         source={{uri: `${BASE_URL}${service_image}`}}
@@ -49,15 +54,8 @@ const BookingCard = ({
 
         <View
           style={{flexDirection: 'row', alignItems: 'center', marginBottom: 5}}>
-          <View style={{...styles.rowCont, alignItems: 'center'}}>
-            <Image
-              source={require('./../../assets/icons/call.png')}
-              style={{width: 15, height: 15, marginRight: 5}}
-              PlaceholderContent={<ActivityIndicator />}
-            />
-            <Text style={styles.h3}>{mobileno}</Text>
-          </View>
-          <View
+     
+          {/* <View
             style={{...styles.rowCont, marginLeft: 10, alignItems: 'center'}}>
             <Image
               source={require('./../../assets/icons/location.png')}
@@ -65,7 +63,7 @@ const BookingCard = ({
               PlaceholderContent={<ActivityIndicator />}
             />
             <Text style={styles.h3}>{location}</Text>
-          </View>
+          </View> */}
         </View>
 
         <View

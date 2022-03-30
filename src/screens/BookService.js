@@ -20,12 +20,16 @@ import {
 } from './../services/api';
 import EStyleSheet from 'react-native-extended-stylesheet';
 import {useDispatch, useSelector} from 'react-redux';
-import {bookServiceAction} from '../redux/actions/bookings';
+import {bookResetAction, bookServiceAction} from '../redux/actions/bookings';
 import moment from 'moment';
+import SuccessAlert from '../components/molecules/alert/SuccessAlert';
+import {verifyPaymentAction} from '../redux/actions/wallet';
 
 const BookService = props => {
   const dispatch = useDispatch();
   const {availableDays} = useSelector(({serviceDetails}) => serviceDetails);
+  const {bookingSuccess} = useSelector(({bookingsReducer}) => bookingsReducer);
+
 
   const {service_amount, serviceId} = props.route.params;
 
@@ -171,6 +175,11 @@ const BookService = props => {
       setAmount(service_amount);
       setCouponError(response.data.response.response_message);
     }
+  };
+
+  const handleSuccessOkayButton = () => {
+    props.navigation.goBack();
+    dispatch(bookResetAction());
   };
 
   return (
@@ -319,6 +328,12 @@ const BookService = props => {
           onPress={() => submitHandler()}
         />
       </View>
+
+      <SuccessAlert
+        visible={bookingSuccess}
+        message={'Service Booked'}
+        onPressOkay={handleSuccessOkayButton}
+      />
     </KeyboardAwareScrollView>
   );
 };

@@ -200,7 +200,7 @@ const EditProfile = ({route, navigation}) => {
                   styleItemsContainer={styles.itemContainer}
                   styleSelectorContainer={styles.selectorContainer}
                   styleRowList={styles.rowList}
-                  // textColor={theme === 'dark' ? EStyleSheet.value('$BLACK') : "$WHITE"}
+
                 />
               </View>
 
@@ -234,6 +234,7 @@ const EditProfile = ({route, navigation}) => {
                   styleItemsContainer={styles.itemContainer}
                   styleSelectorContainer={styles.selectorContainer}
                   styleRowList={styles.rowList}
+
 
                 />
               </View>

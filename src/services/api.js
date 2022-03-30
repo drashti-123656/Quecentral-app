@@ -56,8 +56,8 @@ export const categoryWiseServices = (data) => {
     return http.post('category_select', data)
 }
 
-export const walletHistory = () => {
-    return http.post('wallet-history')
+export const walletHistoryAPI = (data) => {
+    return http.post('wallet-history', data)
 }
 
 export const bookServiceAPI = (data) => {
@@ -79,6 +79,16 @@ export const validateCoupon = (data) => {
 export const walletTransaction = (data) => {
     return http.post('wallet-transaction-user', data)
 }
+
+export const createOrderAPI = (data) => {
+    return http.post('create_order', data)
+}
+
+export const verifyPaymentAPI = (data) => {
+    return http.post('verify_razorpay_payment', data)
+}
+
+
 
 
 

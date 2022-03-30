@@ -41,9 +41,9 @@ const dispatch = useDispatch();
       ) : (
         <FlatList
           data={bookingsList}
-          refreshControl={
-            <RefreshControl refreshing={refreshing} onRefresh={refreshScreen} />
-          }
+          // refreshControl={
+          //   <RefreshControl refreshing={refreshing} onRefresh={refreshScreen} />
+          // }
           renderItem={({item}) => (
             <View style={styles.item_view}>
               <BookingCard
