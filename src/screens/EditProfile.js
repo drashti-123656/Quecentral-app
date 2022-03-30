@@ -186,14 +186,14 @@ const EditProfile = ({route, navigation}) => {
                   searchInputPlaceholderText=" Search Items..."
                   onChangeInput={text => console.log(text)}
                   altFontFamily="ProximaNova-Light"
-                  tagRemoveIconColor="#CCC"
-                  tagBorderColor="#CCC"
-                  tagTextColor="#CCC"
-                  selectedItemTextColor="black"                 
-                  selectedItemIconColor="black"
+                  tagRemoveIconColor={EStyleSheet.value('$BLACK')}
+                  tagBorderColor={EStyleSheet.value('$BLACK')}
+                  tagTextColor={EStyleSheet.value('$BLACK')}
+                  selectedItemTextColor={EStyleSheet.value('$WHITE')}             
+                  selectedItemIconColor={EStyleSheet.value('$WHITE')}
                   itemTextColor={EStyleSheet.value('$TEXT')}
                   searchInputStyle={styles.brandSearchInputStyle}
-                  submitButtonColor="#CCC"
+                  submitButtonColor={EStyleSheet.value('$BLACK')}
                   submitButtonText="Submit"
                   styleListContainer={styles.listContainer}
                   // styleDropdownMenu={styles.dropdownMenu}
@@ -202,8 +202,7 @@ const EditProfile = ({route, navigation}) => {
                   styleItemsContainer={styles.itemContainer}
                   styleSelectorContainer={styles.selectorContainer}
                   styleRowList={styles.rowList}
-                  textColor='#a1a1a1'
-
+                  textColor={EStyleSheet.value('$BLACK')}
                 />
               </View>
 
@@ -223,21 +222,21 @@ const EditProfile = ({route, navigation}) => {
                   searchInputPlaceholderText="Search Items..."
                   onChangeInput={text => console.log(text)}
                   altFontFamily="ProximaNova-Light"
-                  tagRemoveIconColor="#CCC"
-                  tagBorderColor="#CCC"
                   styleListContainer={{height: 200}}
-                  tagTextColor="#CCC"
-                  selectedItemTextColor="white"
-                  selectedItemIconColor="white"
+                  tagRemoveIconColor={EStyleSheet.value('$BLACK')}
+                  tagBorderColor={EStyleSheet.value('$BLACK')}
+                  tagTextColor={EStyleSheet.value('$BLACK')}
+                  selectedItemTextColor={EStyleSheet.value('$WHITE')}             
+                  selectedItemIconColor={EStyleSheet.value('$WHITE')}
                   itemTextColor={EStyleSheet.value('$TEXT')}
                   searchInputStyle={styles.brandSearchInputStyle}
-                  submitButtonColor="#CCC"
+                  submitButtonColor={EStyleSheet.value('$BLACK')}
                   submitButtonText="Submit"
                   styleInputGroup={styles.inputGroup}
                   styleItemsContainer={styles.itemContainer}
                   styleSelectorContainer={styles.selectorContainer}
                   styleRowList={styles.rowList}
-                  textColor='#a1a1a1'
+                  textColor={EStyleSheet.value('$BLACK')}
 
                 />
               </View>
@@ -271,16 +270,16 @@ const EditProfile = ({route, navigation}) => {
                   searchInputPlaceholderText="Search Items..."
                   onChangeInput={text => console.log(text)}
                   altFontFamily="ProximaNova-Light"
-                  tagRemoveIconColor="#CCC"
-                  tagBorderColor="#CCC"
-                  tagTextColor="#CCC"
-                  textColor='#a1a1a1'
-                  selectedItemTextColor="white"
-                  selectedItemIconColor="white"
+                  tagRemoveIconColor={EStyleSheet.value('$BLACK')}
+                  tagBorderColor={EStyleSheet.value('$BLACK')}
+                  tagTextColor={EStyleSheet.value('$BLACK')}
+                  textColor={EStyleSheet.value('$BLACK')}
+                  selectedItemTextColor={EStyleSheet.value('$WHITE')}
+                  selectedItemIconColor={EStyleSheet.value('$WHITE')}
                   itemTextColor={EStyleSheet.value('$TEXT')}
                   searchInputStyle={styles.brandSearchInputStyle}
                   styleSelectorContainer={styles.selectorContainer}
-                  submitButtonColor="#CCC"
+                  submitButtonColor={EStyleSheet.value('$BLACK')}
                   submitButtonText="Submit"
                   styleRowList={styles.rowList}
                 />
