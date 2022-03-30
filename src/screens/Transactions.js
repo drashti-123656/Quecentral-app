@@ -16,6 +16,7 @@ import {fetchTransactionsAction} from '../redux/actions/transactions';
 import {useDispatch, useSelector} from 'react-redux';
 import {FlatList} from 'react-native-gesture-handler';
 import NoResultFound from '../components/molecules/NoResultFound';
+import Loader from '../components/atoms/Loader';
 
 const Transactions = () => {
   const dispatch = useDispatch();
@@ -26,8 +27,8 @@ const Transactions = () => {
 
   useEffect(() => {
     const payload = {
-      from_date: '12/03/2021',
-      to_date: '29/03/2022',
+      from_date:'12/03/2021',
+      to_date:'02/02/2022'
     };
     dispatch(fetchTransactionsAction(payload));
   }, []);
@@ -79,17 +80,12 @@ const Transactions = () => {
   );
 
   const _handleEmptyComponentRender = () =>
-    isFetching ? _handleRenderFooter() : <NoResultFound />;
+    isFetching ? <Loader /> : <NoResultFound />;
 
   const _handleRenderFooter = () => (
     <>
-      {isFetching ? (
-        <View style={styles.loaderContainer}>
-          <ActivityIndicator
-            color={EStyleSheet.value('$PRIMARY')}
-            size={'large'}
-          />
-        </View>
+      {isFetching && transactions.length !== 0? (
+       <Loader /> 
       ) : null}
     </>
   );
@@ -102,7 +98,7 @@ const Transactions = () => {
         ListEmptyComponent={_handleEmptyComponentRender}
         ListFooterComponent={_handleRenderFooter}
         keyExtractor={item => item.id}
-        contentContainerStyle={{flex: 1}}
+        contentContainerStyle={styles.flatlistContainer}
       />
     </RootScreen>
   );
@@ -148,4 +144,5 @@ const styles = EStyleSheet.create({
     backgroundColor: 'white',
   },
   loaderContainer: {justifyContent: 'center', alignItems: 'center', flex: 1},
+  flatlistContainer: {flexGrow: 1}
 });

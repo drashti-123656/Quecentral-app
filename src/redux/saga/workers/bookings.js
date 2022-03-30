@@ -44,9 +44,13 @@ export function* bookingServiceWorker({payload}) {
         )
         .then(() =>
           navigate('SettingsStack', {
-            screen: 'Wallet',
+            screen: 'WalletStack',
           }),
-        );
+        )    .then(() =>
+        navigate('WalletStack', {
+          screen: 'Wallet',
+        }),
+      );
     } else {
       showMessage({
         message: error.response.data.response.response_message,

@@ -88,7 +88,7 @@ const BookingCard = ({
         </View>
       </View>
 
-      <Text style={styles.amount}>{service_amount}</Text>
+      <Text style={styles.amount}>₹ {service_amount}</Text>
     </LinearGradient>
   );
 };

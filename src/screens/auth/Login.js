@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import {
   StyleSheet,
   Text,
@@ -31,10 +31,17 @@ import EStyleSheet from 'react-native-extended-stylesheet';
 import {Formik} from 'formik';
 import OtpModel from '../../components/model/OtpModel';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+var {FBLogin, FBLoginManager} = require('react-native-facebook-login');
+import {
+  GoogleSignin,
+  GoogleSigninButton,
+  statusCodes,
+} from '@react-native-google-signin/google-signin';
 
 const Login = ({route, navigation}) => {
   const dispatch = useDispatch();
-
+  const inputRef = useRef();
+  const userInputRef = useRef();
   const {error, errorMsg, showOtpModal, authData} = useSelector(
     ({auth}) => auth,
   );
@@ -91,6 +98,34 @@ const Login = ({route, navigation}) => {
     }
   }, [error, errorMsg]);
 
+
+  const handleSignInGoogle = async () => {
+    try {
+      await GoogleSignin.hasPlayServices();
+      const userInfo = await GoogleSignin.signIn();
+      const tokens = await GoogleSignin.getTokens();
+      const data = {
+        token: userInfo.idToken,
+      };
+      dispatch(googleLoginAction(data));
+    } catch (error) {
+      if (error.code === statusCodes.SIGN_IN_CANCELLED) {
+        // user cancelled the login flow
+      } else if (error.code === statusCodes.IN_PROGRESS) {
+        // operation (e.g. sign in) is in progress already
+      } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
+        // play services not available or outdated
+      } else {
+        // some other error happened
+      }
+    }
+  };
+
+  const handleFacebookLogin = data => {
+    const {credentials: {token}} = data;
+    const payload = {token}
+      dispatch(facebookLoginAction(payload))
+  };
   return (
     <View style={styles.container}>
       <ScrollView contentContainerStyle={{flexGrow: 1}}>
@@ -156,11 +191,55 @@ const Login = ({route, navigation}) => {
             )}
           </Formik>
 
+          <View style={styles.GoogleFacebookContainer}>
+          <GoogleSigninButton
+            style={{width: '100%', height: 48}}
+            size={GoogleSigninButton.Size.Wide}
+            color={GoogleSigninButton.Color.Dark}
+            onPress={handleSignInGoogle}
+          />
+
+          <Text style={{fontWeight: 'bold', textAlign: 'center', padding: 5}}>
+            {' '}
+            OR{' '}
+          </Text>
+          <FBLogin
+            ref={inputRef}
+            loginBehavior={FBLoginManager.LoginBehaviors.Native}
+            permissions={['email']}
+            onLogin={handleFacebookLogin}
+            onLogout={function () {
+              console.log('Logged out.');
+              //     _this.setState({ user : null });
+            }}
+            onLoginFound={function (data) {
+              console.log('Existing login found.');
+              console.log(data);
+              //  _this.setState({ user : data.credentials });
+            }}
+            onLoginNotFound={function () {
+              console.log('No user logged in.');
+              //  _this.setState({ user : null });
+            }}
+            onError={function (data) {
+              console.log('ERROR');
+              console.log(data);
+            }}
+            onCancel={function () {
+              console.log('User cancelled.');
+            }}
+            onPermissionsMissing={function (data) {
+              console.log('Check permissions!');
+              console.log(data);
+            }}
+          />
+        </View>
+
           <Text
             style={{
               textAlign: 'center',
               color: EStyleSheet.value('$TEXT'),
-              marginTop: 20,
+              marginTop: 10,
             }}>
             Don't have an account ?{' '}
             <Text
@@ -190,7 +269,10 @@ const styles = EStyleSheet.create({
     flex: 1,
     justifyContent: 'flex-end',
   },
-
+  GoogleFacebookContainer: {
+    marginHorizontal: '20%',
+    marginTop: 20
+  },
   headerCont: {
     height: 190,
     padding: 10,

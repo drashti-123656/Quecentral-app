@@ -21,9 +21,10 @@ import RazorpayCheckout from 'react-native-razorpay';
 import EStyleSheet from 'react-native-extended-stylesheet';
 import RootScreen from '../components/molecules/rootScreen/RootScreen';
 import CustomHeader from '../components/molecules/header/CustomHeader';
-import {createOrderAction, walletResetAction} from '../redux/actions/wallet';
+import {createOrderAction, walletDetailsAction, walletResetAction} from '../redux/actions/wallet';
 import Pressable from 'react-native/Libraries/Components/Pressable/Pressable';
 import Button from '../components/atoms/Button';
+import {useFocusEffect} from '@react-navigation/native';
 
 const Wallet = () => {
   const dispatch = useDispatch();
@@ -31,41 +32,18 @@ const Wallet = () => {
     userData: {name, email, mobileno},
   } = useSelector(({auth}) => auth);
 
-  const {viewCheckoutModal} = useSelector(({walletReducer}) => walletReducer);
+  const {walletData, isFetchingWalletData} = useSelector(({walletReducer}) => walletReducer);
 
-  const [walletInfo, setWalletInfo] = useState({});
+
   const [amount, setAmount] = useState('');
   const [wallet_transactions, set_wallet_transactions] = useState([]);
-  const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-    fetchWalletDetails();
-    fetchWalletHistory();
-
-    return () => {
-      dispatch(walletResetAction())
-    }
-  }, []);
-
- 
-
-  const fetchWalletDetails = async () => {
-    setLoading(true);
-    const response = await walletDetailsAPI();
-    if (response.data.response.response_code == 200) {
-      setWalletInfo(response.data.data.wallet_info);
-    }
-    setLoading(false);
-  };
-
-  const fetchWalletHistory = async () => {
-    setLoading(true);
-    const response = await walletHistoryAPI();
-    if (response.data.response.response_code == 200) {
-      set_wallet_transactions(response.data.data.wallet_info.wallet_history);
-    }
-    setLoading(false);
-  };
+  
+  useFocusEffect(
+    React.useCallback(() => {
+      dispatch(walletDetailsAction())
+    }, [])
+  );
 
   const createOrder = () => {
     const paylaod = {
@@ -74,10 +52,6 @@ const Wallet = () => {
     dispatch(createOrderAction(paylaod));
   };
 
- 
-
-
-
   return (
     <RootScreen headerComponent={() => <CustomHeader title={'Wallet'} />}>
       <ScrollView style={styles.scrollview}>
@@ -85,10 +59,10 @@ const Wallet = () => {
           <Text style={styles.wallet_text}>My Wallet</Text>
           <View style={styles.wallet_view}>
             <Text style={styles.h1}>
-              {loading ? (
+              {isFetchingWalletData ? (
                 <ActivityIndicator color={EStyleSheet.value('$PRIMARY')} />
               ) : (
-                walletInfo.wallet_amt
+                walletData.wallet_amt
               )}
             </Text>
             <Text style={styles.text}>Available Balance</Text>
@@ -111,10 +85,10 @@ const Wallet = () => {
             </View>
 
             <Text style={styles.credit_debit_text}>
-              {loading ? (
+              {isFetchingWalletData ? (
                 <ActivityIndicator color={EStyleSheet.value('$PRIMARY')} />
               ) : (
-                `+ ${walletInfo.currency} ${walletInfo.total_credit}`
+                `+ ${walletData.currency} ${walletData.total_credit}`
               )}
             </Text>
           </View>
@@ -128,10 +102,10 @@ const Wallet = () => {
               <Text style={styles.text}>Total Debit</Text>
             </View>
             <Text style={styles.credit_debit_text}>
-              {loading ? (
+              {isFetchingWalletData ? (
                 <ActivityIndicator color={EStyleSheet.value('$PRIMARY')} />
               ) : (
-                `+ ${walletInfo.currency} ${Math.round(walletInfo.total_debit)}`
+                `+ ${walletData.currency} ${Math.round(walletData.total_debit)}`
               )}
             </Text>
           </View>
@@ -197,58 +171,9 @@ const Wallet = () => {
 
         <View>
           <Text style={styles.transaction}>Transaction History</Text>
-
-          {loading && (
+          {isFetchingWalletData && (
             <ActivityIndicator color={EStyleSheet.value('$PRIMARY')} />
           )}
-
-          {wallet_transactions.map((item, i) => (
-            <Card key={i} style={styles.itemContainer}>
-              {/* <Image
-                source={{uri: `${BASE_URL}${item.profile_img}`}}
-                style={{
-                  width: 30,
-                  height: 30,
-                  borderRadius: 100,
-                  marginRight: 5,
-                  alignSelf: 'flex-start',
-                }}
-              /> */}
-              <View style={styles.transactionHistory_view}>
-                <View style={styles.transaction_history}>
-                  <Text style={{...styles.h1, fontSize: 15}}>
-                    {item.reason}
-                  </Text>
-                  <Text
-                    style={{
-                      ...styles.h1,
-                      fontSize: 18,
-                      color: EStyleSheet.value('$PRIMARY'),
-                    }}>{`${item.currency} ${item.total_amt}`}</Text>
-                </View>
-                <Text style={styles.history_text}>
-                  Gateway : <Text>{'Razorpay'}</Text>
-                </Text>
-                <View style={styles.transaction_history}>
-                  <Text
-                    style={[
-                      styles.h2,
-                      {color: '#a1a1a1', fontWeight: 'normal', fontSize: 12},
-                    ]}>
-                    {item.created_at.split(' ')[0]}
-                  </Text>
-                  <Text
-                    style={[
-                      styles.h2,
-                      {marginTop: 'auto', fontSize: 13, color: 'green'},
-                    ]}>
-                    {' '}
-                    Paid
-                  </Text>
-                </View>
-              </View>
-            </Card>
-          ))}
         </View>
       </ScrollView>
     </RootScreen>

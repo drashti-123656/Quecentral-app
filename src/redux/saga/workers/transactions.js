@@ -9,9 +9,7 @@ import {navigate, navReset} from '../../../navigation/RootNavigation';
 
 export function* fetchTransactionsWorker({payload}) {
   try {
-    const {data} = yield call(walletHistoryAPI);
-
-    console.log('data', data.data.wallet_info.wallet_history)
+    const {data} = yield call(walletHistoryAPI, payload);
     yield put({
       type: FETCH_TRANSACTIONS_SUCCESS,
       payload: data.data.wallet_info.wallet_history,

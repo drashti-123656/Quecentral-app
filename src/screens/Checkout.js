@@ -1,5 +1,5 @@
 import {StyleSheet, Text, View} from 'react-native';
-import React from 'react';
+import React, {useEffect} from 'react';
 import Button from '../components/atoms/Button';
 import RootScreen from '../components/molecules/rootScreen/RootScreen';
 import CustomHeader from '../components/molecules/header/CustomHeader';
@@ -7,21 +7,22 @@ import EStyleSheet from 'react-native-extended-stylesheet';
 import {useDispatch, useSelector} from 'react-redux';
 import RazorpayCheckout from 'react-native-razorpay';
 import {showMessage} from 'react-native-flash-message';
-import {verifyPaymentAction} from '../redux/actions/wallet';
+import {verifyPaymentAction, walletResetAction} from '../redux/actions/wallet';
 
 const Checkout = () => {
   const dispatch = useDispatch();
   const {
     orderDetails: {amount, id},
+    isCreatingOrder,
+    isVerifyingPayment,
   } = useSelector(({walletReducer}) => walletReducer);
 
   const {
     userData: {email},
   } = useSelector(({auth}) => auth);
+  
 
   const handleCheckout = () => {
-    console.log('amount', amount);
-    console.log('id', id);
     const options = {
       description: 'Add money to wallet',
       image: 'https://i.imgur.com/3g7nmJC.png',
@@ -55,13 +56,19 @@ const Checkout = () => {
   return (
     <RootScreen headerComponent={() => <CustomHeader title={'Checkout'} />}>
       <View style={styles.contentContainer}>
-        <Text style={styles.amountTitle}>Amount : {amount/100}</Text>
+        {isVerifyingPayment ? (
+          <Text style={styles.amountTitle}>Verifying payment...</Text>
+        ) : (
+          <Text style={styles.amountTitle}>Amount : ₹ {amount / 100}</Text>
+        )}
+   </View>
         <Button
           onPress={handleCheckout}
           style={styles.button}
           title={'checkout'}
+          loading={isCreatingOrder || isVerifyingPayment}
         />
-      </View>
+   
     </RootScreen>
   );
 };
@@ -87,6 +94,6 @@ const styles = EStyleSheet.create({
     alignItems: 'center',
   },
   button: {
-    alignSelf: 'flex-end',
+    marginBottom: 20
   },
 });
