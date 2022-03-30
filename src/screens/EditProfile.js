@@ -186,22 +186,23 @@ const EditProfile = ({route, navigation}) => {
                   searchInputPlaceholderText=" Search Items..."
                   onChangeInput={text => console.log(text)}
                   altFontFamily="ProximaNova-Light"
-                  tagRemoveIconColor="#CCC"
-                  tagBorderColor="#CCC"
-                  tagTextColor="#CCC"
-                  selectedItemTextColor="black"
-                  selectedItemIconColor="black"
+                  tagRemoveIconColor={EStyleSheet.value('$BLACK')}
+                  tagBorderColor={EStyleSheet.value('$BLACK')}
+                  tagTextColor={EStyleSheet.value('$BLACK')}
+                  selectedItemTextColor={EStyleSheet.value('$WHITE')}             
+                  selectedItemIconColor={EStyleSheet.value('$WHITE')}
                   itemTextColor={EStyleSheet.value('$TEXT')}
                   searchInputStyle={styles.brandSearchInputStyle}
-                  submitButtonColor="#CCC"
+                  submitButtonColor={EStyleSheet.value('$BLACK')}
                   submitButtonText="Submit"
                   styleListContainer={styles.listContainer}
-                  //styleDropdownMenu={styles.dropdownMenu}
+                  // styleDropdownMenu={styles.dropdownMenu}
                   styleDropdownMenuSubsection={styles.dropdownSubSection}
                   styleInputGroup={styles.inputGroup}
                   styleItemsContainer={styles.itemContainer}
                   styleSelectorContainer={styles.selectorContainer}
                   styleRowList={styles.rowList}
+                  textColor={EStyleSheet.value('$BLACK')}
                 />
               </View>
 
@@ -221,20 +222,22 @@ const EditProfile = ({route, navigation}) => {
                   searchInputPlaceholderText="Search Items..."
                   onChangeInput={text => console.log(text)}
                   altFontFamily="ProximaNova-Light"
-                  tagRemoveIconColor="#CCC"
-                  tagBorderColor="#CCC"
                   styleListContainer={{height: 200}}
-                  tagTextColor="#CCC"
-                  selectedItemTextColor="white"
-                  selectedItemIconColor="white"
+                  tagRemoveIconColor={EStyleSheet.value('$BLACK')}
+                  tagBorderColor={EStyleSheet.value('$BLACK')}
+                  tagTextColor={EStyleSheet.value('$BLACK')}
+                  selectedItemTextColor={EStyleSheet.value('$WHITE')}             
+                  selectedItemIconColor={EStyleSheet.value('$WHITE')}
                   itemTextColor={EStyleSheet.value('$TEXT')}
                   searchInputStyle={styles.brandSearchInputStyle}
-                  submitButtonColor="#CCC"
+                  submitButtonColor={EStyleSheet.value('$BLACK')}
                   submitButtonText="Submit"
                   styleInputGroup={styles.inputGroup}
                   styleItemsContainer={styles.itemContainer}
                   styleSelectorContainer={styles.selectorContainer}
                   styleRowList={styles.rowList}
+                  textColor={EStyleSheet.value('$BLACK')}
+
                 />
               </View>
 
@@ -248,7 +251,7 @@ const EditProfile = ({route, navigation}) => {
               />
 
               <View>
-                <Text style={styles.title}> Select gender</Text>
+                <Text style={styles.selectTitle}> Select gender</Text>
                 <MultiSelect
                   hideTags
                   items={genderData}
@@ -261,21 +264,22 @@ const EditProfile = ({route, navigation}) => {
                   }
                   selectedItems={values.gender}
                   selectText="  Pick Gender"
-                  styleDropdownMenuSubsection={styles.dropDownSubSection}
+                  styleDropdownMenuSubsection={styles.genderdropDownMenuSection}
                   styleInputGroup={styles.inputGroup}
                   styleItemsContainer={styles.itemContainer}
                   searchInputPlaceholderText="Search Items..."
                   onChangeInput={text => console.log(text)}
                   altFontFamily="ProximaNova-Light"
-                  tagRemoveIconColor="#CCC"
-                  tagBorderColor="#CCC"
-                  tagTextColor="#CCC"
-                  selectedItemTextColor="white"
-                  selectedItemIconColor="white"
+                  tagRemoveIconColor={EStyleSheet.value('$BLACK')}
+                  tagBorderColor={EStyleSheet.value('$BLACK')}
+                  tagTextColor={EStyleSheet.value('$BLACK')}
+                  textColor={EStyleSheet.value('$BLACK')}
+                  selectedItemTextColor={EStyleSheet.value('$WHITE')}
+                  selectedItemIconColor={EStyleSheet.value('$WHITE')}
                   itemTextColor={EStyleSheet.value('$TEXT')}
                   searchInputStyle={styles.brandSearchInputStyle}
                   styleSelectorContainer={styles.selectorContainer}
-                  submitButtonColor="#CCC"
+                  submitButtonColor={EStyleSheet.value('$BLACK')}
                   submitButtonText="Submit"
                   styleRowList={styles.rowList}
                 />
@@ -316,10 +320,15 @@ const styles = EStyleSheet.create({
     paddingHorizontal: 20,
     backgroundColor: '$BACKGROUND',
   },
+  texttag:{
+color:'red'
+  },
   rowCont: {
     flexDirection: 'row',
     alignItems: 'center',
   },
+ 
+
   profilePic: {
     width: 100,
     height: 100,
@@ -329,6 +338,12 @@ const styles = EStyleSheet.create({
     fontSize: 15,
     fontWeight: 'bold',
     marginTop:15,
+    color : '$TEXT'
+  },
+  selectTitle:{
+    fontSize: 15,
+    fontWeight: 'bold',
+    marginTop:10,
     color : '$TEXT'
   },
   brandSearchInputStyle: {
@@ -345,7 +360,7 @@ const styles = EStyleSheet.create({
   //   borderWidth: 1,
   //   borderStyle: 'solid',
   //   borderWidth: 0,
-  //   borderColor: '#20232a',
+  //   // borderColor: '#20232a',
   //   height: 50,
   // },
   dropdownSubSection: {
@@ -354,6 +369,8 @@ const styles = EStyleSheet.create({
     borderColor: '$PRIMARY',
     height: 50,
     marginTop: 20,
+    backgroundColor:'transparent'
+
   },
   inputGroup: {
     borderWidth: 1,
@@ -374,5 +391,13 @@ const styles = EStyleSheet.create({
     borderColor: '$TEXT',
     padding: 10,
     borderRadius: 20,
+  },
+  genderdropDownMenuSection: {
+    borderWidth: 1,
+    borderRadius: 10,
+    borderColor: '$PRIMARY',
+    height: 50,
+    marginTop: 20,
+  backgroundColor:'transparent',
   },
 });
