@@ -9,6 +9,7 @@ import {FlatList} from 'react-native-gesture-handler';
 import RootScreen from '../components/molecules/rootScreen/RootScreen';
 import CustomHeader from '../components/molecules/header/CustomHeader';
 import NoResultFound from '../components/molecules/NoResultFound';
+import Loader from '../components/atoms/Loader';
 
 const ServicesList = props => {
   const {categoryID} = props.route.params;
@@ -46,16 +47,10 @@ const ServicesList = props => {
   );
 
   const _handleEmptyComponentRender = () =>
-    loading ? _handleRenderFooter() : <NoResultFound />;
+    loading ? <Loader /> : <NoResultFound />;
 
   const _handleRenderFooter = () => (
-    <>
-      {loading ? (
-        <View style={{justifyContent: 'center', alignItems: 'center', flex: 1}}>
-          <ActivityIndicator color={COLORS.PRIMARY} size={'large'} />
-        </View>
-      ) : null}
-    </>
+    <>{loading && serviceListData.length !== 0 ? <Loader /> : null}</>
   );
   return (
     <RootScreen headerComponent={() => <CustomHeader title={'Services'} />}>
@@ -64,7 +59,7 @@ const ServicesList = props => {
         renderItem={_handleRenderItem}
         ListEmptyComponent={_handleEmptyComponentRender}
         ListFooterComponent={_handleRenderFooter}
-        contentContainerStyle={{flex: 1}}
+        contentContainerStyle={styles.flexBoxContainer}
         keyExtractor={item => item.id}
       />
     </RootScreen>
@@ -74,9 +69,9 @@ const ServicesList = props => {
 export default ServicesList;
 
 const styles = EStyleSheet.create({
-  container: {
+  flexBoxContainer: {
     padding: 10,
     flexGrow: 1,
-    backgroundColor: '$BACKGROUND',
+    backgroundColor: 'transparent',
   },
 });

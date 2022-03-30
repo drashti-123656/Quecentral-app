@@ -1,4 +1,4 @@
-import {CREATE_ORDER, VERIFY_PAYMENT, WALLET_RESET} from "../reduxConstants";
+import {CREATE_ORDER, FETCH_WALLET_DETAILS, VERIFY_PAYMENT, WALLET_RESET} from "../reduxConstants";
 
 export const createOrderAction = (payload) => ({
   type: CREATE_ORDER,
@@ -13,4 +13,9 @@ export const verifyPaymentAction = (payload) => ({
   type: VERIFY_PAYMENT,
   payload,
 });
+
+export const walletDetailsAction = () => ({
+  type: FETCH_WALLET_DETAILS,
+});
+
 

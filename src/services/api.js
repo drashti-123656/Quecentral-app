@@ -32,7 +32,7 @@ export const notificationList = () => {
     return http.get('get-notification-list')
 }
 
-export const walletDetails = () => {
+export const walletDetailsAPI = () => {
     return http.post('get-wallet')
 }
 

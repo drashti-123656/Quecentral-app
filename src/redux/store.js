@@ -20,6 +20,7 @@ import {watchCouponDetails} from './saga/watchers/coupon';
 import {
   watchCreateOrderService,
   watchVerifyPaymentService,
+  watchWalletDetailsService,
 } from './saga/watchers/wallet';
 import {watchTransactions} from './saga/watchers/transaction';
 
@@ -51,6 +52,8 @@ function* rootSaga() {
   yield fork(watchCreateOrderService);
   yield fork(watchVerifyPaymentService);
   yield fork(watchTransactions);
+  yield fork(watchWalletDetailsService);
+  
 }
 sagaMiddleware.run(rootSaga);
 

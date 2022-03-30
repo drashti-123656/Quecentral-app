@@ -167,7 +167,7 @@ const Settings = ({ navigation }) => {
               <Text style={styles.h2}>Coupon</Text>
             </TouchableOpacity>
 
-            <TouchableOpacity
+            {/* <TouchableOpacity
               onPress={toggleTheme}
               style={{
                 ...styles.rowCont,
@@ -193,7 +193,7 @@ const Settings = ({ navigation }) => {
                 value={theme === 'dark' ? false : true}
                 styles={{ alignSelf: 'flex-end' }}
               />
-            </TouchableOpacity>
+            </TouchableOpacity> */}
           </View>
         </>
       )}
