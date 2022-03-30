@@ -27,6 +27,7 @@ export function* bookingServiceWorker({payload}) {
       type: BOOK_SERVICE_SUCCESS,
       payload: data,
     });
+    console.log('data', data)
   } catch (error) {
     if (error.response.status === 402) {
       showMessage({

@@ -9,6 +9,7 @@ import {COLORS} from './../utils/theme';
 import Notifications from './../screens/Notifications';
 import Transactions from './../screens/Transactions';
 import EStyleSheet from 'react-native-extended-stylesheet';
+import WalletStack from './WalletStack';
 
 const dashboardStack = createNativeStackNavigator();
 
@@ -53,19 +54,14 @@ const SettingsStack = () => {
       />
 
       <dashboardStack.Screen
-        name="Wallet"
-        component={Wallet}
+        name="WalletStack"
+        component={WalletStack}
         options={{
           headerShown: false,
-          title: 'Wallet',
-          headerStyle: {
-            backgroundColor: EStyleSheet.value('$PRIMARY'),
-          },
-          headerTintColor: '#fff',
         }}
       />
-      
-       <dashboardStack.Screen
+
+      <dashboardStack.Screen
         name="Coupon"
         component={Coupon}
         options={{
@@ -82,11 +78,7 @@ const SettingsStack = () => {
         name="Transactions"
         component={Transactions}
         options={{
-          title: 'Transactions',
-          headerStyle: {
-            backgroundColor: EStyleSheet.value('$PRIMARY'),
-          },
-          headerTintColor: '#fff',
+          headerShown: false,
         }}
       />
     </dashboardStack.Navigator>

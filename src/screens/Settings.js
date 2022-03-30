@@ -121,7 +121,7 @@ const Settings = ({ navigation }) => {
             </TouchableOpacity>
 
             <TouchableOpacity
-              onPress={() => navigation.navigate('Wallet')}
+              onPress={() => navigation.navigate('WalletStack')}
               style={{ ...styles.rowCont, ...styles.menuItems }}>
               <View style={styles.iconWrapper}>
                 <Icon
