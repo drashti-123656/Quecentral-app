@@ -63,8 +63,6 @@ const FindAProfessional = ({route, navigation}) => {
       data.category = Categories.id;
     }
 
-    // let formdata = new URLSearchParams(data);
-
     dispatch(searchServiceAction(data));
   };
 

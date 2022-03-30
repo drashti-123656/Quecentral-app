@@ -6,39 +6,48 @@ import {
   Image,
   TextInput,
   ActivityIndicator,
+  Modal,
 } from 'react-native';
-import {showMessage, hideMessage} from 'react-native-flash-message';
-import {useSelector} from 'react-redux';
-import {COLORS} from './../utils/theme';
+import {showMessage} from 'react-native-flash-message';
+import {useDispatch, useSelector} from 'react-redux';
 import LoginButton from './../components/button/LoginButton';
-import {BASE_URL} from '../utils/global';
 import {
   walletDetails as walletDetailsAPI,
   walletHistory as walletHistoryAPI,
-  walletTransaction as walletTransactionAPI
+  walletTransaction as walletTransactionAPI,
 } from './../services/api';
 import Card from './../components/cards/Card';
 import RazorpayCheckout from 'react-native-razorpay';
 import EStyleSheet from 'react-native-extended-stylesheet';
-
 import RootScreen from '../components/molecules/rootScreen/RootScreen';
 import CustomHeader from '../components/molecules/header/CustomHeader';
+import {createOrderAction, walletResetAction} from '../redux/actions/wallet';
+import Pressable from 'react-native/Libraries/Components/Pressable/Pressable';
+import Button from '../components/atoms/Button';
 
 const Wallet = () => {
-  const {userData : {name, email, mobileno}} = useSelector(({auth}) => auth);
+  const dispatch = useDispatch();
+  const {
+    userData: {name, email, mobileno},
+  } = useSelector(({auth}) => auth);
+
+  const {viewCheckoutModal} = useSelector(({walletReducer}) => walletReducer);
 
   const [walletInfo, setWalletInfo] = useState({});
   const [amount, setAmount] = useState('');
-  const [paymentGateway, setPaymentGateway] = useState('paypal');
   const [wallet_transactions, set_wallet_transactions] = useState([]);
-
-  const [viewModal, setViewModal] = useState(false);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     fetchWalletDetails();
     fetchWalletHistory();
+
+    return () => {
+      dispatch(walletResetAction())
+    }
   }, []);
+
+ 
 
   const fetchWalletDetails = async () => {
     setLoading(true);
@@ -58,56 +67,19 @@ const Wallet = () => {
     setLoading(false);
   };
 
-  const addWalletHandler = () => {
-    {
-      var options = {
-        description: 'Add money to wallet',
-        image: 'https://i.imgur.com/3g7nmJC.png',
-        currency: 'INR',
-        key: 'rzp_test_7DBE92V0ZiWCac',
-        amount: amount * 100,
-        name: 'Queue Central',
-        //  order_id: 'order_DslnoIgkIDL8Zt',//Replace this with an order_id created using Orders API.
-        prefill: {
-          email: email,
-          contact: mobileno,
-          name: name,
-        },
-        theme: {color: EStyleSheet.value('$PRIMARY')},
-      };
-      RazorpayCheckout.open(options)
-        .then(async(razorPayData) => {
-          const formData = {
-            transaction_id: razorPayData.razorpay_payment_id,
-            transaction_amount: amount
-          }
-          const {data} = await walletTransactionAPI(formData)
-          console.log('response ===>', data)
-          if(response.data.response.response_code == 200){
-            fetchWalletDetails();
-            fetchWalletHistory();
-          }else{
-            showMessage({
-              message: response.data.response.response_message,
-              type: 'info',
-              backgroundColor: EStyleSheet.value('$WARNING_RED'),
-            });
-          }
-        })
-        .catch(error => {
-          // handle failure
-          showMessage({
-            message: `Error: ${error.code} | ${error.description}`,
-            type: 'info',
-            backgroundColor: EStyleSheet.value('$WARNING_RED'),
-          });
-          alert(`Error: ${error.code} | ${error.description}`);
-        });
-    }
+  const createOrder = () => {
+    const paylaod = {
+      payment_amount: amount,
+    };
+    dispatch(createOrderAction(paylaod));
   };
 
+ 
+
+
+
   return (
-    <RootScreen headerComponent={() => <CustomHeader title={'Wallet'}  />}>
+    <RootScreen headerComponent={() => <CustomHeader title={'Wallet'} />}>
       <ScrollView style={styles.scrollview}>
         <View style={styles.myWalletCont}>
           <Text style={styles.wallet_text}>My Wallet</Text>
@@ -138,8 +110,7 @@ const Wallet = () => {
               <Text style={styles.text}>Total Credit</Text>
             </View>
 
-            <Text
-              style={styles.credit_debit_text}>
+            <Text style={styles.credit_debit_text}>
               {loading ? (
                 <ActivityIndicator color={EStyleSheet.value('$PRIMARY')} />
               ) : (
@@ -147,8 +118,7 @@ const Wallet = () => {
               )}
             </Text>
           </View>
-          <View
-            style={styles.line}></View>
+          <View style={styles.line}></View>
           <View>
             <View style={styles.credit_debit}>
               <Image
@@ -157,8 +127,7 @@ const Wallet = () => {
               />
               <Text style={styles.text}>Total Debit</Text>
             </View>
-            <Text
-              style={styles.credit_debit_text}>
+            <Text style={styles.credit_debit_text}>
               {loading ? (
                 <ActivityIndicator color={EStyleSheet.value('$PRIMARY')} />
               ) : (
@@ -169,8 +138,7 @@ const Wallet = () => {
         </View>
 
         <View style={styles.withdrawCont}>
-          <View
-            style={styles.withdrawCont_view}>
+          <View style={styles.withdrawCont_view}>
             <Text style={styles.withdrawCont_text}>Withdraw</Text>
             <Image
               source={require('./../assets/images/razorpay.png')}
@@ -221,18 +189,18 @@ const Wallet = () => {
                 });
                 return;
               } else {
-                addWalletHandler();
+                createOrder();
               }
             }}
           />
         </View>
 
         <View>
-          <Text style={styles.transaction}>
-            Transaction History
-          </Text>
+          <Text style={styles.transaction}>Transaction History</Text>
 
-          {loading && <ActivityIndicator color={EStyleSheet.value('$PRIMARY')} />}
+          {loading && (
+            <ActivityIndicator color={EStyleSheet.value('$PRIMARY')} />
+          )}
 
           {wallet_transactions.map((item, i) => (
             <Card key={i} style={styles.itemContainer}>
@@ -247,8 +215,7 @@ const Wallet = () => {
                 }}
               /> */}
               <View style={styles.transactionHistory_view}>
-                <View
-                  style={styles.transaction_history}>
+                <View style={styles.transaction_history}>
                   <Text style={{...styles.h1, fontSize: 15}}>
                     {item.reason}
                   </Text>
@@ -260,11 +227,9 @@ const Wallet = () => {
                     }}>{`${item.currency} ${item.total_amt}`}</Text>
                 </View>
                 <Text style={styles.history_text}>
-                  Gateway :{' '}
-                  <Text>{'Razorpay'}</Text>
+                  Gateway : <Text>{'Razorpay'}</Text>
                 </Text>
-                <View
-                  style={styles.transaction_history}>
+                <View style={styles.transaction_history}>
                   <Text
                     style={[
                       styles.h2,
@@ -298,7 +263,7 @@ const styles = EStyleSheet.create({
     backgroundColor: '$BACKGROUND',
   },
   scrollview: {
-    padding: 10
+    padding: 10,
   },
   myWalletCont: {
     backgroundColor: '$CARD_BACKGROUND',
@@ -313,10 +278,10 @@ const styles = EStyleSheet.create({
     color: '$TEXT',
   },
   wallet_view: {
-    alignItems: 'flex-end'
+    alignItems: 'flex-end',
   },
   text: {
-    color: '#a1a1a1'
+    color: '#a1a1a1',
   },
   withdrawCont_textinput: {
     backgroundColor: '#f1f1f1',
@@ -324,7 +289,7 @@ const styles = EStyleSheet.create({
     height: 50,
     paddingHorizontal: 20,
     marginBottom: 10,
-    color:'#000'
+    color: '#000',
   },
   withdrawCont: {
     backgroundColor: '$CARD_BACKGROUND',
@@ -333,37 +298,37 @@ const styles = EStyleSheet.create({
     marginBottom: 10,
   },
   transaction: {
-    fontWeight: 'bold', 
+    fontWeight: 'bold',
     marginBottom: 10,
     color: '$TEXT',
   },
   credit_debit: {
     flexDirection: 'row',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   credit_debit_img: {
-    width: 20, 
-    height: 20, 
-    marginRight: 10
+    width: 20,
+    height: 20,
+    marginRight: 10,
   },
-  credit_debit_text: { 
-    fontWeight: 'bold', 
-    fontSize: 18, 
+  credit_debit_text: {
+    fontWeight: 'bold',
+    fontSize: 18,
     textAlign: 'right',
     color: '$TEXT',
   },
   line: {
-    width: 2, 
-    backgroundColor: '#a1a1a1', 
-    height: 30
+    width: 2,
+    backgroundColor: '#a1a1a1',
+    height: 30,
   },
   withdrawCont_view: {
-      flexDirection: 'row',
-      justifyContent: 'space-between',
-      alignItems: 'center',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
   },
   withdrawCont_image: {
-    width: 20, 
+    width: 20,
     height: 20,
   },
   h1: {
@@ -378,9 +343,9 @@ const styles = EStyleSheet.create({
     marginBottom: 1,
   },
   withdrawCont_text: {
-    fontWeight: 'bold', 
+    fontWeight: 'bold',
     color: '$TEXT',
-    marginBottom: 10
+    marginBottom: 10,
   },
   itemContainer: {
     flexDirection: 'row',
@@ -388,20 +353,19 @@ const styles = EStyleSheet.create({
     padding: 10,
     borderRadius: 10,
     marginBottom: 10,
-    backgroundColor: '$CARD_BACKGROUND'
+    backgroundColor: '$CARD_BACKGROUND',
   },
   transactionHistory_view: {
-    marginLeft: 10, 
-    marginRight: 10, 
+    marginLeft: 10,
+    marginRight: 10,
     flex: 1,
-    
   },
   history_text: {
-    color: '$TEXT'
+    color: '$TEXT',
   },
-  transaction_history : {
+  transaction_history: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-  }
+  },
 });
