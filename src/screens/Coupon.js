@@ -28,6 +28,9 @@ const Coupon = () => {
     useEffect(() => {
         dispatch(couponAction());
     }, []);
+    const _handleRefresh = () => {
+        dispatch(couponAction());
+      };
     const _handleEmptyComponentRender = () =>
         isFetching ? _handleRenderFooter() : <NoResultFound />;
     const _handleRenderFooter = () => (
@@ -45,7 +48,7 @@ const Coupon = () => {
                 <FlatList
                     data={couponData}
                     refreshControl={
-                        <RefreshControl refreshing={refreshing} onRefresh={refreshScreen} />
+                        <RefreshControl refreshing={refreshing} onRefresh={_handleRefresh} />
                     }
                     renderItem={({ item }) => (
                         <View style={styles.container}>

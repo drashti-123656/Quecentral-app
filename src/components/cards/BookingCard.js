@@ -49,7 +49,7 @@ const BookingCard = ({
               serviceId: service_id,
             })
           }>
-          <Text style={{...styles.h1, marginBottom: 5}}>{service_title}</Text>
+          <Text style={{...styles.h1, marginBottom: 5,color:EStyleSheet.value('$TEXT')}}>{service_title}</Text>
         </TouchableOpacity>
 
         <View
@@ -72,7 +72,7 @@ const BookingCard = ({
             source={require('./../../assets/icons/user.png')}
             style={styles.profilePic}
           />
-          <Text style={{...styles.h2, marginLeft: 10}}>Nithya User</Text>
+          <Text style={{...styles.h2, marginLeft: 10,color:EStyleSheet.value('$TEXT')}}>Nithya User</Text>
         </View>
 
         <View style={{...styles.rowCont, justifyContent: 'space-between'}}>
@@ -81,6 +81,7 @@ const BookingCard = ({
               ...styles.h2,
               color: '#333',
               fontWeight: 'normal',
+              color:EStyleSheet.value('$TEXT')
             }}>
             {`${from_time} - ${to_time}`}
           </Text>
@@ -95,7 +96,7 @@ const BookingCard = ({
 
 export default BookingCard;
 
-const styles = StyleSheet.create({
+const styles = EStyleSheet.create({
   rowCont: {
     flexDirection: 'row',
   },
@@ -122,6 +123,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     fontSize: 12,
     color: '#333',
+    color:'$TEXT'
   },
   amount: {
     position: 'absolute',
