@@ -20,6 +20,7 @@ import RootScreen from '../components/molecules/rootScreen/RootScreen';
 import CustomHeader from '../components/molecules/header/CustomHeader';
 import { useDispatch, useSelector } from 'react-redux';
 import { TOGGLE_THEME } from '../redux/reduxConstants';
+import Config from 'react-native-config';
 
 const Settings = ({ navigation }) => {
   const dispatch = useDispatch();
@@ -56,14 +57,14 @@ const Settings = ({ navigation }) => {
       ) : (
         <>
           <View style={{ ...styles.rowCont, marginTop: 20 }}>
-            {userDetails.profile_img == '' ? (
+            {!userDetails.profile_img ? (
               <Image
                 source={require('./../assets/icons/user.png')}
                 style={{ ...styles.profilePic, marginRight: 10 }}
               />
             ) : (
               <Image
-                source={{ uri: `${BASE_URL}${userDetails.profile_img}` }}
+                source={{ uri: `${Config.BASE_URL}${userDetails.profile_img}` }}
                 style={{ ...styles.profilePic, marginRight: 10 }}
               />
             )}

@@ -19,6 +19,7 @@ import EStyleSheet from 'react-native-extended-stylesheet';
 import RootScreen from '../components/molecules/rootScreen/RootScreen';
 import {FlatList} from 'react-native-gesture-handler';
 import CustomHeader from '../components/molecules/header/CustomHeader';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 
 const Dashboard = ({navigation}) => {
   const [loading, setLaoding] = useState(false);
@@ -136,8 +137,37 @@ const Dashboard = ({navigation}) => {
     <ActivityIndicator color={EStyleSheet.value('$PRIMARY')} />
   );
 
+  const HeaderLeft = ({showNav, title}) => {
+    return (
+      <Image
+        style={{height: 32, width: 92}}
+        source={require('./../assets/images/logo.png')}
+      />
+    );
+  };
+
+  const HeaderRight = ({showNav, title}) => {
+    const handleIconPress = () => navigation.navigate('Notifications');
+    return (
+      <Icon
+        name="notifications"
+        size={30}
+        color={EStyleSheet.value('$WHITE')}
+        onPress={handleIconPress}
+        //  style={styles.navButton}
+      />
+    );
+  };
+
   return (
-    <RootScreen headerComponent={() => <CustomHeader title={'QueueCentral'} showNav={false}/>}>
+    <RootScreen
+      headerComponent={() => (
+        <CustomHeader
+          headerLeft={<HeaderLeft />}
+          headerRight={<HeaderRight />}
+          showNav={false}
+        />
+      )}>
       <SearchBar value={searchKey} onChangeText={setSearchKey} />
       <FlatList
         data={popularServices}

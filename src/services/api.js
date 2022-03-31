@@ -28,7 +28,7 @@ export const categoryList = () => {
     return http.get('category')
 }
 
-export const notificationList = () => {
+export const notificationListAPI = () => {
     return http.get('get-notification-list')
 }
 

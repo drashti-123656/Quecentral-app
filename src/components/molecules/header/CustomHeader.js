@@ -4,7 +4,7 @@ import EStyleSheet from 'react-native-extended-stylesheet';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useNavigation } from '@react-navigation/native';
 
-const HeaderRight = ({showNav, title}) => {
+const HeaderLeft = ({showNav, title}) => {
   const handleNavPress = () => {
     navigation.goBack()
   }
@@ -28,7 +28,8 @@ const HeaderRight = ({showNav, title}) => {
 const CustomHeader = ({title, headerRight, headerLeft, showNav = true}) => {
   return (
     <View style={styles.conainer}>
-      <HeaderRight showNav={showNav} title={title}/>
+      {headerLeft ? headerLeft :  <HeaderLeft showNav={showNav} title={title}/>}
+      {headerRight ? headerRight :  null}
     </View>
   );
 };
