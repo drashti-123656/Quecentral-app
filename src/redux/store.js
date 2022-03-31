@@ -23,6 +23,7 @@ import {
   watchWalletDetailsService,
 } from './saga/watchers/wallet';
 import {watchTransactions} from './saga/watchers/transaction';
+import {watchNotifications} from './saga/watchers/notifications';
 
 const persistConfig = {
   key: 'root',
@@ -53,6 +54,8 @@ function* rootSaga() {
   yield fork(watchVerifyPaymentService);
   yield fork(watchTransactions);
   yield fork(watchWalletDetailsService);
+  yield fork(watchNotifications);
+  
   
 }
 sagaMiddleware.run(rootSaga);

@@ -11,6 +11,7 @@ import http from './../services/httpServices';
 import {useDispatch} from 'react-redux';
 import {logout} from '../redux/actions/auth';
 import EStyleSheet from 'react-native-extended-stylesheet';
+import {GoogleSignin} from '@react-native-google-signin/google-signin';
 const Tab = createBottomTabNavigator();
 
 const AuthNavigation = () => {
@@ -22,6 +23,19 @@ const AuthNavigation = () => {
   useEffect(() => {
     http.setToken(token);
   }, []);
+
+  const handleLogout = async () => {
+    http.setToken('8338d6ff4f0878b222f312494c1621a9');
+    const isSignedIn = await GoogleSignin.isSignedIn();
+    if (isSignedIn) {
+      try {
+        await GoogleSignin.signOut();
+      } catch (error) {
+        console.error(error);
+      }
+    }
+    dispatch(logout());
+  };
 
   return (
     <Tab.Navigator
@@ -102,10 +116,7 @@ const AuthNavigation = () => {
                 onPress: () => navigation.navigate('Home'),
                 style: 'cancel',
               },
-              {text: 'Yes', onPress: () => {
-                http.setToken('8338d6ff4f0878b222f312494c1621a9');
-                dispatch(logout())
-              }},
+              {text: 'Yes', onPress: () => handleLogout()},
             ]);
           },
         })}

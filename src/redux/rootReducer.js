@@ -8,6 +8,7 @@ import serviceDetails from './reducers/serviceDetails';
 import coupon from './reducers/coupon';
 import walletReducer from './reducers/wallet';
 import transactionReducer from './reducers/transaction';
+import notificationReducer from './reducers/notificationReducer';
 
 
 const rootReducer = combineReducers({
@@ -20,6 +21,7 @@ const rootReducer = combineReducers({
   coupon,
   walletReducer,
   transactionReducer,
+  notificationReducer
 });
 
 export default rootReducer;

@@ -37,6 +37,15 @@ import {
   GoogleSigninButton,
   statusCodes,
 } from '@react-native-google-signin/google-signin';
+import {SigninSchema} from '../../utils/schema';
+
+GoogleSignin.configure({
+  webClientId:
+    '627271039306-pmpu3n4npmlls97vkj0i9kunip66gr23.apps.googleusercontent.com', // client ID of type WEB for your server (needed to verify user ID and offline access)
+  offlineAccess: true,
+  access_type: 'offline', // if you want to access Google API on behalf of the user FROM YOUR SERVER
+  accountName: '', // [Android] specifies an account name on the device that should be used
+});
 
 const Login = ({route, navigation}) => {
   const dispatch = useDispatch();
@@ -98,7 +107,6 @@ const Login = ({route, navigation}) => {
     }
   }, [error, errorMsg]);
 
-
   const handleSignInGoogle = async () => {
     try {
       await GoogleSignin.hasPlayServices();
@@ -107,6 +115,8 @@ const Login = ({route, navigation}) => {
       const data = {
         token: userInfo.idToken,
       };
+
+      console.log('data', data)
       dispatch(googleLoginAction(data));
     } catch (error) {
       if (error.code === statusCodes.SIGN_IN_CANCELLED) {
@@ -122,9 +132,11 @@ const Login = ({route, navigation}) => {
   };
 
   const handleFacebookLogin = data => {
-    const {credentials: {token}} = data;
-    const payload = {token}
-      dispatch(facebookLoginAction(payload))
+    const {
+      credentials: {token},
+    } = data;
+    const payload = {token};
+    dispatch(facebookLoginAction(payload));
   };
   return (
     <View style={styles.container}>
@@ -143,13 +155,23 @@ const Login = ({route, navigation}) => {
               color: EStyleSheet.value('$TEXT'),
               marginBottom: 20,
             }}>
-              {authData.facebookId || authData.googleId ? 'One More Step...' : 'Login'}
+            {authData.facebookId || authData.googleId
+              ? 'One More Step...'
+              : 'Login'}
           </Text>
 
           <Formik
             initialValues={{mobileno: ''}}
+            validationSchema={SigninSchema}
             onSubmit={values => handleSendOtp(values)}>
-            {({handleChange, handleBlur, handleSubmit, values}) => (
+            {({
+              handleChange,
+              handleBlur,
+              handleSubmit,
+              errors,
+              touched,
+              values,
+            }) => (
               <View>
                 <CustomInput
                   placeholder={'Enter mobile number'}
@@ -160,7 +182,9 @@ const Login = ({route, navigation}) => {
                   keyboardType={'numeric'}
                   placeholderTextColor="#a1a1a1"
                 />
-
+                {errors.mobileno && touched.mobileno ? (
+                  <Text style={styles.error}>{errors.mobileno}</Text>
+                ) : null}
                 {/* <TouchableOpacity
                   onPress={() => setOtpSent(false)}
                   style={{
@@ -191,49 +215,56 @@ const Login = ({route, navigation}) => {
             )}
           </Formik>
 
-          <View style={styles.GoogleFacebookContainer}>
-          <GoogleSigninButton
-            style={{width: '100%', height: 48}}
-            size={GoogleSigninButton.Size.Wide}
-            color={GoogleSigninButton.Color.Dark}
-            onPress={handleSignInGoogle}
-          />
-
-          <Text style={{fontWeight: 'bold', textAlign: 'center', padding: 5}}>
+          <Text
+            style={{
+              fontWeight: 'bold',
+              textAlign: 'center',
+              padding: 5,
+              color: EStyleSheet.value('$TEXT'),
+            }}>
             {' '}
             OR{' '}
           </Text>
-          <FBLogin
-            ref={inputRef}
-            loginBehavior={FBLoginManager.LoginBehaviors.Native}
-            permissions={['email']}
-            onLogin={handleFacebookLogin}
-            onLogout={function () {
-              console.log('Logged out.');
-              //     _this.setState({ user : null });
-            }}
-            onLoginFound={function (data) {
-              console.log('Existing login found.');
-              console.log(data);
-              //  _this.setState({ user : data.credentials });
-            }}
-            onLoginNotFound={function () {
-              console.log('No user logged in.');
-              //  _this.setState({ user : null });
-            }}
-            onError={function (data) {
-              console.log('ERROR');
-              console.log(data);
-            }}
-            onCancel={function () {
-              console.log('User cancelled.');
-            }}
-            onPermissionsMissing={function (data) {
-              console.log('Check permissions!');
-              console.log(data);
-            }}
-          />
-        </View>
+
+          <View style={styles.GoogleFacebookContainer}>
+            <GoogleSigninButton
+              style={{width: '100%', height: 48, marginBottom: 10}}
+              size={GoogleSigninButton.Size.Wide}
+              color={GoogleSigninButton.Color.Dark}
+              onPress={handleSignInGoogle}
+            />
+
+            <FBLogin
+              ref={inputRef}
+              loginBehavior={FBLoginManager.LoginBehaviors.Native}
+              permissions={['email']}
+              onLogin={handleFacebookLogin}
+              onLogout={function () {
+                console.log('Logged out.');
+                //     _this.setState({ user : null });
+              }}
+              onLoginFound={function (data) {
+                console.log('Existing login found.');
+                console.log(data);
+                //  _this.setState({ user : data.credentials });
+              }}
+              onLoginNotFound={function () {
+                console.log('No user logged in.');
+                //  _this.setState({ user : null });
+              }}
+              onError={function (data) {
+                console.log('ERROR');
+                console.log(data);
+              }}
+              onCancel={function () {
+                console.log('User cancelled.');
+              }}
+              onPermissionsMissing={function (data) {
+                console.log('Check permissions!');
+                console.log(data);
+              }}
+            />
+          </View>
 
           <Text
             style={{
@@ -271,7 +302,7 @@ const styles = EStyleSheet.create({
   },
   GoogleFacebookContainer: {
     marginHorizontal: '20%',
-    marginTop: 20
+    marginTop: 10,
   },
   headerCont: {
     height: 190,
@@ -300,7 +331,7 @@ const styles = EStyleSheet.create({
     margin: 12,
     borderWidth: 1,
     padding: 10,
-    color:'$TEXT',
+    color: '$TEXT',
     borderRadius: 10,
     borderColor: '$PRIMARY',
   },
@@ -316,5 +347,12 @@ const styles = EStyleSheet.create({
   imageIcon: {
     width: 60,
     height: 70,
+  },
+  error: {
+    fontSize: 12,
+    fontWeight: 'bold',
+    color: COLORS.warningRed,
+    marginHorizontal: 12,
+    textAlign: 'right',
   },
 });

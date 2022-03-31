@@ -91,7 +91,7 @@ const DashboardStack = () => {
         name="Notifications"
         component={Notifications}
         options={({navigation, route}) => ({
-          headerShown: true,
+          headerShown: false,
           title: 'Notifications',
           headerBackVisible: true,
         })}

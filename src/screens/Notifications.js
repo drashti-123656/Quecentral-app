@@ -16,62 +16,59 @@ import EStyleSheet from 'react-native-extended-stylesheet';
 import RootScreen from '../components/molecules/rootScreen/RootScreen';
 import CustomHeader from '../components/molecules/header/CustomHeader';
 import NoResultFound from '../components/molecules/NoResultFound';
+import {useDispatch, useSelector} from 'react-redux';
+import {fetchNotificationsAction} from '../redux/actions/notifications';
+import Loader from '../components/atoms/Loader';
+import Config from 'react-native-config';
 
 const Notifications = () => {
-  const [loading, setLoading] = useState(false);
-  const [notificationData, setNotificationData] = useState([]);
+  const dispatch = useDispatch();
+  const {notifications, isFetching} = useSelector(
+    ({notificationReducer}) => notificationReducer,
+  );
 
   useEffect(() => {
-    fetchNotification();
+    dispatch(fetchNotificationsAction());
   }, []);
 
-  const fetchNotification = async () => {
-    setLoading(true);
-    const response = await notificationListAPI();
-    if (response.data.response.response_code == 200) {
-      setNotificationData(response.data.data.notification_list);
-    }
-    setLoading(false);
+  const _handleRefresh = () => {
+    dispatch(fetchNotificationsAction());
   };
 
-  const _handleEmptyComponentRender = () => <NoResultFound />;
+  const _handleEmptyComponentRender = () =>
+    isFetching ? <Loader /> : <NoResultFound />;
+
+  const _handleRenderFooter = () => (
+    <>{isFetching && notifications.length !== 0 ? <Loader /> : null}</>
+  );
+
+  const _handleNotificationItems = ({item}) => (
+    <Card style={styles.card}>
+      <Image
+        source={{uri: `${Config.BASE_URL}/${item.profile_img}`}}
+        style={styles.card_image}
+      />
+      <View style={styles.card_view}>   
+        <Text style={styles.h1}>{item.name}</Text>
+        <Text style={styles.h2}>{item.message}</Text>
+        <Text style={styles.h3}>{item.utc_date_time}</Text>
+      </View>
+    </Card>
+  )
 
   return (
     <RootScreen headerComponent={() => <CustomHeader title={'Notification'} />}>
-      {loading ? (
-        <View style={styles.screen_view}>
-          <ActivityIndicator
-            color={EStyleSheet.value('$PRIMARY')}
-            size={'large'}
-          />
-        </View>
-      ) : (
-        <FlatList
-          data={notificationData}
-          refreshControl={
-            <RefreshControl
-              refreshing={loading}
-              onRefresh={fetchNotification}
-            />
-          }
-          ListEmptyComponent={_handleEmptyComponentRender}
-          renderItem={({item}) => (
-            <Card style={styles.card}>
-              <Image
-                source={{uri: `${BASE_URL}${item.profile_img}`}}
-                style={styles.card_image}
-              />
-              <View style={styles.card_view}>
-                <Text style={styles.h1}>{item.name}</Text>
-                <Text style={styles.h2}>{item.message}</Text>
-                <Text style={styles.h3}>{item.utc_date_time}</Text>
-              </View>
-            </Card>
-          )}
-          contentContainerStyle={{flex: 1}}
-          keyExtractor={() => Math.random()}
-        />
-      )}
+      <FlatList
+        data={notifications}
+        ListEmptyComponent={_handleEmptyComponentRender}
+        renderItem={_handleNotificationItems}
+        contentContainerStyle={styles.flexboxContainer}
+        ListFooterComponent={_handleRenderFooter}
+        refreshControl={
+          <RefreshControl refreshing={isFetching} onRefresh={_handleRefresh} />
+        }
+        keyExtractor={item => item.id}
+      />
     </RootScreen>
   );
 };
@@ -83,6 +80,7 @@ const styles = EStyleSheet.create({
     flex: 1,
     backgroundColor: '$BACKGROUND',
   },
+  flexboxContainer: {flexGrow: 1},
   screen_view: {
     justifyContent: 'center',
     alignItems: 'center',
@@ -104,16 +102,19 @@ const styles = EStyleSheet.create({
     flex: 1,
   },
   h1: {
-    color: '#000',
+    color: '$TEXT',
     fontWeight: 'bold',
+    marginBottom:5
   },
   h2: {
-    color: '#333',
+    color: '$TEXT',
+    opacity: 0.5
   },
   h3: {
-    color: '#a1a1a1',
+    color:'$TEXT',
     fontSize: 12,
     fontWeight: 'bold',
+    opacity: 0.5
   },
   emptyContainer: {
     flex: 1,

@@ -56,7 +56,6 @@ export function* createOrderWorker({payload}) {
 export function* verifyPaymentWorker({payload}) {
   try {
     const {data} = yield call(verifyPaymentAPI, payload);
-    console.log('data', data)
     yield put({
       type: VERIFY_PAYMENT_SUCCESS,
       payload: data.data,

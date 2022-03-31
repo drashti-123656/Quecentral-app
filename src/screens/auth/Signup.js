@@ -132,39 +132,19 @@ const Signup = ({navigation}) => {
     setLoading(false);
   };
 
+
   const handleSignInGoogle = async () => {
     try {
+     
       await GoogleSignin.hasPlayServices();
+     
       const userInfo = await GoogleSignin.signIn();
       const tokens = await GoogleSignin.getTokens();
-
-      console.log('userInfo==>', userInfo);
-
       const data = {
         token: userInfo.idToken,
       };
-
+      console.log('data', data)
       dispatch(googleLoginAction(data));
-
-      // const response = await signupAPI(data);
-
-      // if (response.data.response.response_code == 200 || 201) {
-      //   //  setAlertDisplay(true);
-      //   const URlEncodedData = new URLSearchParams({
-      //     login_type: 3,
-      //     email: userInfo.user.email,
-      //     login_token: tokens.accessToken,
-      //   });
-
-      //   dispatch(signIn(URlEncodedData));
-      // } else {
-      //   setOtpView(true);
-      //   showMessage({
-      //     message: response.data.response.response_message,
-      //     type: 'info',
-      //     backgroundColor: COLORS.warningRed,
-      //   });
-      // }
     } catch (error) {
       if (error.code === statusCodes.SIGN_IN_CANCELLED) {
         // user cancelled the login flow
@@ -181,8 +161,6 @@ const Signup = ({navigation}) => {
   const handleFacebookLogin = data => {
     const {credentials: {token}} = data;
     const payload = {token}
-
-    console.log('payload',payload)
       dispatch(facebookLoginAction(payload))
   };
 
@@ -305,18 +283,20 @@ const Signup = ({navigation}) => {
           )}
         </Formik>
 
-        <View style={styles.GoogleFacebookContainer}>
-          <GoogleSigninButton
-            style={{width: '100%', height: 48}}
-            size={GoogleSigninButton.Size.Wide}
-            color={GoogleSigninButton.Color.Dark}
-            onPress={handleSignInGoogle}
-          />
-
-          <Text style={{fontWeight: 'bold', textAlign: 'center', padding: 5}}>
+        {/* <Text style={{fontWeight: 'bold', textAlign: 'center', padding: 5, color:EStyleSheet.value('$TEXT')}}>
             {' '}
             OR{' '}
           </Text>
+
+        <View style={styles.GoogleFacebookContainer}>
+        <GoogleSigninButton
+              style={{width: '100%', height: 48, marginBottom: 10}}
+              size={GoogleSigninButton.Size.Wide}
+              color={GoogleSigninButton.Color.Dark}
+              onPress={handleSignInGoogle}
+            />
+
+       
           <FBLogin
             ref={inputRef}
             loginBehavior={FBLoginManager.LoginBehaviors.Native}
@@ -347,7 +327,7 @@ const Signup = ({navigation}) => {
               console.log(data);
             }}
           />
-        </View>
+        </View> */}
 
         <Text style={{  color: EStyleSheet.value('$TEXT'), textAlign: 'center', marginBottom: 30, marginTop: 10}}>
           Already have an account?{' '}

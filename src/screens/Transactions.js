@@ -1,11 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {
-  StyleSheet,
-  Text,
-  View,
-  ActivityIndicator,
-  ScrollView,
-} from 'react-native';
+import {Text, View, RefreshControl} from 'react-native';
 import {walletHistory as walletHistoryAPI} from './../services/api';
 import Card from './../components/cards/Card';
 import {COLORS} from './../utils/theme';
@@ -27,11 +21,19 @@ const Transactions = () => {
 
   useEffect(() => {
     const payload = {
-      from_date:'12/03/2021',
-      to_date:'02/02/2022'
+      from_date: '12/03/2021',
+      to_date: '02/02/2022',
     };
     dispatch(fetchTransactionsAction(payload));
   }, []);
+
+  const _handleRefresh = () => {
+    const payload = {
+      from_date: '12/03/2021',
+      to_date: '02/02/2022',
+    };
+    dispatch(fetchTransactionsAction(payload));
+  };
 
   const handleTransactionItems = ({item}) => (
     <Card style={styles.itemContainer}>
@@ -83,11 +85,7 @@ const Transactions = () => {
     isFetching ? <Loader /> : <NoResultFound />;
 
   const _handleRenderFooter = () => (
-    <>
-      {isFetching && transactions.length !== 0? (
-       <Loader /> 
-      ) : null}
-    </>
+    <>{isFetching && transactions.length !== 0 ? <Loader /> : null}</>
   );
 
   return (
@@ -99,6 +97,9 @@ const Transactions = () => {
         ListFooterComponent={_handleRenderFooter}
         keyExtractor={item => item.id}
         contentContainerStyle={styles.flatlistContainer}
+        refreshControl={
+          <RefreshControl refreshing={isFetching} onRefresh={_handleRefresh} />
+        }
       />
     </RootScreen>
   );
@@ -144,5 +145,5 @@ const styles = EStyleSheet.create({
     backgroundColor: 'white',
   },
   loaderContainer: {justifyContent: 'center', alignItems: 'center', flex: 1},
-  flatlistContainer: {flexGrow: 1}
+  flatlistContainer: {flexGrow: 1},
 });
