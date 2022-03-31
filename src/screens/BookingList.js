@@ -88,6 +88,7 @@ const styles = EStyleSheet.create({
   },
   item_view: {
     marginBottom: 10,
+    marginTop:60
   },
   flatListContainer: {flexGrow: 1},
 });
