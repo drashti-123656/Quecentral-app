@@ -1,10 +1,16 @@
 import React, {useState} from 'react';
 import {Text, View, Clipboard, TouchableOpacity} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
+import { showMessage, hideMessage } from "react-native-flash-message";
 import EStyleSheet from 'react-native-extended-stylesheet';
 const CouponCard = ({id, name, discount, expiry_date, count, used_coupon}) => {
   const copyToClipboard = () => {
     Clipboard.setString(name);
+    showMessage({
+        message: "Code Copied!!",
+        type: "info",
+        backgroundColor: EStyleSheet.value('$WARNING_GREEN'),
+      });
   };
   return (
     <LinearGradient
