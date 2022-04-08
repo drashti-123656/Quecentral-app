@@ -1,15 +1,15 @@
-import React, { useState, useEffect } from 'react';
-import { Text, View, RefreshControl, Modal, Pressable } from 'react-native';
-import { walletHistory as walletHistoryAPI } from './../services/api';
+import React, {useState, useEffect} from 'react';
+import {Text, View, RefreshControl, Modal, Pressable} from 'react-native';
+import {walletHistory as walletHistoryAPI} from './../services/api';
 import Card from './../components/cards/Card';
-import { COLORS } from './../utils/theme';
-import moment from 'moment'; 
+import {COLORS} from './../utils/theme';
+import moment from 'moment';
 import EStyleSheet from 'react-native-extended-stylesheet';
 import RootScreen from '../components/molecules/rootScreen/RootScreen';
 import CustomHeader from '../components/molecules/header/CustomHeader';
-import { fetchTransactionsAction } from '../redux/actions/transactions';
-import { useDispatch, useSelector } from 'react-redux';
-import { FlatList } from 'react-native-gesture-handler';
+import {fetchTransactionsAction} from '../redux/actions/transactions';
+import {useDispatch, useSelector} from 'react-redux';
+import {FlatList} from 'react-native-gesture-handler';
 import NoResultFound from '../components/molecules/NoResultFound';
 import Loader from '../components/atoms/Loader';
 import Icon from 'react-native-vector-icons/MaterialIcons';
@@ -19,14 +19,14 @@ const Transactions = () => {
   const dispatch = useDispatch();
   const [selectedDay, setSelectedDay] = useState({});
   const [modalVisible, setModalVisible] = useState(false);
-  const { transactions, isFetching } = useSelector(
-    ({ transactionReducer }) => transactionReducer,
+  const {transactions, isFetching} = useSelector(
+    ({transactionReducer}) => transactionReducer,
   );
 
   useEffect(() => {
     const payload = {
-      from_date: '12/03/2021',
-      to_date: '02/02/2022',
+      from_date: moment().startOf('month').format('DD/MM/YYYY'),
+      to_date: moment().format('DD/MM/YYYY'),
     };
     dispatch(fetchTransactionsAction(payload));
   }, []);
@@ -40,17 +40,21 @@ const Transactions = () => {
   };
   const handleDateSelect = async day => {
     setSelectedDay(day);
-    const startOfMonth = moment(day.dateString).startOf('month').format('DD/MM/YYYY');
-    const endOfMonth = moment(day.dateString).endOf('month').format('DD/MM/YYYY');
+    const startOfMonth = moment(day.dateString)
+      .startOf('month')
+      .format('DD/MM/YYYY');
 
     const payload = {
       from_date: startOfMonth,
-      to_date: endOfMonth,
+      to_date:
+        moment().format('MM') === moment(day.dateString).format('MM')
+          ? moment().format('DD/MM/YYYY')
+          : moment(day.dateString).endOf('month').format('DD/MM/YYYY'),
     };
     dispatch(fetchTransactionsAction(payload));
     setModalVisible(false);
   };
-  const handleTransactionItems = ({ item }) => (
+  const handleTransactionItems = ({item}) => (
     <Card style={styles.itemContainer}>
       {/* <Image
           source={{uri: `${BASE_URL}${item.profile_img}`}}
@@ -64,7 +68,7 @@ const Transactions = () => {
         /> */}
       <View style={styles.screen_view}>
         <View style={styles.card_view}>
-          <Text style={{ ...styles.h1, fontSize: 15 }}>{item.reason}</Text>
+          <Text style={{...styles.h1, fontSize: 15}}>{item.reason}</Text>
           <Text
             style={{
               ...styles.h1,
@@ -79,14 +83,14 @@ const Transactions = () => {
           <Text
             style={[
               styles.h2,
-              { color: '#a1a1a1', fontWeight: 'normal', fontSize: 12 },
+              {color: '#a1a1a1', fontWeight: 'normal', fontSize: 12},
             ]}>
             {item.created_at.split(' ')[0]}
           </Text>
           <Text
             style={[
               styles.h2,
-              { marginTop: 'auto', fontSize: 13, color: 'green' },
+              {marginTop: 'auto', fontSize: 13, color: 'green'},
             ]}>
             {' '}
             Paid
@@ -103,7 +107,7 @@ const Transactions = () => {
   );
   const handlefilter = () => {
     setModalVisible(true);
-  }
+  };
   const handleFilterClose = () => {
     setModalVisible(false);
   };
@@ -111,18 +115,23 @@ const Transactions = () => {
     setModalVisible(false);
   };
   return (
-    <RootScreen headerComponent={() => <CustomHeader title={'Transactions'}
-      headerRight={
-        <View>
-          <Icon
-            name="filter-alt"
-            size={30}
-            color={EStyleSheet.value('$WHITE')}
-            onPress={handlefilter}
-            style={styles.navButton}
-          />
-        </View>}
-    />}>
+    <RootScreen
+      headerComponent={() => (
+        <CustomHeader
+          title={'Transactions'}
+          headerRight={
+            <View>
+              <Icon
+                name="filter-alt"
+                size={30}
+                color={EStyleSheet.value('$WHITE')}
+                onPress={handlefilter}
+                style={styles.navButton}
+              />
+            </View>
+          }
+        />
+      )}>
       <Modal animationType="slide" transparent={true} visible={modalVisible}>
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
@@ -206,8 +215,8 @@ const styles = EStyleSheet.create({
     marginBottom: 10,
     backgroundColor: 'white',
   },
-  loaderContainer: { justifyContent: 'center', alignItems: 'center', flex: 1 },
-  flatlistContainer: { flexGrow: 1 },
+  loaderContainer: {justifyContent: 'center', alignItems: 'center', flex: 1},
+  flatlistContainer: {flexGrow: 1},
   filterBy: {
     fontWeight: 'bold',
     fontSize: 14,
@@ -252,8 +261,8 @@ const styles = EStyleSheet.create({
     borderWidth: 1,
   },
   buttonView: {
-    marginTop:100,
-    flexDirection: 'row-reverse'
+    marginTop: 100,
+    flexDirection: 'row-reverse',
   },
   textColor: {
     color: 'blue',
