@@ -33,8 +33,8 @@ const Transactions = () => {
 
   const _handleRefresh = () => {
     const payload = {
-      from_date: '12/03/2021',
-      to_date: '02/02/2022',
+      from_date: moment().startOf('month').format('DD/MM/YYYY'),
+      to_date: moment().format('DD/MM/YYYY'),
     };
     dispatch(fetchTransactionsAction(payload));
   };
