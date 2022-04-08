@@ -1,81 +1,56 @@
-import React, {useState, useEffect} from 'react';
-import {
-  Text,
-  View,
-  RefreshControl,
-  Modal,
-  Pressable,
-  TouchableOpacity,
-  Image,
-} from 'react-native';
-import {walletHistory as walletHistoryAPI} from './../services/api';
+import React, { useState, useEffect } from 'react';
+import { Text, View, RefreshControl, Modal, Pressable } from 'react-native';
+import { walletHistory as walletHistoryAPI } from './../services/api';
 import Card from './../components/cards/Card';
-import {COLORS} from './../utils/theme';
+import { COLORS } from './../utils/theme';
+import moment from 'moment'; 
 import EStyleSheet from 'react-native-extended-stylesheet';
 import RootScreen from '../components/molecules/rootScreen/RootScreen';
 import CustomHeader from '../components/molecules/header/CustomHeader';
-import {fetchTransactionsAction} from '../redux/actions/transactions';
-import {useDispatch, useSelector} from 'react-redux';
-import {FlatList} from 'react-native-gesture-handler';
+import { fetchTransactionsAction } from '../redux/actions/transactions';
+import { useDispatch, useSelector } from 'react-redux';
+import { FlatList } from 'react-native-gesture-handler';
 import NoResultFound from '../components/molecules/NoResultFound';
 import Loader from '../components/atoms/Loader';
-import {Calendar} from 'react-native-calendars';
-import moment from 'moment';
-import {date} from 'yup';
+import Icon from 'react-native-vector-icons/MaterialIcons';
+import CalendarPicker from './../components/picker/CalendarPicker';
 
-const Transactions = props => {
+const Transactions = () => {
   const dispatch = useDispatch();
-  const [fromdatemodal, setfromdatemodal] = useState(false);
-  const [todatemodal, settodatemodal] = useState(false);
-  const [fromdate, setfromdate] = useState('');
-  const [finalModal, setfinalModal] = useState(false);
-  const [todate, settodate] = useState('');
-
-  const {transactions, isFetching} = useSelector(
-    ({transactionReducer}) => transactionReducer,
+  const [selectedDay, setSelectedDay] = useState({});
+  const [modalVisible, setModalVisible] = useState(false);
+  const { transactions, isFetching } = useSelector(
+    ({ transactionReducer }) => transactionReducer,
   );
 
   useEffect(() => {
     const payload = {
-      from_date: fromdate.dateString,
-      to_date: todate.dateString,
+      from_date: '12/03/2021',
+      to_date: '02/02/2022',
     };
     dispatch(fetchTransactionsAction(payload));
   }, []);
 
   const _handleRefresh = () => {
     const payload = {
-      from_date: fromdate.dateString,
-      to_date: todate.dateString,
+      from_date: '12/03/2021',
+      to_date: '02/02/2022',
     };
     dispatch(fetchTransactionsAction(payload));
   };
-  const handleFilterResult = () => {
-    if (fromdate.dateString === undefined) {
-      alert('please enter from date');
-    } else if (todate.dateString === undefined) {
-      alert('please enter To date');
-    } else {
-      setfinalModal(true);
-      const payload = {
-        from_date: fromdate.dateString,
-        to_date: todate.dateString,
-      };
-      dispatch(fetchTransactionsAction(payload));
-    }
-  };
+  const handleDateSelect = async day => {
+    setSelectedDay(day);
+    const startOfMonth = moment(day.dateString).startOf('month').format('DD/MM/YYYY');
+    const endOfMonth = moment(day.dateString).endOf('month').format('DD/MM/YYYY');
 
-  const onFromDayPress = dateString => {
-    setfromdate(dateString);
-    setfromdatemodal(false);
+    const payload = {
+      from_date: startOfMonth,
+      to_date: endOfMonth,
+    };
+    dispatch(fetchTransactionsAction(payload));
+    setModalVisible(false);
   };
-
-  const onToDayPress = dateString => {
-    settodate(dateString);
-    settodatemodal(false);
-  };
-
-  const handleTransactionItems = ({item}) => (
+  const handleTransactionItems = ({ item }) => (
     <Card style={styles.itemContainer}>
       {/* <Image
           source={{uri: `${BASE_URL}${item.profile_img}`}}
@@ -89,7 +64,7 @@ const Transactions = props => {
         /> */}
       <View style={styles.screen_view}>
         <View style={styles.card_view}>
-          <Text style={{...styles.h1, fontSize: 15}}>{item.reason}</Text>
+          <Text style={{ ...styles.h1, fontSize: 15 }}>{item.reason}</Text>
           <Text
             style={{
               ...styles.h1,
@@ -104,14 +79,14 @@ const Transactions = props => {
           <Text
             style={[
               styles.h2,
-              {color: '#a1a1a1', fontWeight: 'normal', fontSize: 12},
+              { color: '#a1a1a1', fontWeight: 'normal', fontSize: 12 },
             ]}>
             {item.created_at.split(' ')[0]}
           </Text>
           <Text
             style={[
               styles.h2,
-              {marginTop: 'auto', fontSize: 13, color: 'green'},
+              { marginTop: 'auto', fontSize: 13, color: 'green' },
             ]}>
             {' '}
             Paid
@@ -126,136 +101,68 @@ const Transactions = props => {
   const _handleRenderFooter = () => (
     <>{isFetching && transactions.length !== 0 ? <Loader /> : null}</>
   );
-
+  const handlefilter = () => {
+    setModalVisible(true);
+  }
+  const handleFilterClose = () => {
+    setModalVisible(false);
+  };
+  const handleFilterResult = () => {
+    setModalVisible(false);
+  };
   return (
-    <RootScreen headerComponent={() => <CustomHeader title={'Transactions'} />}>
-      <View>
-        <View style={{flexDirection: 'row'}}>
-          <View>
-            <Text style={styles.title}>From Date:</Text>
-          </View>
-          <View>
-            <Text style={styles.toTitle}>To Date:</Text>
-          </View>
-        </View>
-        <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-          <View style={{marginTop: 10}}>
-            <TouchableOpacity
-              style={styles.input}
-              onPress={() => setfromdatemodal(true)}>
-              <Text style={{color: EStyleSheet.value('$TEXT')}}>
-                {fromdate ? fromdate.dateString : 'Choose date'}
-              </Text>
-              <Modal
-                animationType="fade"
-                visible={fromdatemodal}
-                transparent={true}>
-                <View style={{flex: 1, justifyContent: 'center'}}>
-                  <Pressable
-                    onPress={() => setfromdatemodal(false)}
-                    style={{
-                      height: '100%',
-                      width: '100%',
-                      opacity: 0.7,
-                      backgroundColor: '#000',
-                      position: 'absolute',
-                    }}></Pressable>
-                  <View style={styles.modalCont}>
-                    <Calendar
-                      placeholder={'Choose Date'}
-                      onDayPress={onFromDayPress}
-                      value={fromdate}
-                    />
-                  </View>
+    <RootScreen headerComponent={() => <CustomHeader title={'Transactions'}
+      headerRight={
+        <View>
+          <Icon
+            name="filter-alt"
+            size={30}
+            color={EStyleSheet.value('$WHITE')}
+            onPress={handlefilter}
+            style={styles.navButton}
+          />
+        </View>}
+    />}>
+      <Modal animationType="slide" transparent={true} visible={modalVisible}>
+        <View style={styles.centeredView}>
+          <View style={styles.modalView}>
+            <View>
+              <View style={styles.filter}>
+                <View style={styles.filterHeadingViewStyle}>
+                  <Pressable onPress={handleFilterClose}>
+                    <Icon name={'close'} size={30} />
+                  </Pressable>
                 </View>
-              </Modal>
-            </TouchableOpacity>
-          </View>
-          <View style={{marginTop: 10}}>
-            <TouchableOpacity
-              style={styles.input}
-              onPress={() => settodatemodal(true)}>
-              <Text style={{color: EStyleSheet.value('$TEXT')}}>
-                {todate ? todate.dateString : 'Choose date'}
-              </Text>
-              <Modal
-                animationType="fade"
-                visible={todatemodal}
-                transparent={true}>
-                <View style={{flex: 1, justifyContent: 'center'}}>
-                  <Pressable
-                    onPress={() => settodatemodal(false)}
-                    style={{
-                      height: '100%',
-                      width: '100%',
-                      opacity: 0.7,
-                      backgroundColor: '#000',
-                      position: 'absolute',
-                    }}></Pressable>
-                  <View style={styles.modalCont}>
-                    <Calendar
-                      placeholder={'Choose Date'}
-                      onDayPress={onToDayPress}
-                      value={todate}
-                    />
-                  </View>
-                </View>
-              </Modal>
-            </TouchableOpacity>
-          </View>
-        </View>
-        <View style={styles.container}>
-          <TouchableOpacity style={styles.button} onPress={handleFilterResult}>
-            <Text
-              style={{fontWeight: 'bold', color: EStyleSheet.value('$WHITE')}}>
-              Submit
-            </Text>
-            <View style={{marginTop: 200}}>
-              <Modal
-                animationType="fade"
-                visible={finalModal}
-                transparent={true}>
-                <View style={{flex: 1, justifyContent: 'center'}}>
-                  <View>
-                    <TouchableOpacity onPress={() => setfinalModal(false)}>
-                      <Image
-                        style={styles.close}
-                        source={require('../../src/assets/icons/close.png')}
-                      />
-                    </TouchableOpacity>
-                  </View>
-                  <Pressable
-                    onPress={() => setfinalModal(false)}
-                    style={{
-                      height: '100%',
-                      width: '100%',
-                      opacity: 0.7,
-                      backgroundColor: '#000',
-                      position: 'absolute',
-                    }}></Pressable>
-                  <View></View>
-                  <View style={styles.modalCont}>
-                    <FlatList
-                      data={transactions}
-                      renderItem={handleTransactionItems}
-                      ListEmptyComponent={_handleEmptyComponentRender}
-                      ListFooterComponent={_handleRenderFooter}
-                      keyExtractor={item => item.id}
-                      contentContainerStyle={styles.flatlistContainer}
-                      refreshControl={
-                        <RefreshControl
-                          refreshing={isFetching}
-                          onRefresh={_handleRefresh}
-                        />
-                      }
-                    />
-                  </View>
-                </View>
-              </Modal>
+                <Text style={styles.filterBy}>Filter By</Text>
+                <CalendarPicker
+                  title={'Select date'}
+                  value={selectedDay}
+                  onSelect={handleDateSelect}
+                  placeholder={'Choose Date'}
+                />
+              </View>
+              <View style={styles.buttonView}>
+                <Pressable
+                  style={[styles.button, styles.buttonClose]}
+                  onPress={handleFilterResult}>
+                  <Text style={styles.textStyle}>Show Result</Text>
+                </Pressable>
+              </View>
             </View>
-          </TouchableOpacity>
+          </View>
         </View>
-      </View>
+      </Modal>
+      <FlatList
+        data={transactions}
+        renderItem={handleTransactionItems}
+        ListEmptyComponent={_handleEmptyComponentRender}
+        ListFooterComponent={_handleRenderFooter}
+        keyExtractor={item => item.id}
+        contentContainerStyle={styles.flatlistContainer}
+        refreshControl={
+          <RefreshControl refreshing={isFetching} onRefresh={_handleRefresh} />
+        }
+      />
     </RootScreen>
   );
 };
@@ -272,19 +179,6 @@ const styles = EStyleSheet.create({
     marginRight: 10,
     flex: 1,
   },
-  input: {
-    height: 50,
-    borderWidth: 1,
-    padding: 10,
-    width: 180,
-    borderRadius: 10,
-    borderColor: '$PRIMARY',
-    justifyContent: 'center',
-    marginBottom: 10,
-    backgroundColor: 'transparent',
-    color: '$TEXT',
-    marginTop: 10,
-  },
   card_view: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -292,30 +186,6 @@ const styles = EStyleSheet.create({
   },
   card_text: {
     color: '$TEXT',
-  },
-  close: {
-    width: 50,
-    height: 50,
-    position: 'absolute',
-    left: 320,
-    bottom: 90,
-  },
-  modalCont: {
-    padding: 10,
-    flex: 0.5,
-    marginHorizontal: 20,
-    backgroundColor: '$GRAY',
-    justifyContent: 'center',
-    borderRadius: 10,
-    shadowColor: '$PRIMARY',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-
-    elevation: 5,
   },
   h1: {
     fontSize: 20,
@@ -336,30 +206,81 @@ const styles = EStyleSheet.create({
     marginBottom: 10,
     backgroundColor: 'white',
   },
-  loaderContainer: {justifyContent: 'center', alignItems: 'center', flex: 1},
-  flatlistContainer: {flexGrow: 1},
-  title: {
-    marginTop: 120,
+  loaderContainer: { justifyContent: 'center', alignItems: 'center', flex: 1 },
+  flatlistContainer: { flexGrow: 1 },
+  filterBy: {
     fontWeight: 'bold',
+    fontSize: 14,
+    paddingBottom: 1,
   },
-  toTitle: {
-    marginTop: 120,
-    marginLeft: 130,
+  filterStyle: {
+    marginTop: 10,
+    flexDirection: 'row',
+    alignItems: 'flex-end',
+    justifyContent: 'space-around',
+  },
+  filter: {
+    height: 270,
+    padding: 20,
+  },
+  filterHeadingViewStyle: {
+    paddingLeft: 300,
+    alignItems: 'stretch',
+    justifyContent: 'space-between',
+  },
+  filterHeading: {
+    fontSize: 24,
     fontWeight: 'bold',
+    paddingBottom: 4,
+  },
+  centeredView: {
+    flex: 1,
+    flexDirection: 'column-reverse',
   },
   button: {
-    alignItems: 'center',
-    backgroundColor: '$PRIMARY',
+    borderRadius: 20,
     padding: 10,
-    height: 45,
-    width: 100,
-    marginTop: 50,
-    marginLeft: 230,
-    borderRadius: 10,
+    elevation: 2,
   },
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    paddingHorizontal: 10,
+  buttonClose: {
+    backgroundColor: 'blue',
+    width: 150,
+  },
+  buttonReset: {
+    backgroundColor: 'white',
+    borderColor: 'blue',
+    borderWidth: 1,
+  },
+  buttonView: {
+    marginTop:100,
+    flexDirection: 'row-reverse'
+  },
+  textColor: {
+    color: 'blue',
+  },
+  textStyle: {
+    color: 'white',
+    fontWeight: 'bold',
+    textAlign: 'center',
+    paddingLeft: 12,
+    paddingRight: 12,
+  },
+  textSpacing: {
+    paddingLeft: 30,
+    paddingRight: 30,
+  },
+  modalView: {
+    backgroundColor: 'white',
+    borderRadius: 20,
+    padding: 20,
+    height: 500,
+    shadowColor: 'grey',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
   },
 });
