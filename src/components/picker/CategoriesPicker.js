@@ -39,7 +39,7 @@ const CategoriesPicker = ({ title, onSelect, value}) => {
         <Text style={styles.title}>{title}</Text>
 
       <TouchableOpacity style={styles.input} onPress={() => setShowModal(true)}>
-        <Text>{value.category_name}</Text>
+        <Text style={styles.name}>{value.category_name}</Text>
       </TouchableOpacity>
 
       <Modal animationType="fade" visible={showModal} transparent={true}>
@@ -82,6 +82,9 @@ const styles = EStyleSheet.create({
     fontSize:15,
     marginBottom:5,
     color : '$TEXT'
+  },
+  name: {
+    color: 'white',
   },
   modalCont: {
     padding: 10,

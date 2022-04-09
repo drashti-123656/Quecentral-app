@@ -292,7 +292,7 @@ const styles = EStyleSheet.create({
     borderRadius: 10,
     paddingHorizontal: 10,
   },
-  searchTitle: {flex: 1, color: '#000'},
+  searchTitle: {flex: 1, color: '#fff'},
   locationTitle: {marginBottom: 5},
   sortbyTitle: {width: '49%'},
   searchContainer: {backgroundColor: '$BACKGROUND', zIndex: 1},

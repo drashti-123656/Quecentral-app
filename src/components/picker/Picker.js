@@ -37,7 +37,7 @@ const picker = ({title, onSelect, value, data}) => {
         <TouchableOpacity
           style={styles.input}
           onPress={() => setShowModal(true)}>
-          <Text>{value.value}</Text>
+          <Text style={styles.name}>{value.value}</Text>
         </TouchableOpacity>
         </View>
       )}
@@ -87,6 +87,9 @@ const styles = EStyleSheet.create({
     fontSize: 15,
     marginBottom: 5,
     color: '$TEXT'
+  },
+  name: {
+    color: 'white',
   },
   modalCont: {
     padding: 10,

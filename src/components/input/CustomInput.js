@@ -77,7 +77,7 @@ const CouponInputWithTitle = props => {
           style={{
             flex: 1,
             padding: 10,
-            color:'#000'
+            color:'#fff'
           }}
           onChangeText={props.onChangeText}
           value={props.value}

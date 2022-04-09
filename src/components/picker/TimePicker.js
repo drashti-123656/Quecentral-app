@@ -20,11 +20,11 @@ const TimePicker = props => {
   };
 
   return (
-    <View>
+    <View style={styles.timeslot}>
       <Text style={styles.title}>{props.title}</Text>
 
       <TouchableOpacity style={styles.input} onPress={() => setShowModal(true)}>
-        <Text>
+        <Text style={styles.slot}>
           {props.value.start_time !== undefined
             ? `${props.value.start_time} - ${props.value.end_time}`
             : 'Choose time'}
@@ -68,13 +68,20 @@ const TimePicker = props => {
 export default TimePicker;
 
 const styles = StyleSheet.create({
+  timeslot:{
+    marginTop: 15,
+  },
   h1: {
     padding: 10,
   },
+  slot: {
+    color: 'white',
+  },
   title: {
     fontWeight: 'bold',
-    fontSize: 12,
+    fontSize: 15,
     marginBottom: 5,
+    color: 'white',
   },
   modalCont: {
     padding: 10,
