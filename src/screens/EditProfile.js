@@ -60,8 +60,8 @@ const EditProfile = ({route, navigation}) => {
       dob: moment(values.dob.dateString).format('DD-MM-YYYY'),
       gender: values.gender[0],
       type: 1,
+      profile_img: `data:image/png;base64,${ProfilePic.assets[0].base64}`,
     };
-
     dispatch(updateProfileAction(payload));
   };
 
@@ -77,7 +77,6 @@ const EditProfile = ({route, navigation}) => {
     <KeyboardAwareScrollView
       contentContainerStyle={{flexGrow: 1}}
       style={styles.container}>
-
       <Formik
         initialValues={{
           email: userDetails.email,
@@ -96,7 +95,7 @@ const EditProfile = ({route, navigation}) => {
         }}
         onSubmit={values => handleSubmit(values)}>
         {({handleChange, handleBlur, handleSubmit, setFieldValue, values}) => (
-          <View >
+          <View>
             <View style={{...styles.rowCont, marginVertical: 20}}>
               <View>
                 {userDetails.profile_img == '' ? (
@@ -187,7 +186,7 @@ const EditProfile = ({route, navigation}) => {
                   tagRemoveIconColor={EStyleSheet.value('$BLACK')}
                   tagBorderColor={EStyleSheet.value('$BLACK')}
                   tagTextColor={EStyleSheet.value('$BLACK')}
-                  selectedItemTextColor={EStyleSheet.value('$WHITE')}             
+                  selectedItemTextColor={EStyleSheet.value('$TEXT')}
                   selectedItemIconColor={EStyleSheet.value('$WHITE')}
                   itemTextColor={EStyleSheet.value('$TEXT')}
                   searchInputStyle={styles.brandSearchInputStyle}
@@ -200,7 +199,6 @@ const EditProfile = ({route, navigation}) => {
                   styleItemsContainer={styles.itemContainer}
                   styleSelectorContainer={styles.selectorContainer}
                   styleRowList={styles.rowList}
-
                 />
               </View>
 
@@ -224,7 +222,7 @@ const EditProfile = ({route, navigation}) => {
                   tagRemoveIconColor={EStyleSheet.value('$BLACK')}
                   tagBorderColor={EStyleSheet.value('$BLACK')}
                   tagTextColor={EStyleSheet.value('$BLACK')}
-                  selectedItemTextColor={EStyleSheet.value('$WHITE')}             
+                  selectedItemTextColor={EStyleSheet.value('$TEXT')}
                   selectedItemIconColor={EStyleSheet.value('$WHITE')}
                   itemTextColor={EStyleSheet.value('$TEXT')}
                   searchInputStyle={styles.brandSearchInputStyle}
@@ -234,13 +232,11 @@ const EditProfile = ({route, navigation}) => {
                   styleItemsContainer={styles.itemContainer}
                   styleSelectorContainer={styles.selectorContainer}
                   styleRowList={styles.rowList}
-
-
                 />
               </View>
 
               <CalendarPicker
-                title={'Select date'}
+                title={'Select DOB'}
                 value={values.dob}
                 onSelect={value => setFieldValue('dob', value)}
                 //   minDate={new Date().toISOString().slice(0, 10)}
@@ -317,14 +313,13 @@ const styles = EStyleSheet.create({
     paddingHorizontal: 20,
     backgroundColor: '$BACKGROUND',
   },
-  texttag:{
-color:'red'
+  texttag: {
+    color: 'red',
   },
   rowCont: {
     flexDirection: 'row',
     alignItems: 'center',
   },
- 
 
   profilePic: {
     width: 100,
@@ -334,14 +329,14 @@ color:'red'
   title: {
     fontSize: 15,
     fontWeight: 'bold',
-    marginTop:15,
-    color : '$TEXT'
+    marginTop: 15,
+    color: '$TEXT',
   },
-  selectTitle:{
+  selectTitle: {
     fontSize: 15,
     fontWeight: 'bold',
-    marginTop:10,
-    color : '$TEXT'
+    marginTop: 10,
+    color: '$TEXT',
   },
   brandSearchInputStyle: {
     height: 45,
@@ -366,12 +361,12 @@ color:'red'
     borderColor: '$PRIMARY',
     height: 50,
     marginTop: 20,
-    backgroundColor:'transparent'
-
+    backgroundColor: 'transparent',
   },
   inputGroup: {
     borderWidth: 1,
     borderColor: '$PRIMARY',
+    backgroundColor: '$BACKGROUND',
     marginTop: 10,
     borderRadius: 10,
   },
@@ -395,6 +390,6 @@ color:'red'
     borderColor: '$PRIMARY',
     height: 50,
     marginTop: 20,
-  backgroundColor:'transparent',
+    backgroundColor: 'transparent',
   },
 });
